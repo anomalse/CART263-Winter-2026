@@ -14,6 +14,8 @@
     --padding-nav-vert: 1vw;
      --code-t1-color: #b30086;
     --code-t1-bkcolor: #d8a0ca;
+      --code-l-bkcolor: #ecbde0;
+
 
 
 }
@@ -104,6 +106,27 @@ nav ul li {
 
 
 
+}
+a{
+      text-decoration: none; 
+      padding:2px;
+
+}
+ a:link {
+    color: var(--code-t1-color);
+}
+ a:active {
+    color: var(--body-color);
+}
+ a:visited {
+     color: var(--code-t1-color)
+     
+}
+
+ a:hover {
+    background-color: var(--code-l-bkcolor);
+    color: var(--code-t1-color);
+    padding:2px;
 }
 
 nav ul li a {
