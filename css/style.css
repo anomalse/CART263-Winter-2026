@@ -1,0 +1,218 @@
+:root {
+    /* --body-color: #cce6ff; */
+       --body-color: #ffffff;
+    --text-color: #003366;
+    --line-color: #e6f2ff;
+    --nav-back-color: #99ccff;
+     --contents-color: #b30086;
+    --contents-h3-color: #99ccff;
+    --contents-h4-color: #88acd3;
+    --padding-vert: 2vh;
+    --padding-vert-p: .5rem;
+    --margin-vert: 2vh;
+    --padding-nav-vert: 1vw;
+
+     --code-t1-color: #b30086;
+    --code-t1-bkcolor: #d8a0ca;
+
+
+}
+
+p {
+  line-height: 1.8; /* Sets line height to 1.8 times the current font size */
+  margin-bottom: var(--padding-vert-p)
+
+}
+
+* {
+    margin: 0;
+    /* padding:0; */
+}
+/* html{
+    font-size:20px;
+   
+} */
+pre{
+     /* font-size: 62.5%; */
+    background-color:red;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--body-color); 
+    color: var(--text-color);
+}
+
+h1 {
+    padding-top: var(--padding-vert);
+    padding-bottom: var(--padding-vert);
+}
+
+h1,
+h2 {
+    /* The font size will be at least 2rem (32px), at most 5rem (80px),
+     and scale with 4% of the viewport width in between. */
+    font-size: clamp(1.0rem, 4vw, 1.5rem);
+}
+
+.inner-head {
+    padding-top: var(--padding-vert);
+    padding-bottom: var(--padding-vert);
+
+}
+
+.inner-descript p {
+    padding-top: var(--padding-vert-p);
+    padding-bottom: var(--padding-vert-p);
+}
+
+main {
+    margin-left: 10vw;
+    margin-right: 10vw;
+
+}
+
+header {
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+
+nav ul {
+    margin-top: var(--margin-vert);
+    margin-bottom: var(--margin-vert);
+    display: flex;
+    /* justify-content:right; */
+    background-color: var(--nav-back-color);
+    flex-wrap: wrap;
+    /* The font size will be at least 2rem (32px), at most 5rem (80px),
+     and scale with 4% of the viewport width in between. */
+    font-size: clamp(1rem, 1vw, 2rem);
+}
+
+nav ul li {
+    /* width:10%; */
+    text-transform: uppercase;
+    list-style-type: none;
+    padding: var(--padding-nav-vert);
+
+
+}
+
+nav ul li a {
+    text-decoration: none;
+    padding: var(--padding-nav-vert);
+}
+
+nav ul li a:link {
+    color: var(--text-color);
+}
+
+
+nav ul li a:active {
+    color: var(--body-color);
+}
+
+nav ul li a:visited {
+    color: var(--text-color);
+}
+
+nav ul li a:hover {
+    background-color: var(--text-color);
+    color: var(--body-color);
+}
+
+.content-box {
+    display: flex;
+    width: 95%;
+}
+
+.flex-inner {
+    margin-right: 1vw;
+    width: 45%;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: var(--line-color);
+}
+
+
+.customP {
+    color: var(--contents-color);
+    font-size: 16px;
+}
+
+.customH {
+    color: #992495;
+    font-size: 16px;
+}
+
+
+/* .gitC {
+    color: #01a2cd;
+    font-weight: bold;
+} */
+ /* code{
+    font-size:12px;
+} */
+
+pre{
+    border-radius: 0.3em;
+}
+/* ul{
+    list-style-type: none;
+} */
+ul li{
+    padding-top:var(--padding-nav-vert)
+}
+ol li{
+    padding-top:var(--padding-nav-vert)
+}
+
+section{
+    margin-top:var(--padding-nav-vert);
+    margin-bottom:var(--padding-nav-vert)
+}
+.table-contents{
+
+    color:var(--contents-color)
+}
+.contents h3{
+
+    padding:var(--padding-vert-p);
+    background:var(--contents-h3-color);
+    margin-bottom:var(--padding-nav-vert)
+}
+
+.contents h4{
+    margin-top:var(--padding-vert-p);
+    margin-bottom:var(--padding-vert-p);
+    background:var(--contents-h4-color);
+    padding:var(--padding-vert-p);
+}
+
+
+code{
+    color:var(--text-color);
+    background-color: var(--contents-h3-color);
+    font-size:14px;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+.code-task{
+    color:var(--code-t1-color);
+    /* background-color: var(--code-t1-bkcolor); */
+    background-color: var(--body-color);
+    font-size:14px;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+
+
+
+
+
+
+
+

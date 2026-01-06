@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+      <link href="css/themes/prism.css" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
+        <hr />
+
+         <nav id = "cart263Nav"></nav>
+        <script src = "js/loadNav.js"></script>
+       <div class="inner-head">
+                <h2>TASK 1 : DUE ... </h2>
+                <hr />
+            </div>
+    </header>
+    <main>
+
+<section class="contents">
+<h3>To be completed in class:: In groups of maximum 2-3 people::</h3>
+<ul>
+<li>Please work on the following questions 1-7. The tasks are ordered by difficulty... They become more complex as the numbers increase.</li>
+<li>They are <span class ="customP">REVIEW tasks</span> from things learnt in CART 253: meaning that you should be able to complete them all without learning/looking up new stuff :)</li>
+<li>You may seek help from your peers, the professor, the TA ... and the internet. However - please do not use Chat GPT or any other AI Assistant</li>
+<li>These tasks <span class ="customP">ARE NOT A TEST</span>. IT is not a competition - and you are not competing for first/second/nth place. The goal is for you to practice constructs (ie. variables, if/then, while, for ...) in p5.js in class.</li>
+<li>The prof will stop the session after about 1.5 hours and we will all hopefully all together go over possible solutions</li>
+<li><span class ="customP">Participation in this session is necessary and you are obligated to stay even if you are a seasoned programmer... help your peers :)</span></li>
+<li>For each group: upon successful attempts at all parts of this activity - they have the <em>potential</em> to receive up to 4% bonus marks overall (towards their final grade)</li>
+</ul>
+
+<ul>
+<li><h4>PRELIMINARY STEPS:</h4> <!--START PRELIM-->
+<ul>
+<li><a href="t1-resources/p5-rev-template.zip">Download the following template code</a></li>
+<li>Open a new project in VS Code</li>
+<li>Everyone in the same group works on the SAME project/code ... you need to collaborate...</li>
+<li>All code is to be written in javascript /p5.js. Do not use any other libraries/frameworks API's, languages etc...</li>
+<li>Remember: there may be more than one solution for a given task ... so do not worry if someone else has a different solution. Implement one solution per task...</li>
+</ul>
+<!--END PRELIM --></li>
+<li><h4>QU 1:</h4> <!--START 1 -->
+<ul>
+<li>Create <strong>three ellipses</strong></li>
+<li>Each ellipse must have a different color, size and position</li>
+<li>Only use variables for the x, y, width, height and color (r,g,b) for each ellipse.</li>
+<li>REUSE THE SAME variables for each ellipse</li>
+<li>DO NOT USE: objects, arrays, loops, animation, custom self created functions or the random function</li>
+<li style="width: 100%;"><img src="t1-resources/1.png" alt="1" width="231" height="235"></li>
+<!--END 1 --></ul>
+</li>
+<li><h4>QU 2:</h4> <!--START 2 -->
+<ul>
+<li>REDO Task 1 but create and use a custom function with the following signature: <br><code>
+function drawEllipse(x,y,w,h,r,g,b){ //body}
+</code></li>
+<li>Then: in the setup() make three calls to <code>drawEllipse(...)</code></li>
+</ul>
+<!--END 2 --></li>
+<li><h4>QU 3:</h4> <!--START 3 -->
+<ul>
+<li>Create <strong>three rectangles</strong> (or squares)</li>
+<li>The color, size, initial positions of the three rectangles do not matter: but USE VARS/CONSTS whenever possible</li>
+<li>Then: update the position of the 1st rectangle whenever the <span class = "customP">mouse is clicked</span> on the canvas</li>
+<li>And: update the position of the 2nd rectangle when <span class = "customP">spacebar</span> is pressed</li>
+<li>Finally: update the position of the 3rd rectangle in the <span class = "customP">draw() </span>(each frame). Only change the y position in one direction. Also: handle the bottom canvas bounds: if the rectangle is at the bottom, set it to the top of the canvas</li>
+<li>BONUS: every time the <span class = "customP">mouse moves</span> on the canvas change the color of the 3rd rectangle with a new random color</li>
+<li>For ALL parts: DO NOT USE OBJECTS or ARRAYS</li>
+<li>You can use IF STATEMENTS</li>
+<li>  <video controls="true" width="268" height="265">
+        <source src="t1-resources/3.mov">
+</video> </li>
+</ul>
+<!--END 3 --></li>
+<li><h4>QU 4:</h4> <!--START 4 -->
+<ul>
+<li>AGAIN USE VARIABLES/CONSTS WHENEVER POSSIBLE</li>
+<li>Create <strong>three</strong> rectangles: each one is the <span class = "customP">height of the canvas</span> and <span class = "customP">1/3 of the width of the canvas</span></li>
+<li>Position the first rectangle in the first third, the second in the second third and the third at the end of the canvas (three columns)</li>
+<li>Each rectangle should be a different blue color</li>
+<li>Then, IF/WHEN the <span class = "customP">mouse is over</span> the 1st rectangle change the colour of the first rectangle to white</li>
+<li>Apply the same mouse behaviour to the other two rectangles</li>
+<li>Also: Implement the following; when/if the <span class = "customP">mouse is NOT over a given rectangle</span> make sure that those rectangles go back to their original color</li>
+<li>For ALL parts: DO NOT USE ARRAYS</li>
+<li>You may use OBJECTS - but only for the color of the rectangles</li>
+<li> <video controls="true" width="268" height="265">
+        <source src="t1-resources/4.mov">
+</video> </li>
+</ul>
+<!--END 4 --></li>
+<li><h4>QU 5:</h4> <!--START 5 -->
+<ul>
+<li>USE VARIABLES/CONSTS WHENEVER POSSIBLE</li>
+<li>FOR THIS EXERCISE DO NOT USE A FOR LOOP - <strong>ONLY WHILE LOOP(S)</strong></li>
+<li>Create a variable that will hold a number i.e. <code>counter</code>, set its value to 0</li>
+<li>Create an orange square (width, size and position do not matter)</li>
+<li>Use an object to hold the square's properties (<code>w,h,x and y and color</code>)</li>
+<li>Create a function called <code>displaySquare()</code> and in the body of the function implement the code to render the orange square. Call this function in the <code>draw()</code></li>
+<li>Whenever the <span class = "customP">mouse is clicked</span> inside the orange square increment the counter variable by 1</li>
+<li>Whenever the <span class = "customP">mouse is over</span> the orange square: highlight the square to be lighter orange</li>
+<li>Create a helper function to check if the mouse is inside the square (i.e. <code>checkCollisionWithSquare()</code>), and have it return true if it is and false otherwise. USE this function for the mouse click/over functionalities.</li>
+<li>Create an ellipse and draw it with its center at the center of the screen</li>
+<li>make a variable called <code>radius</code> to hold the size of the ellipse</li>
+<li>Set the color of the ellipse to be white</li>
+<li>Create a variable called <code>ellipseAlpha</code> to hold the alpha value of the ellipse.</li>
+<li>Practise showing the ellipse at different sizes - change the radius (always with the same x and y)</li>
+<li>USE A <strong>SINGLE WHILE LOOP</strong> in the draw() to <span class = "customP">draw the same number of ellipse as that of the counter (if the counter is 1 - 1 ellipse, if the counter is 2: 2 ellipse etc...)</span></li>
+<li>Also in the while loop: each new circle should be slightly larger and make the alpha value larger (start the alpha small)</li>
+<li>Do not draw anything if the counter is greater than 10 or less than 1</li>
+<li>BONUS: make the logic for drawing a single circle into a custom function (i.e. <code>drawCircle(x,y,radius,alpha)</code>)</li>
+<li>BONUS II : make another square (red) that when clicked will decrement the counter by 1 ... AND - when hovered over will be lighter red ... (make custom functions and objects as required)</li>
+<li>BONUS III: INSTEAD OF USING A WHILE LOOP FOR THE ELLIPSE(S) - USE A FOR LOOP...</li>
+<li> <video controls="true" width="268" height="265">
+<source src="t1-resources/5.mov">
+</video> </li>
+</ul>
+<!--END 5 --></li>
+<li><h4>QU 6:</h4> <!--START 6 -->
+<ul>
+<li>AGAIN USE VARIABLES/CONSTS WHENEVER POSSIBLE</li>
+<li>Make a text object to hold the string "test" , fill white , textSize 28 , center of screen</li>
+<li>Write a <span class = "customP">for loop to repeat 10 times: start at 0 and finish at 9</span></li>
+<li>In the for loop body: output the counter variable (usually labelled <code>i</code>) as text. As well, use the counter variable to offset the x position of the text (i.e. if i ==1 then x position ==20, if i ==2 x position ==40 etc..)</li>
+<li>Make <span class = "customP">another for loop to repeat 15 times: start at 15 end at 1 </span></li>
+<li>In this loop: output the counter variable as text . As well, use the counter variable to offset the y position of the text (i.e. if i ==1 then y position ==20, if i ==2 y position ==40 etc..)</li>
+<li>BONUS: USING THE SAME FOR LOOP AS JUST BEFORE: can you make the the greatest number start at the top and the smallest output at the bottom?</li>
+<li><img src ="t1-resources/6.png"alt="6" width="231" height="235"></li>
+</ul>
+<!--END 6--></li>
+<li><h4>QU 7:</h4> <!--START 7 -->
+<ul>
+<li>Use a <span class = "customP">nested for loop</span> to draw a grid of evenly spaced circles .</li>
+<li>Make the grid work for a circle size that is a multiple of 5 (up to 100) - <span class = "customP">just by changing one variable</span>.</li>
+<li>Make ALL circles the SAME random color - only switches on page reload</li>
+<li>Have this random color CHANGE for ALL CIRCLES when the <span class = "customP">user presses on space bar</span></li>
+<li> <video controls="true" width="268" height="265">
+        <source src="t1-resources/7.mov">
+<li>On<span class = "customP"> mouse click</span> change CIRCLES the to SQUARES if they were CIRCLES .. AND to CIRCLES if they were SQUARES</li>
+<li> <video controls="true" width="268" height="265">
+        <source src="t1-resources/7_b.mov">
+</video> </li>
+<li>BONUS: ON LOAD: make <span class = "customP">every even row CIRCLES </span>and every <span class = "customP"> odd row SQUARES</span>. Switch circles/squares on mouse click (odd row SQUARES and even row CIRCLES )..and vice versa</li>
+<li> <video controls="true" width="268" height="265">
+<source src="t1-resources/7_c.mov"></video> </li>
+</ul>
+<!--END 7--></li>
+</ul>
+
+
+</section>
+</main>
+  <script src="js/prism.js"></script>
+</body>
+
+</html>
