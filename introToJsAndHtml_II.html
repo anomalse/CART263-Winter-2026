@@ -29,12 +29,12 @@
 
 <section class="contents">
 <h3>Events and CallBacks</h3>
-As already demonstrated with the <code>window.onload</code> event, JavaScript functions can be executed  when a specific <code>event</code> is triggered.
-<span class="customP">What is an event?:</span>
-An event is some <span class="customP">action</span> (like when a user "clicks" on a button), which when occurs will cause some <span class="customP">change</span> to take place:
+<p>As already demonstrated with the <code>window.onload</code> event, JavaScript functions can be executed  when a specific <code>event</code> is triggered.</p>
+<p><span class="customP">What is an event?:</span></p>
+<p>An event is some <span class="customP">action</span> (like when a user "clicks" on a button), which when occurs will cause some <span class="customP">change</span> to take place:
 (i.e: when the user clicks on a menu item in an HTML page, the requested page will be loaded in the browser...).
 In the browser most code is <span class="customP">event-driven</span> and writing interactive applications in JavaScript is often about <span class="customP">waiting for and reacting to events</span>, to alter the behaviour of the browser in some way. 
-Events occur when the page loads, when user interacts (clicks, hovers, changes) and a myriad of other times (i.e. timers), and can be triggered manually too... 
+Events occur when the page loads, when user interacts (clicks, hovers, changes) and a myriad of other times (i.e. timers), and can be triggered manually too... </p>
 <ul>
 <li>In order to react to an event one needs the following:</li>
 <li> An <span class = "customP">instruction</span> which enables an HTML element to <span class = "customP">listen for the event to occur </span></li>
@@ -279,11 +279,10 @@ When you run your page in the browser now - and you click on the "intro" div - t
 <li> So putting this altogether: the element whose id is <span class="customP">intro</span> has an event listener attached to it - and therefore when it is <span class="customP">clicked</span>, the anonymous function will be executed.</li>
 </ul>
 <h4> The Returned Event Object</h4>
-Whenever one defines a callback function that will be associated with an event (mouse click, mouse drag ...., keyboard events...) the browser will by default RETURN an the event object to this callback function. So - as we saw previously: we added the <span class="customP">an event</span> parameter to the callback function. We can then access the returned event object and receive and use all kinds of useful information.
+<p>Whenever one defines a callback function that will be associated with an event (mouse click, mouse drag ...., keyboard events...) the browser will by default RETURN an the event object to this callback function. So - as we saw previously: we added the <span class="customP">an event</span> parameter to the callback function. We can then access the returned event object and receive and use all kinds of useful information.</p>
 
 <h4> Using "this"</h4>
-Within any <code>callback</code> function, the variable <span class = "customP">this</span> is automatically assigned to the element that has the <code>eventListener</code> allocated to it. So: in order to modify the <span class = "customP">#intro element</span> within the callback function - we can refer to it with <code>this</code>.
-
+<p>Within any <code>callback</code> function, the variable <span class = "customP">this</span> is automatically assigned to the element that has the <code>eventListener</code> allocated to it. So: in order to modify the <span class = "customP">#intro element</span> within the callback function - we can refer to it with <code>this</code></p>
 Next: add the following after the background change:
 <pre data-line = "2,4,6" class="language-javascript line-numbers">
 <code>
@@ -291,11 +290,11 @@ Next: add the following after the background change:
  document.querySelector(`#${this.id} p`).style.background = `rgba(214, 110, 239 ,.75)`;
 </code>
 </pre>
-As you can see - we can further refer to the id of the <span class = "customP">intro</span> element and at the same time refer to the paragraph element within the element and change its background simultaneously.... 
-Point: - you can perform as many operations as you want within a callback function - it is really just a function ...:)
+<p>As you can see - we can further refer to the id of the <span class = "customP">intro</span> element and at the same time refer to the paragraph element within the element and change its background simultaneously.... 
+Point: - you can perform as many operations as you want within a callback function - it is really just a function ...:)</p>
 <h4> Making the callback more dynamic</h4>
-So - next:: the rgb values of the background color are those <span class = "customP">specifically for the intro section</span> - so if we wanted to add  the same behaviour to other elements we would need to re-write the callback function. Our current solution  is not really a modular approach and creates a lot of redundant code... so lets look at this all more closely: 
-First replace all the event listener code with the following:
+<p>So - next:: the rgb values of the background color are those <span class = "customP">specifically for the intro section</span> - so if we wanted to add  the same behaviour to other elements we would need to re-write the callback function. Our current solution  is not really a modular approach and creates a lot of redundant code... so lets look at this all more closely: 
+First replace all the event listener code with the following:</p>
 <pre data-line = "2,4,6,8,10" class="language-javascript line-numbers">
 <code>
  let introSection = document.querySelector("#intro");
@@ -307,28 +306,28 @@ First replace all the event listener code with the following:
     })
 </code>
 </pre>
-SO - this code does exactly the same thing as before - BUT it is more dynamic... why and how?
+<p>SO - this code does exactly the same thing as before - BUT it is more dynamic... why and how?</p>
 <h4> Setting another style property as an inline property </h4>
-Well - one option as demonstrated above - is that since we are only changing the <span class = "customP"> opacity property </span> of the element - we just dynamically set the inline style property "opacity" as opposed to the background.. so we are essentially <span class = "customP"> extending the style</span> as opposed to overwriting it...
-But - now how to set the paragraph within more dynamically?
+<p>Well - one option as demonstrated above - is that since we are only changing the <span class = "customP"> opacity property </span> of the element - we just dynamically set the inline style property "opacity" as opposed to the background.. so we are essentially <span class = "customP"> extending the style</span> as opposed to overwriting it...
+<br/> But - now how to set the paragraph within more dynamically?</p>
 <h4> Access the computed style of an element </h4>
 If - we just want to set the opacity of the child paragraph element like so:
-<pre data-line = "2," class="language-javascript line-numbers"></pre>
+<pre data-line = "2," class="language-javascript line-numbers">
 <code>
  document.querySelector(`#${this.id} p`).style.setProperty("opacity", .75");
  </code>
 </pre>
-It will not work -- because the parent elemnet has the lower opacity value....
+<p>It will not work -- because the parent elemnet has the lower opacity value....
 So: we rework our solution:
-
+<br/>
 We can access the <span class = "customP">style attributes</span> of any HTML element rendered to the browser (in most modern browsers) using the <code>window.getComputedStyle()</code> function. 
-This returns an object (set of key value-pairs) of all the style attributes for that element. So , then if we want to access the background we do so by using the <code> getPropertyValue() </code> : 
+This returns an object (set of key value-pairs) of all the style attributes for that element. So , then if we want to access the background we do so by using the <code> getPropertyValue() </code> :</p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
 let bgColor = cssObj.getPropertyValue("background-color"); 
 </code>
 </pre>
-Ok ... but this returns a string :( - we need to perform some string operations  on access the color values from the string.... - so we create the helper function <span class = "customP">getColorObj():</span>
+<p>Ok ... but this returns a string :( - we need to perform some string operations  on access the color values from the string.... - so we create the helper function <span class = "customP">getColorObj():</span></p>
 <pre data-line = "2,4,6,8,10,12,14" class="language-javascript line-numbers">
 <code>
 function getColorObj(inColor) {
@@ -342,8 +341,8 @@ function getColorObj(inColor) {
   }
   </code>
 </pre>
-Finally - we can then use the returned rgb values in the <span class = "customP">backgroundColorArray</span> and use those on the element and on the associated paragraph tag... nice ;):
-Below is the entire callback function re-worked:
+<p>Finally - we can then use the returned rgb values in the <span class = "customP">backgroundColorArray</span> and use those on the element and on the associated paragraph tag... nice ;):
+Below is the entire callback function re-worked:</p>
 <pre data-line = "2,4,68,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
 let introSection = document.querySelector("#intro");
@@ -367,8 +366,8 @@ let introSection = document.querySelector("#intro");
 </code>
 </pre>
 <h4> Same Event behaviours on a group of elements</h4>
-Ok. Now we are ready to apply the above callback function on all the sections ... 
-we can now do this with <span class = "customP">one piece of code</span>... Replace the above with:
+<p>Ok. Now we are ready to apply the above callback function on all the sections ... 
+We can now do this with <span class = "customP">one piece of code</span>... Replace the above with:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
 <code>
   // /**** 4 Combined  */
@@ -400,14 +399,16 @@ we can now do this with <span class = "customP">one piece of code</span>... Repl
 </code>
 </pre>
 So - what changed? 
-1/ Access all the sections with the same class name: <span class ="customP">mouseclick-active-section</span>
-2/ Use a for loop to go through all the found elements and then execute exactly the same instructions as previously....
+<ol>
+<li>Access all the sections with the same class name: <span class ="customP">mouseclick-active-section</span></li>
+<li>Use a for loop to go through all the found elements and then execute exactly the same instructions as previously....</li>
+</ol>
 Nice ... 
 <h4> Toggle the behaviour</h4>
-A last feature that we will add to this example: <span class = "customP"> a toggle behaviour </span>.
+<p>A last feature that we will add to this example: <span class = "customP"> a toggle behaviour </span>.
 Essentially: we will implement a boolean toggle: when one mouse clicks on the element. - we will alternate between the darker style and the original style. Here, the easiest solution would be test the alpha value, BUT that is very specific to this example.We will look at something more generic - and useful in many instances. Let's use the <span class = "customP">custom boolean attribute: <code>custom-bool</code> that has been assigned to each element</span> and set it to either <code>active</code> or <code>inactive</code> with each mouse click. 
 Then: we use the <code> if/else </code> construct to decide either to apply the dark or the light style:
-Below is the revised code. Note: the ONLY change is actually the implementation of the if/else...
+Below is the revised code. Note: the ONLY change is actually the implementation of the if/else...</p>
 <pre id = "writeC" class="language-javascript line-numbers">
 <script>
 let s3 = ""
@@ -467,8 +468,8 @@ document.querySelector("#writeC").setAttribute("data-line",s3)
 </pre>
 
 <h4>Events affecting other elements.</h4>
-Ok - so now lets apply another mouse click event listener to the <span class = "customP"> bubble button </span>.. Note you can have multiple elements with event listeners - and so we by no means have to remove any previous code... 
-Add the following within the setup()
+<p>Ok - so now lets apply another mouse click event listener to the <span class = "customP"> bubble button </span>.. Note you can have multiple elements with event listeners - and so we by no means have to remove any previous code... 
+<br/> Add the following within the setup():</p>
 <pre data-line = "2,4" class="language-javascript line-numbers">
 <code>
  document.querySelector("#bubbleButton").addEventListener("click",function(){
@@ -476,8 +477,8 @@ Add the following within the setup()
 })
 </code>
 </pre>
-This should be super familiar:::
-OK - now we will do something different ... when the button is clicked - we will generate new html elements with random colors and positions:
+<p>This should be super familiar:::
+<br/> OK - now we will do something different ... when the button is clicked - we will generate new html elements with random colors and positions:</p>
 <pre data-line = "2,4,6,8,10,12,14,16" class="language-javascript line-numbers">
   <code>
     //<< CREATE A NEW ELEMENT ON THE FLY >>>
@@ -498,9 +499,9 @@ Note how this code is using the <code>Math</code> library:
 <span class = "customP">Math.ceil()</span> and <span class = "customP">Math.random()</span>.
 <!--SABINE -->
 <h4> Responding to a MouseMove</h4>
-This example will demo some more interesting functionality..
+<p>This example will demo some more interesting functionality..
 We will build an example whereby we will first access the mouse coordinates when we move the mouse in a target div. Then, we will draw points inside this div wherever the mouse moves.... like a pen :)
-Let us start with another html page + css + js:
+Let us start with another html page + css + js:</p>
 The HTML: <span class = "customP"> MoveEvent.html</span>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22" class="language-html line-numbers">
 <code>
@@ -606,9 +607,9 @@ Next ... lets capture the mouse coordinates inside this callback function
 //relative to the WINDOW...
 </code>
 </pre>
-SO - if you now test - you will observe that the mouse coordinates (part of the event object (e)) are relative to the <span class ="customP">window </span> and not at the start of the div... 
+<p>If you now test - you will observe that the mouse coordinates (part of the event object (e)) are relative to the <span class ="customP">window </span> and not at the start of the div... 
 So, we need to so some <span class ="customP">calculations</span> and find out the <span class ="customP">rendered coordinates of the #draw-box-a div</span>.
-The function <code> element.getBoundingClientRect() </code> provided by an HTML5 Library see <a href = "https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">docs</a> allows us to access the <span class ="customP">rendered coordinates of the #draw-box-a div</span> and then we can do the following:
+The function <code> element.getBoundingClientRect() </code> provided by an HTML5 Library see <a href = "https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">docs</a> allows us to access the <span class ="customP">rendered coordinates of the #draw-box-a div</span> and then we can do the following:</p>
 <pre data-line = "2,4,6,8" class="language-javascript line-numbers">
 <code>
 let rect = this.getBoundingClientRect();
@@ -619,8 +620,8 @@ let rect = this.getBoundingClientRect();
    drawBox.innerHTML+= `<p> offset_x: ${offsetX}, offset_y:${offsetY} </p>`;
   </code>
 </pre>
-Now - if you test and compare the output ... you will see that we have calculated coordinates relative to the div ... 
-Finally - we can create  <span class ="customP"> a new element (div), apply a style and set the position at the offseted mouse coordinates: 
+<p>Now - if you test and compare the output ... you will see that we have calculated coordinates relative to the div ... 
+Finally - we can create  <span class ="customP"> a new element (div), apply a style and set the position at the offseted mouse coordinates:</span></p>
 <pre data-line = "2,4,6,8,10" class="language-javascript line-numbers">
 <code>
 let p = document.createElement("div");
@@ -630,12 +631,12 @@ p.style.top = offsetY+"px";
 this.appendChild(p);
   </code>
 </pre>
-Be sure to comment out the two  <code>drawBox.innerHTML...</code> statements before testing... otherwise you may have unexpected output.
-But ... as you can see we have created a very very simple drawing tool... :)
+<p>Be sure to comment out the two  <code>drawBox.innerHTML...</code> statements before testing... otherwise you may have unexpected output.
+<br/> But ... as you can see we have created a very very simple drawing tool... :)</p>
 <h4> Responding to a Mouse Drag</h4>
-This example will demo some more interesting components... :)
+<p>This example will demo some more interesting components... :)
 This will be another example where <span class = "customP">this</span> and the <span class = "customP">event target</span> does not refer to the same element - i.e. we add an event listener to the <strong>window</strong> object - the event handler will be triggered when something is STARTING to be dragged inside the window; however the object BEING dragged will be another element. Let us start with another html page + css + js:
-The HTML: <span class = "customP"> dragEvent.html</span>
+The HTML: <span class = "customP"> dragEvent.html</span></p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-html line-numbers">
 <code>
   &lt;!DOCTYPE html&gt;
@@ -755,8 +756,8 @@ function setup() {
 }
 </code>
 </pre>
-Note:: an element needs to have its <span class = "customP">draggable</span> property set to true  - so in this example, the two divs can be dragged.
-Let's continue with the example and add a callback for when dragging stops:
+<p>Note: an element needs to have its <span class = "customP">draggable</span> property set to true  - so in this example, the two divs can be dragged.
+Let's continue with the example and add a callback for when dragging stops:</p>
 <pre data-line = "2,4,6,8,10,12,14" class="language-javascript line-numbers">
 <code>
 let handleDraggingStop = function (event) {
@@ -769,7 +770,7 @@ let handleDraggingStop = function (event) {
   window.addEventListener("dragend", handleDraggingStop);
   </code>
 </pre>
-SO: we have call back functions for when an element has started to be dragged and when it has stopped dragging. We can also at an event and its associated callback function to find out if an element has been dragged to and then <span class = "customP">dropped into another element</span>:
+<p>SO: we have call back functions for when an element has started to be dragged and when it has stopped dragging. We can also at an event and its associated callback function to find out if an element has been dragged to and then <span class = "customP">dropped into another element</span>:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
 <code>
 /** NEW:: TO HANDLE DROPPING **/
@@ -788,11 +789,14 @@ SO: we have call back functions for when an element has started to be dragged an
  });
 </code>
 </pre>
-Ok - what is SUPER important to note is that in the case of drop - the target is WHAT THE ELEMENT WAS DROPPED INTO  -  and NOT the element being dragged as before ;) So when this event has been fired - how do we know WHO was dropped?
-We need to store the id of the element being dragged - and we have different options ... 
-1/ We could have a variable which holds the id of the element being dragged...
-2/ or we can use the <code> event.dataTransfer.setData()</code> to write the <span class = "customP">id of the object being dragged</span> to the actual event object ... this is far more useful ...:
-Add to the <code>handleDragging()</code>:
+<p>What is SUPER important to note is that in the case of drop - the target is WHAT THE ELEMENT WAS DROPPED INTO  -  and NOT the element being dragged as before ;) So when this event has been fired - how do we know WHO was dropped?
+<br/> We need to store the id of the element being dragged - and we have different options:
+<ol>
+<li>We could have a variable which holds the id of the element being dragged...</li>
+<li>Or, we can use the <code> event.dataTransfer.setData()</code> to write the <span class = "customP">id of the object being dragged</span> to the actual event object ... </li>
+</ol>
+<p>The second option is more useful.
+Add to the <code>handleDragging()</code>:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
 <code>
 // Clear the drag data cache (for all formats/types)
@@ -802,8 +806,8 @@ Add to the <code>handleDragging()</code>:
 });
 </code>
 </pre>
-So finally - to finish the example - once the element has been dropped into the target we will move it there...
-Append the following to the <span class = "customP">drop event handler</span>:
+<p>Finally: to finish the example - once the element has been dropped into the target we will move it there...
+Append the following to the <span class = "customP">drop event handler</span>:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
 <code>
  if(event.target.id ==="dropTarget"){
@@ -816,7 +820,7 @@ Append the following to the <span class = "customP">drop event handler</span>:
     } 
   </code>
 </pre>
-And we are done -- 2 boxes should now have the ability to be dragged and dropped into the relevant div ... 
+<p>And we are done -- 2 boxes should now have the ability to be dragged and dropped into the relevant div ... </p>
 </section>
 </main>
   <script src="js/prism.js"></script>

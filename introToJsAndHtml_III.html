@@ -29,10 +29,10 @@
 
 <section class="contents">
 <h3> KEY EVENTS</h3>
-Like you already learnt in p5 -  you can also control elements using the keyboard .. For  detecting real-time typing or handling specific keys, you can use JavaScript's event handling system. By listening for keyboard events (keydown, keypress, keyup), we can capture input as the user interacts with the keyboard.
+<p>Like you already learnt in p5 -  you can also control elements using the keyboard .. For  detecting real-time typing or handling specific keys, you can use JavaScript's event handling system. By listening for keyboard events (keydown, keypress, keyup), we can capture input as the user interacts with the keyboard.</p>
 <h4> Keydown event </h4>
-The <span class = "customP">keydown event</span> occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys.
-We will do a series of examples with key events and so let us start with a new html, js and css:
+<p>The <span class = "customP">keydown event</span> occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys.
+We will do a series of examples with key events and so let us start with a new html, js and css:</p>
 the html <span class = "customP">keyEvent.html</span>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22" class="language-html line-numbers">
 <code>
@@ -138,16 +138,16 @@ window.addEventListener("keydown", function(event)
 })
 </code>
 </pre>
-So: The keydown event occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys. If you run the above code and observe the console output - you will see that the resulting <span class = "customP"> event object </span> will give you all the info you need :) Also note: that as long as a key is down - the event will fire continuously.
-If we want to output the value of the key pressed  - we can use the <code>event.key</code> and/or the <code>event.code</code>
+<p>So: The keydown event occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys. If you run the above code and observe the console output - you will see that the resulting <span class = "customP"> event object </span> will give you all the info you need :) Also note: that as long as a key is down - the event will fire continuously.
+If we want to output the value of the key pressed  - we can use the <code>event.key</code> and/or the <code>event.code</code></p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
 // document.querySelector("#textContainer").textContent+=event.key;
  document.querySelector("#textContainer").textContent+=event.code;
  </code>
 </pre>
-And ... we can go furthur with this by triggering distinct <code>actions</code> depending on which key(s) are pressed i.e. lets move the first box when the <code>ArrowRight</code> or <code>ArrowLeft</code> is pressed:
-First outside of the event callback function declare a variable for the speed:
+<p>And: we can go furthur with this by triggering distinct <code>actions</code> depending on which key(s) are pressed i.e. lets move the first box when the <code>ArrowRight</code> or <code>ArrowLeft</code> is pressed:
+First outside of the event callback function declare a variable for the speed:</p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
 let speedX =5;
@@ -177,8 +177,8 @@ Within the same <span class = "customP"> callback function </span> we can access
     }
 </code>
 </pre>
-Lets go one step furthur and implement a <span class = "customP"> toggle </span> for the background... (switch to orange or back to blue using the same key ...:(revision from last week):
-Ok so the strategy is:
+<p>Let's go one step furthur and implement a <span class = "customP"> toggle </span> for the background... (switch to orange or back to blue using the same key ...:(revision from last week):
+<br/>Ok so the strategy is:</p>
 <ul>
 <li> first we access the <span class = "customP"> custom-bool </span> attribute</li>
 <li> then we build a condition for the toggle</li>
@@ -199,9 +199,9 @@ else if (event.code === "Space") {
     }
 </code>
 </pre>
-Yyayay
+<p>Yyayay<br>
 Next - we will look at the <code>keyup</code> event -> why? well sometimes you want to not only know when a key is pressed but ALSO/OR when it is released...
-Lets add a color background change to Box A  when we press the  <code>SHIFT key </code>:
+Lets add a color background change to Box A  when we press the  <code>SHIFT key </code>:</p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
  else if (event.key === "Shift") {
@@ -209,7 +209,7 @@ Lets add a color background change to Box A  when we press the  <code>SHIFT key 
     }
 </code>
 </pre>
-And then a <span class = "customP"> new event listener + callback for <code> keyup </code> with shift:
+And then a <span class = "customP"> new event listener + callback for <code> keyup </code> with shift:</span>
 <pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
 <code>
  window.addEventListener("keyup", function(event){
@@ -226,16 +226,16 @@ And then a <span class = "customP"> new event listener + callback for <code> key
   })
 </code>
 </pre>
-Note - the function implementation is similar  to the <code> keypress </code> : in that you specify within the callback which key has just been released....
-Something to consider: since we can capture key down and key up - we can also implement the functionality to detetch how long a key was pressed for :)
+<p>The function implementation is similar  to the <code> keypress </code> : in that you specify within the callback which key has just been released....
+Something to consider: since we can capture key down and key up - we can also implement the functionality to detetch how long a key was pressed for :)</p>
 </section>
 <section class = "contents">
 <h3>Timer Events</h3>
-Ok - so we have seen key events and mouse events - where the browser <span class = "customP"> waits for the user (human)</span> to interact with the keyboard or mouse in order to execute a particular callback function.
-Here - we will see that we can schedule functions (callbacks) to be executed some time in the future using <span class = "customP">Timer Events</span>.
+<p>Ok - so we have seen key events and mouse events - where the browser <span class = "customP"> waits for the user (human)</span> to interact with the keyboard or mouse in order to execute a particular callback function.
+Here - we will see that we can schedule functions (callbacks) to be executed some time in the future using <span class = "customP">Timer Events</span>.</p>
 <h4> setTimeout() </h4>
-The first function: <code>window.setTimeout()</code> waits a given number of <span class = "customP">milliseconds</span> and then calls its associated callback function.
-For example:
+<p>The first function: <code>window.setTimeout()</code> waits a given number of <span class = "customP">milliseconds</span> and then calls its associated callback function.
+<br/>For example:</p>
 <pre data-line = "2,4,6,8" class="language-javascript line-numbers">
 <code>
   window.setTimeout(addTimeoutText,2000);
@@ -245,11 +245,11 @@ For example:
   }
 </code>
 </pre>
- We call the setTimeout() and pass the callback function and the number of ms to wait before executing the given callback function. The result is that after 2 secs the function addTimeoutText() will be called and new text will appear in the parent element.
+ <p>We call the setTimeout() and pass the callback function and the number of ms to wait before executing the given callback function. The result is that after 2 secs the function addTimeoutText() will be called and new text will appear in the parent element.</p>
 <span class = "customP">setTimeout() ones only one time</span>.
 <h4> setInterval()</h4>
-While setTimeout - schedules a function to be called ONLY <span class = "customP">once</span> in the future -> the <code>window.setInterval()</code> function schedules a function to be called <span class = "customP">AND re-called</span> every set interval ...
-For example:
+<p>While setTimeout - schedules a function to be called ONLY <span class = "customP">once</span> in the future -> the <code>window.setInterval()</code> function schedules a function to be called <span class = "customP">AND re-called</span> every set interval ...
+<br/>For example:</p>
 <pre data-line = "2,4,6,8" class="language-javascript line-numbers">
 <code>
     window.setInterval(addTextRecur,2000);
@@ -259,8 +259,8 @@ For example:
   }
   </code>
 </pre>
-OK -  so lets do something more interesting with the <code>setInterval()</code> ... and it will hopefully also help you understand the <a href = "https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/what-is-modular-arithmetic">MOD</a>operator and why it is useful.
-As usual lets start with some html:
+<p>So, let's do something more interesting with the <code>setInterval()</code> ... and it will hopefully also help you understand the <a href = "https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/what-is-modular-arithmetic">MOD</a>operator and why it is useful.
+<br/>As usual lets start with some html:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-html line-numbers">
 <code>
 &lt;!DOCTYPE html&gt;
@@ -370,7 +370,7 @@ window.onload = function () {
 }
 </code>
 </pre>
-OK. First we build a grid composed of <code> div</code> elements and we store all the elements in a <span class ="customP">2-Dimensional Array</span>:
+<p>OK. First we build a grid composed of <code> div</code> elements and we store all the elements in a <span class ="customP">2-Dimensional Array</span>:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
 let gridArray = [];
@@ -394,8 +394,8 @@ let gridArray = [];
   console.log(gridArray);
 </code>
 </pre>
-Next: we will implement the code to alternate the background color of the grid elements based on the MOD operator.
-First lets add an array of possible colors:
+<p>Next: we will implement the code to alternate the background color of the grid elements based on the MOD operator.
+<br/>First lets add an array of possible colors:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
 let shades = [
@@ -410,8 +410,10 @@ let shades = [
 ];
 </code>
 </pre>
-So there are 8 possible shades ... and we will map these colors in the different ways:
-1/: if the row number is a multiple of 2 (when dividing by 2 the remainder is 0) then use shades[0] else remainder == 1 so use use shades[1]:
+<p>So there are 8 possible shades ... and we will map these colors in the different ways:
+<br/>
+<code>If the row number is a multiple of 2 (when dividing by 2 the remainder is 0) then use shades[0]<br>
+else remainder == 1 so use use shades[1]:</code></p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
 //the divisor
@@ -431,7 +433,6 @@ let num=2;
 };
 </code>
 </pre>
-
 Ok - change the code to work for columns:
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
@@ -449,10 +450,10 @@ for (let i = 0; i < 24; i++) {
 };
 </code>
 </pre>
-
+<p>
 Now - we can add a sort of <span class = "customP">animation</span> using setInterval() -> whereby we will <span class = "customP">increment the divisor with each setInterval()</span> so that we can experience the magic of MOD :):
-First comment out the two examples with divisor of 2...
-then create a function to test the <code>setInterval()</code>:
+<br>First comment out the two examples with divisor of 2...
+then create a function to test the <code>setInterval()</code>:</p>
 <pre data-line = "2,4,6,8,10" class="language-javascript line-numbers">
 <code>
 setInterval(animate_cells_mod_rows,1000);
@@ -464,9 +465,9 @@ function animate_cells_mod_rows() {
 }
 </code>
 </pre>
-Ok - you see how the number is continuously cycling from 1-9 and again and again forever...
-Lets now use that num as the divisor - so instead of it being always 2 it will change and each time we will add in another color choice:
-Add in the following <span class = "customP">before incrementing num</span>:
+<p>You see how the number is continuously cycling from 1-9 and again and again forever?
+<br/>Lets now use that num as the divisor - so instead of it being always 2 it will change and each time we will add in another color choice:
+<br/>Add in the following <span class = "customP">before incrementing num</span>:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24" class="language-javascript line-numbers">
 <code>
  for (let i = 0; i < 24; i++) {
@@ -536,9 +537,11 @@ function animate_cells_mod_cols() {
   }
 </code>
 </pre>
+<p>
 Nice..:)
+<br/>
 What if we want to chnage the delay dynamically within a setInterval()? - i.e. <span class = "customP">we want with each call the delay to accelerate</span>?
-Comment out all the grid code and then add the following:
+Comment out all the grid code and then add the following:</p>
 <pre data-line = "2,4,6,8,10" class="language-javascript line-numbers">
 <code>
  window.setInterval(addText, 1000);
@@ -567,8 +570,8 @@ let speed =1000;
   }
 </code>
 </pre>
-No. Why? Because the setInterval() takes the value of the speed ONLY ONE TIME - not every time the function is called...
-So - instead we can use a setTimeout() - and call it continuously BUT each time updating the delay:
+<p>No. Why? Because the setInterval() takes the value of the speed ONLY ONE TIME - not every time the function is called...
+So - instead we can use a setTimeout() - and call it continuously BUT each time updating the delay:</p>
 <pre data-line = "2,4,6,8,10,12,14,16," class="language-javascript line-numbers">
 <code>
 let speed = 1000;
@@ -586,8 +589,7 @@ let speed = 1000;
   }
   </code>
 </pre>
-....
-This leads us to another issue... how do we stop a <code>setInterval()</code> from running....?
+<p>This leads us to another issue:how do we stop a <code>setInterval()</code> from running....?</p>
 <h4> clearInterval() & clearTimeout()</h4>
 Well there is the <code>clearInterval()</code> - which takes a reference to the setInterval() that you want to stop. The important thing here is that when you set up the <code> setInterval()</code> -> you need to set a <span class = "customP">variable</span> to reference it so that you can clear it later ... 
 Start with a new <code> setInterval() </code> -> comment out everything else:
@@ -609,7 +611,6 @@ Ok - to stop it: 1/ we assign a variable to the <code> setInterval()</code>:
 let ref = window.setInterval(addOtherText, 500);
 </code>
 </pre>
-
 Now we can stop it whenever lets make a condition with a counter... so replace with:
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
@@ -628,11 +629,9 @@ let counter =0;
   }
 </code>
 </pre>
-
-Note:) you can have  more than one setInterval()/setTimeout() call -> it is up to you, the resources available and what you want to to do :)
-Another use case: we can also <span class = "customP">clear a setTimeout()</span> -> but why? When would you want to clear something that is scheduled to run once? Well - <span class = "customP">when you run 0 times</span>...
-Meaning: you schedule a setTimeout - but then you actually DECIDE to cancel it :)
-i.e.
+<p>Note:) you can have  more than one setInterval()/setTimeout() call -> it is up to you, the resources available and what you want to to do :)
+<br/>Another use case: we can also <span class = "customP">clear a setTimeout()</span> -> but why? When would you want to clear something that is scheduled to run once? Well - <span class = "customP">when you run 0 times</span>...
+Meaning: you schedule a setTimeout - but then you actually DECIDE to cancel it :) i.e.:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24" class="language-javascript line-numbers">
 <code>
 let randomChanceToRun = setTimeout(oneTimeText, 500);
@@ -667,20 +666,16 @@ In this case sometimes it runs and sometimes not (reload page every time to test
 <p>
 <span class = "customP">setInterval()</span> and <span class = "customP">setTimeout()</span> are a useful functions to be able to execute some code once a timer has expired (one time, many times, or forever...). 
 However, setInterval() is not very reliable if we were to use it for proper animations (where we repaint the screen every frame.
-</p>
-<p>Why?</p>
-<p>The time specified by the delay is not always honoured, as is dependent on the users' resources at the given time (may be unavailable) - 
-this leads to inconsistent delay intervals.</p>
-<p>Also - continuously using <span class="customP">setInterval()</span> can lead to <span class = "customP">layout thrashing</span> -> when the web browser has to reflow or repaint a web page many times before the page is 'loaded' - 
-i.e. you want an animation at 60fps but it takes the browser longer to load a frame and will not reach that frame rate (take longer then (1000/60) 16ms to "load" a frame.</p>
-
-<p>So, we have the <span class="customP">requestAnimationFrame()</span> function instead.</p>
-<p>This function allows one to execute code on the next available screen repaint.
+<br>Why?
+<br>The time specified by the delay is not always honoured, as is dependent on the users' resources at the given time (may be unavailable) - 
+this leads to inconsistent delay intervals.
+<br>Also - continuously using <span class="customP">setInterval()</span> can lead to <span class = "customP">layout thrashing</span> -> when the web browser has to reflow or repaint a web page many times before the page is 'loaded' - 
+i.e. you want an animation at 60fps but it takes the browser longer to load a frame and will not reach that frame rate (take longer then (1000/60) 16ms to "load" a frame.
+<br>So, we have the <span class="customP">requestAnimationFrame()</span> function instead.
+<br>This function allows one to execute code on the next available screen repaint.
 When you call <span class="customP">requestAnimationFrame()</span> repeatedly to create an animation, you can be confident that the  animation code is called <span class="customP">only when the browser is actually ready to make those changes</span>, 
-resulting in a smoother, more efficient animation.</p>
-
-The following example demonstrates the basic usge:
-Comment out the other code in the script - or start with a new script:
+resulting in a smoother, more efficient animation.
+<br>The following example demonstrates the basic usage. Comment out the other code in the script - or start with a new script:</p>
 <pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
 <code>
 window.onload = function () {
@@ -694,11 +689,10 @@ window.onload = function () {
 }
 </code>
 </pre>
-<p>This example shows the requestAnimation() function being called ONCE. But there is no animation :(</p>
-
-<p>We need to call the function <span class="customP">recursively</span> to construct the desired animation frame by frame, with each frame being called only when the browser is ready for it.</p>
-<p>This this how <span class = "customP">requestAnimationFrame()</span> becomes superior to <span class = "customP">setTimeout()</span> or <span class = "customP">setInterval()</span> when it comes to handling animation related code efficiently.</p>
-The following example demonstrates just that: 
+<p>This example shows the requestAnimation() function being called ONCE. But there is no animation :(
+<br>We need to call the function <span class="customP">recursively</span> to construct the desired animation frame by frame, with each frame being called only when the browser is ready for it.
+<br>This this how <span class = "customP">requestAnimationFrame()</span> becomes superior to <span class = "customP">setTimeout()</span> or <span class = "customP">setInterval()</span> when it comes to handling animation related code efficiently.
+The following example demonstrates just that:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38" class="language-javascript line-numbers">
 <code>
 window.onload = function () {
@@ -739,9 +733,9 @@ function checkBounds(parent, p) {
 }
 </code>
 </pre>
-So - you can see that we can animate as smoothly as one did in p5 ;)
+<p>So - you can see that we can animate as smoothly as one did in p5 ;)
 And - we also have a <span class  = "customP">cancelAnimationFrame()</span> ... which will stop therequestAnimationFrame() from running... i.e.:
-Start with an animation that uses <span class = "customP"> Math.sin() </span> to animate the width/height of the circle... and a custom mapping function .. super useful:
+Start with an animation that uses <span class = "customP"> Math.sin() </span> to animate the width/height of the circle... and a custom mapping function .. super useful:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
 <code>
 let aniRef = null;
@@ -781,6 +775,23 @@ Ok - so at some point we want to cancel the animation -> lets do that when we pr
 </code>
 </pre>
 </section>
+
+<h3> WEB STORAGE API </h3>
+<p>
+<a href = "https://en.wikipedia.org/wiki/Web_storage">What is web storage ...</a>
+HTML5 provides two ways to store data: <span class = "customP">localStorage and sessionStorage</span>. Data saved as localStorage is available to the browser at any point, even when the browser closes or the system is restarted. Data saved as sessionStorage is lost when the browser is closed.
+A good use case for using web storage is when you want to have variables which are accessible and shared across html pages (of the same website)... or you want to store info regarding the user of the site (client side - not server side)...This API is relatively simple to use - the main point is that <span class = "customP">you store and retrieve values to/from local storage as key/value pairs</span>.
+We will do some LIVE coding examples for this: please use the starting files <a href = "resources/localStorage - cart263 -start.zip">linked here...</a></p>
+<ul class = "heading-list">
+<li><mark>create a single key-value pair and store in local storage</mark></li>
+<li><mark>Use the browser to assist in debugging</mark></li>
+<li><mark>Saving and retrieving a list of items associated with a single key</mark></li>
+<li><mark>Input using an input field</mark></li>
+<li><mark>Checking if an item exists in local storage</mark></li>
+<li><mark>Resetting local storage</mark></li>
+<li><mark>Multiple key/value pairs</mark></li>
+<li><mark>Retrieving items from local storage (same page)</mark></li>
+<li><mark>Save/retrieve from local storage on different pages</mark></li>
 </main>
   <script src="js/prism.js"></script>
 </body>

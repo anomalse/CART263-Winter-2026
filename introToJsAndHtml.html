@@ -27,11 +27,12 @@
     </header>
     <main>
 <section class = "table-contents">
-<h3>Goals of this class and perhaps the next two:</h3>
-<ul>
- 	<li> Accessing and Updating The DOM </li>
- 	<li> Basic Timing Functions in JavaScript</li>
- 	<li> Events + Callbacks</li>
+<h3>GOALS OF THIS AND THE NEXT TWO CLASSES:</h3>
+<ul class = "heading-list">
+ 	<li> <mark>Accessing and Updating The DOM</mark> </li>
+ 	<li> <mark>Basic Timing Functions in JavaScript</mark></li>
+ 	<li><mark>Events + Callbacks</mark></li>
+  	<li><mark>Local Storage</mark></li>
 </ul>
 </section>
 <hr/>
@@ -159,11 +160,11 @@ By accessing the DOM tree of a given webpage using the <span class="customP">doc
 </li>
 </ul>
 <h4>window.onload = function()</h4>
-Ok - so remember in p5.js that we had the <code>setup()</code>?
+<p>Ok - so remember in p5.js that we had the <code>setup()</code>?
 Well first lets introduce the <span class = "customP">Window interface</span>: which represents a window containing a DOM document. 
 In contrast, <span class = "customP">the document</span> property points to the DOM document loaded in that window.
 Next:
-The <span class = "customP">load</span> event is fired when the whole page has loaded, including all dependent resources such as stylesheets, scripts, iframes, and images... so... if we would like to incorporate a <code>setup()</code> like function in Vanilla JS. - we can assign a function to this <span class = "customP">load</span> event: Replace the code in <span class = "customP">1_helloWorld.js</span> to:
+The <span class = "customP">load</span> event is fired when the whole page has loaded, including all dependent resources such as stylesheets, scripts, iframes, and images... so... if we would like to incorporate a <code>setup()</code> like function in Vanilla JS. - we can assign a function to this <span class = "customP">load</span> event: Replace the code in <span class = "customP">1_helloWorld.js</span> to:</p>
 <pre data-line="2,4,6" class="language-javascript line-numbers">
 <code>
 window.onload = setup
@@ -173,11 +174,11 @@ function setup(){
 }
 </code> 
 </pre>
-So - essentially - we are controlling when to run the js code... and note how the <code>document.write()</code> overwrites everything previously written in the document.
+<p>So - essentially - we are controlling when to run the js code... and note how the <code>document.write()</code> overwrites everything previously written in the document.</p>
 </section>
 <section class="contents">
 <h3> Accessing Elements in the DOM </h3>
-Let's start with a new html page (same project): called <span class = "customP">AccessDOM.html</span>- and insert:
+<p>Let's start with a new html page (same project): called <span class = "customP">AccessDOM.html</span>- and insert:</p>
 <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-html line-numbers">
 <code>
 &lt;!DOCTYPE html&gt;
@@ -227,7 +228,7 @@ Let's start with a new html page (same project): called <span class = "customP">
 &lt;/html&gt;
 </code>
 </pre>
-And - add in a file in the js folder called <span class = "customP">2_dom.js</span>, as well as <span class = "customP">dom.css</span> into the styles folder. And insert into the <span class = "customP">dom.css</span> the following:
+<p>And - add in a file in the js folder called <span class = "customP">2_dom.js</span>, as well as <span class = "customP">dom.css</span> into the styles folder. And insert into the <span class = "customP">dom.css</span> the following:</p>
 <pre id = "writeA" class="language-css line-numbers">
 <script>
 let s = ""
@@ -319,7 +320,7 @@ body{
   }
   </code>
 </pre>
-Ok ... in the <span class = "customP">2_dom.js</span> add a function associated with the <span class = "customP">window.load event</span>:
+<p>Ok ... in the <span class = "customP">2_dom.js</span> add a function associated with the <span class = "customP">window.load event</span>:</p>
 <pre data-line = "2,4,6" class="language-javascript line-numbers">
 <code>
 window.onload = setup
@@ -328,32 +329,30 @@ function setup(){
 }
 </code>
 </pre>
-So - there are various ways to access single HTML elements and or groups of elements:
+<p>So - there are various ways to access single HTML elements and or groups of elements:</p>
 <h4>Getting an Element by ID</h4>
-The JavaScript method for getting hold of an element by its ID is: <code>document.getElementById()</code>. 
-Add the following to the setup() in the <span class = "customP">2_dom.js</span>
+<p>The JavaScript method for getting hold of an element by its ID is: <code>document.getElementById()</code>.
+Add the following to the setup() in the <span class = "customP">2_dom.js</span></p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
  console.log(document.getElementById("one"));
  </code>
 </pre>
-So - when you run the page ... in the console you should see the output - representing the relevant html element :)
-<span class = "customP">Does it matter if we put the code outside of the setup()???</span>
-Try it. 
-- No it does not  - because the script is being referenced in the <code> body </code> tag... 
-BUT if we put the script ref in the <code> head </code> ..:
-THEN it does make a difference...:
- -  The code inside the <code>setup()</code> works ... 
- -  But outside of the <code>setup()</code> the element is NULL... why because we are trying to access it before it has loaded...
-<span class = "customP">From this moment onwards we will always follow this pattern: 
-Try to use/access/change html elements (which pre-exist in the document) in JavaScript only once the page has completed loading.:) </span>
-**Note:**
-<code>document.getElementById()</code>returns ONLY the <span class = "customP">1st element</span> it encounters in the DOM tree with the matching ID. 
-Ensure that all your elements have unique ID's (if you are using them to access in js).
+<p>So - when you run the page ... in the console you should see the output - representing the relevant html element :)</p>
+<p><span class = "customP">Does it matter if we put the code outside of the setup()???</span></p>
+<p>Try it:  No it does not work  - because the script is being referenced in the <code> body </code> tag...</p>
+<p>BUT if we put the script ref in the <code> head </code>: THEN it does make a difference...:</p>
+<p>The code inside the <code>setup()</code> works ...</p> 
+ <p>But outside of the <code>setup()</code> the element is NULL... why because we are trying to access it before it has loaded...</p>
+<p><span class = "customP">From this moment onwards we will always follow this pattern:</span></p>
+<p><span class = "customP">Try to use/access/change html elements (which pre-exist in the document) in JavaScript only once the page has completed loading.:)</span> </span></p>
+<p>**Note:** <br/>
+<code>document.getElementById()</code> returns ONLY the <span class = "customP">1st element</span> it encounters in the DOM tree with the matching ID. 
+Ensure that all your elements have unique ID's (if you are using them to access in js).</p>
 <h4>Getting an Element By ID II </h4>
-You can also use the more generic  JavaScript method for getting hold of an element by its ID: <code>document.querySelect()</code>. 
+<p>You can also use the more generic  JavaScript method for getting hold of an element by its ID: <code>document.querySelect()</code>. 
 This method takes different <span class = "customP">patterns</span> as arguments - so to access an element by the ID requires the use of the <span class = "customP">#</span> tag followed by the <span class = "customP">id name</span>.
-Add the following to the setup() in the <span class = "customP">2_dom.js</span>
+Add the following to the setup() in the <span class = "customP">2_dom.js</span></p>
 <pre data-line = "2,4,6" class="language-javascript line-numbers">
 <code>
  console.log(document.querySelector("#one"));
@@ -361,9 +360,9 @@ Add the following to the setup() in the <span class = "customP">2_dom.js</span>
 </pre>
 Note that  - the <code>document.querySelect()</code> function ALWAYS returns the first match found.
 <h4>Getting Elements by TAG NAME</h4>
-The JavaScript method for getting hold of an element(s) by the tag name is: <code>document.getElementsByTagName()</code>. It works in much the same way as <code>getElementById()</code>, except that it takes a tag name <span class = "customP">(a, ul, li, etc)</span> instead of an ID and returns <span class = "customP"> all</span> elements in the page with the required tag. 
-<span class = "customP"> Note: Even if there is only one element with that tag name, Javascript will return a list (array) with one element in it .</span>
-Add the following to the setup() in the <span class = "customP">2_dom.js</span>
+<p>The JavaScript method for getting hold of an element(s) by the tag name is: <code>document.getElementsByTagName()</code>. It works in much the same way as <code>getElementById()</code>, except that it takes a tag name <span class = "customP">(a, ul, li, etc)</span> instead of an ID and returns <span class = "customP"> all</span> elements in the page with the required tag.
+<br/><span class = "customP"> Note: Even if there is only one element with that tag name, Javascript will return a list (array) with one element in it .</span>
+Add the following to the setup() in the <span class = "customP">2_dom.js</span></p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
     console.log(document.getElementsByTagName("div"));
@@ -383,8 +382,8 @@ console.log(document.querySelector("div"));
 </code>
 </pre>
 <h4>Getting Elements by TAG NAME II </h4>
-You can also use the more generic  JavaScript method for getting hold of ALL elements by TAG: <code>document.querySelectAll()</code>. 
-This method like the single version: takes different <span class = "customP">patterns</span> as arguments, and will return a list of matches. Add the following to the setup():
+<p>You can also use the more generic  JavaScript method for getting hold of ALL elements by TAG: <code>document.querySelectAll()</code>. 
+This method like the single version: takes different <span class = "customP">patterns</span> as arguments, and will return a list of matches. Add the following to the setup():</p>
 <pre data-line = "2,4,6" class="language-javascript line-numbers">
 <code>
 console.log(document.querySelectorAll("div"));
@@ -393,7 +392,7 @@ console.log(document.querySelectorAll("div")[0]);
 </code>
 </pre>
 <h4>Getting Elements by CLASS NAME</h4>
-The JavaScript method for getting hold of an element(s) by the tag name is: <code>document.getElementsByClassName()</code>. This method returns the same kind of list as <code>getElementsByTagName()</code>, except that you pass a class name to be matched, not a tag name.
+<p>The JavaScript method for getting hold of an element(s) by the tag name is: <code>document.getElementsByClassName()</code>. This method returns the same kind of list as <code>getElementsByTagName()</code>, except that you pass a class name to be matched, not a tag name.</p>
 <span class="customP">Task: Modify your current example to use this method ...</span>
 Add the following to the setup():
 <pre data-line = "2,4,6" class="language-javascript line-numbers">
@@ -434,28 +433,28 @@ To access the text content pertaining to a particular html element, use the <cod
 console.log(document.getElementById("two").textContent);
 </code>
 </pre>
-In summary: the <code>textContent</code> property outputs <span class ="customP">text/plain</span> while <code>.innerHTML</code> outputs  <span class ="customP">text/html</span>.
+<p>In summary: the <code>textContent</code> property outputs <span class ="customP">text/plain</span> while <code>.innerHTML</code> outputs  <span class ="customP">text/html</span>.
 * Output of type text/plain is not parsed by the browser and results in the full content displaying.
-* Output of the type text/html tells the browser to parse it before displaying it.
+* Output of the type text/html tells the browser to parse it before displaying it.</p>
 <h4> Access Attributes of elements </h4>
-So - sometimes it is also necessary to access the attribute properties of a given elmement(s).
-The <code>getAttribute()</code> method is used in order to access particular value of an attribute for an element. The following will output the <span class = "customP">id</span> and <span class = "customP">class</span> value attributes for the element with id "five".
+<p>So - sometimes it is also necessary to access the attribute properties of a given elmement(s).
+The <code>getAttribute()</code> method is used in order to access particular value of an attribute for an element. The following will output the <span class = "customP">id</span> and <span class = "customP">class</span> value attributes for the element with id "five".</p>
 <pre data-line = "2,4" class="language-javascript line-numbers">
 <code>
   console.log(document.querySelector("#five").getAttribute("id"));
   console.log(document.querySelector("#five").getAttribute("class"));
 </code>
 </pre>
-Note: <span class = "customP">If an attribute is not present for an element, the result will return null.</span>
-And: if there is more than one value for a given property - the method will return all values <span class = "customP"> as a STRING </span>:
+<p>Note: <span class = "customP">If an attribute is not present for an element, the result will return null.</span>
+And: if there is more than one value for a given property - the method will return all values <span class = "customP"> as a STRING </span>:</p>
 <pre data-line = "2,4" class="language-javascript line-numbers">
 <code>
 console.log(document.querySelector("#two").getAttribute("class"));
 console.log(typeof(document.querySelector("#two").getAttribute("class")));
 </code>
 </pre>
-You can also access the classes associated with an element by using the <code> classList </code> property. 
-This property will return an <span class = "customP">iterable list</span>
+<p>You can also access the classes associated with an element by using the <code> classList </code> property. 
+This property will return an <span class = "customP">iterable list</span></p>
 <pre data-line = "1" class="language-javascript line-numbers"> 
 <code>
 console.log(document.querySelector("#two").classList);
@@ -487,10 +486,10 @@ console.log(document.querySelector("#six").style.width);
 </section>
 <section class="contents">
 <h3> Modifying DOM elements </h3>
-Not only can we access properties of elements - we can also alter them ... though <span class = "customP">remember the changes you make to the document are not persistent</span>...
+<p>Not only can we access properties of elements - we can also alter them ... though <span class = "customP">remember the changes you make to the document are not persistent</span>...</p>
 <h4> Parents and Children </h4>
-Before doing that -> there are two properties that are super useful.
-The <code>.parentElement </code> property when applied to an HTML element will return the immediate parent of that element. The following example will return the parent of the first span element:
+<p>Before doing that -> there are two properties that are super useful.
+The <code>.parentElement </code> property when applied to an HTML element will return the immediate parent of that element. The following example will return the parent of the first span element:</p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
 console.log(document.querySelectorAll("span")[0].parentElement)
@@ -522,7 +521,7 @@ document.querySelector("#two").children[0].innerHTML = "&lt;h2&gt; this is now a
 </code>
 </pre>
 <h4> Modify the TEXT content </h4>
-Changing the text content is pretty much the same idea... so instead of changing one element: lets here demonstrate changing a <span class = "customP">group of elements</span> all at once:
+<p>Changing the text content is pretty much the same idea... so instead of changing one element: lets here demonstrate changing a <span class = "customP">group of elements</span> all at once:</p>
 <pre data-line = "2,4,6,8" class="language-javascript line-numbers">
 <code>
 //get the group
@@ -593,11 +592,11 @@ To add a new element to the HTML DOM:
 <li>First create the element (element node): using the <code> createElement()</code> method.</li>
 <li>Then <span class = "customP">append</span> this new element to an existing element.</li>
 </ul>
-<br/>
-The following example demonstrates the <code>appendChild()</code> method which adds the element at the end of the parent. 
+
+<p>The following example demonstrates the <code>appendChild()</code> method which adds the element at the end of the parent. 
 Then, the next example will demonstrate the <code>insertBefore()</code> method which adds the new element before an existing element.
 First: comment out all the example code within the <span class = "customP">setup()</span>.
-Then add the following:
+Then add the following:</p>
 <pre data-line = "2,4,6,8" class="language-javascript line-numbers">
 <code>
   //new element
@@ -627,8 +626,8 @@ parentElementAgain.insertBefore(newDivTwo,sibling);
 </section>
 <section class = "contents">
 <h3>Removing elements from the DOM</h3>
-You can also remove existing elements from the DOM using the <code>removeChild()</code> method. 
-The following example removes an element in the setup() - a bit redundant as an example - but will be more useful when more interesting events are introduced ;)
+<p>You can also remove existing elements from the DOM using the <code>removeChild()</code> method. 
+The following example removes an element in the setup() - a bit redundant as an example - but will be more useful when more interesting events are introduced ;)</p>
 <pre data-line = "2,4,6" class="language-javascript line-numbers">
 <code>
 let parentElementToRemoveFrom = document.querySelector(".wrapper_flex_box")
