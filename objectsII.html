@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+      <link href="css/themes/prism.css" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
+        <hr />
+
+         <nav id = "cart263Nav"></nav>
+        <script src = "js/loadNav.js"></script>
+       <div class="inner-head">
+                <h2>Objects II</h2>
+                <hr />
+            </div>
+    </header>
+    <main>
+
+<section class="contents">
+<h3> Continuing with objects </h3>
+<p>Objective: build a more customizable flower  ... we will use parameters :) 
+The Flower object that we built previously is kind of limited: it cannot be easily customized. If you want a flower to be a specific color, say, or if you want it to start in a specific position - its not possible... 
+Why? Well because the <span class = "customP">constructor</span> always does the same thing. It always sets the position randomly, it always sets the size to 50, it always sets the stemColor to a specific set of RGB values, etc.</p>
+<p>The Goal: <br/>You want to specify a bunch of the properties of a flower when its created, right?
+<br/>Let's say the <span class = "customP">position, size, stem length, and petal color</span> for now:
+This problem was seen before with functions and we solved it then with … parameters!</p>
+<h4> Using Parameters</h4>
+<p>In exactly the same way one uses parameters with functions to make them more powerful and flexible, you can use parameters in a class's constructor to configure an object at creation time. So, if you want to specify position, size, stem length, and petal color, you can change the constructor accordingly:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+constructor(x,y,size,stemLength,petalColor) {
+    // We write instructions to set up a Flower here
+    // Position and size information
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.stemLength = stemLength;
+    this.stemThickness = 10;
+    this.petalThickness = 8;
+    this.flowerStemDiv = document.createElement("div");
+    this.flowerPetalDiv = document.createElement("div");
+
+    // Color information
+    this.stemColor = {
+      r: 50,
+      g: 150,
+      b: 50,
+    };
+    this.petalColor = petalColor;
+    this.centreColor = {
+      r: 50,
+      g: 0,
+      b: 0,
+    };
+  }
+</code>
+</pre>
+<p>Note - <span class = "customP">the list of parameters inside the parentheses of the constructor’s definition</span>. Those parameters are then used to set the values in the Flower’s properties - i.e. the x parameter is used to set the x property (this.x) and the size parameter to set the size property (this.size), and so on...
+This new version of the <code>constructor()</code> can be used when creating a new flower by specifying the arguments appropriately:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+   for (let i = 0; i < garden.numFlowers; i++) {
+      // Create variables for our arguments for clarity
+      let x = Math.random() * (window.innerWidth);
+      let y = Math.random() * 120;
+      let size = Math.random() * 30 + 50;
+      let stemLength = Math.random() * 50 + 50;
+      let petalColor = {
+        r: parseInt(Math.random() * 155) + 100,
+        g: parseInt(Math.random() * 155) + 100,
+        b: parseInt(Math.random() * 155) + 100,
+      };
+
+      // Create a new flower using the arguments
+      let flower = new Flower(x, y, size, stemLength, petalColor);
+      // Add the flower to the array of flowers
+      garden.flowers.push(flower);
+    }
+</code>
+</pre>
+<h4> Adding mouse events ... to objects </h4>
+<p>As we know, an important part of programming is the ability to respond to events. 
+When interacting with the DOM through javascript, we do this by defining event handler functions for our HTML elements (i.e. click, mouseover...)
+<br/>So, Now that we’re defining classes - how can we incorporate these events? 
+<br/>What if we wanted to be able to click a flower in order to make it taller? (Maybe a bit like we’re helping it grow…)
+<br/>Well .... <span class = "customP">recall in the class definition for the Flower in Flower.js -> we have defined member properties in the <code>constructor()</code></span>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+this.flowerStemDiv = document.createElement("div");
+this.flowerPetalDiv = document.createElement("div");
+ </code>
+</pre> 
+<p><span class = "customP">So: very easily we can add the relevant event listeners & callback functions inside the constructor() function!</span>...
+<br/>Let's start by a standard event listener for when we click on the flower stem inside the constructor():</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  //add event listener and the call back
+    this.flowerStemDiv.addEventListener("click", growStem);
+    function growStem(e) {
+      console.log(e.target);
+   }
+   </code>
+</pre>
+<p>Now when you click on the stem ... well we print out the target associated with the click event: <span class = "customP"> the div element </span> 
+<br>YAY... but wait... 
+<br>If we change the growStem() and instead have:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  function growStem(e) {
+      console.log(this);
+   }
+</code>
+</pre>
+<p>Well that is ALSO the div. Why? 
+<br>Because in the context of the event listener:<span class = "customP"> this</span> refers to the div ... NOT the flower object...  help?
+</p>
+<h4> Updating flower properties INSIDE the event handler </h4>
+<p>One solution: we make a copy of <span class = "customP"> the flower instance </span> in the constructor() - so that when it gets overriden in the event handler we use the copy...
+<br>Add in the <code>constructor()</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+let self = this;//keep a copy of 'this'
+</code>
+</pre>
+Now: 
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  function growStem(e) {
+      console.log(self);
+   }
+   </code>
+</pre>
+We output the flower instance INSIDE the event handler -- so we can now update the properties correctly:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+   function growStem(e) {
+      console.log(self);
+      //this is the div :)
+      //console.log(self);
+      self.stemLength = self.stemLength+10;
+      
+      //update the actual div...
+      self.flowerStemDiv.style.height = self.stemLength + "px";
+      self.flowerStemDiv.style.top = self.y - self.stemLength + "px";
+
+      // and also the petal element needs to move up
+      self.flowerPetalDiv.style.top =
+      self.y - self.stemLength - self.size / 2 + "px";
+    }
+</code>
+</pre>
+<p><span class = "customP">Note: we have to update the actual div styles as well NOT just the member properties ...</span>
+<br>But - it works :) 
+<br>And see how the event listener is attached to each individual flower stem and updates only the properties for the clicked on flower...
+<br><span class = "customP">Note:: what we just did is NOT TRIVIAL AT ALL...</span></p>
+<h4> Adding KeyBoard events ... to objects </h4>
+<p>Similarly: we can incorporate <a href = "https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent"> keyboard events</a> with objects ... 
+<br>We can capture a <span class = "customP"> key event </span> and then execute some instruction based on that event...
+<br>We will do the following:</p>
+<ul>
+<li> Turn the sun into another <code>object</code>... </li>
+<li> And allow for it to respond to <code>key events (move)</code>... </li>
+</ul>
+<p>First, let's start with a new class: <span class="customP"> Create the <strong>Sun.js</strong> + in index.html add the ref in a <strong> script tag </strong></span>
+<br/>Next: lets create the <span class = "customP"> Sun </span> class + constructor + a <code>renderSun()</code> method:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+class Sun{
+    constructor(x,y, sunColor){
+        this.x = x;
+        this.y = y;
+        this.vx = 1; //for movement on x
+        this.vy =1; //for movement on y
+        this.sunColor = sunColor;
+        this.sunDiv =  document.createElement("div")
+ }
+ </code>
+</pre>
+<p> Note that the <code>constructor</code> has basically the <span class = "customP">SAME properties</span> as when we defined it in the garden object (which we now remove) in garden.js... 
+<br/>and instead in garden.js - AFTER defining the garden{} -> we add:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+let sun =  new Sun(10,10,{r: 240, g: 206,b: 83})
+</code>
+</pre>
+ANd now add the <code>renderSun()</code> inside the Sun class..:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+ renderSun(){
+    // //sun - IN the sky
+    this.sunDiv.classList.add("sun");
+    this. sunDiv.style.background = `rgb(${this.sunColor.r},${this.sunColor.g},${this.sunColor.b})`;
+    // //append to the SKY div
+    document.querySelector(".sky").appendChild(this.sunDiv);
+    }
+</code>
+</pre>
+<p>And .. is this not the same code as that inside the <code>createAndRenderTheGarden()</code> inside garden.js?
+<br/>So - remove the old code and instead inside the <code>createAndRenderTheGarden()</code> add:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+ sun.renderSun();
+</code>
+</pre>
+<p><span class="customP">ADD KEY EVENTS TO THE SUN:</span></p>
+<p>So now we want to add some movement to our sun - based on w,a,s,d being pressed on the keyboard. 
+<br/> We will add the event listener for the keyboard in the garden.js -> why? 
+<br/>Because we assume that other objects may also use the keyboard - and so it does not necessarily ONLY apply to the sun ... 
+<br/>Add the following:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+window.addEventListener("keydown", function handleKeyDown(event) {
+   //call the handleKeyDown method in sun
+  });
+  </code>
+</pre>
+Next - we create the <span class="customP">local member method: handleKeyDownInSUn()</span> in the sun class (sun.js):
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
+handleKeyDownInSUn(event) {
+    // console.log("key pressed");
+    // console.log(this);
+    //console.log(event);
+
+    //LINEAR MOVEMENT
+    //go up
+    if (event.key === "w") {
+      console.log("up");
+      this.y -= this.vy;
+      this.updateDivPos();
+    }
+    if (event.key === "a") {
+      console.log("left");
+      this.x -= this.vx;
+      this.updateDivPos();
+    }
+    if (event.key === "s") {
+      console.log("down");
+      this.y += this.vy;
+      this.updateDivPos();
+    }
+    if (event.key === "d") {
+      console.log("right");
+      this.x += this.vx;
+      this.updateDivPos();
+    }
+}
+</code>
+</pre>
+<ol>
+<li> We check which key was pressed and have an if statement for "w" or "a" or "s" or "d"</li> 
+<li> Each if statement changes either the x or y position in a <strong> linear manner </strong></li>
+<li> then we call <code>this.updateDivPos();</code></li>
+</ul>
+We need thus to add <span class="customP">local member method: updateDivPos()</strong></span>:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+ updateDivPos() {
+    this.sunDiv.style.left = this.x + "px";
+    this.sunDiv.style.top = this.y + "px";
+  }
+  </code>
+</pre>
+Finally inside the the event listener function in garden.js -> we call <code>handleKeyDownInSUn()</code>:
+
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+window.addEventListener("keydown", function handleKeyDown(event) {
+  //call the handleKeyDown method of class
+  sun.handleKeyDownInSUn(event);
+});
+</code>
+</pre>
+
+And voila you should now have linear movement of a single sun when the relevant keys are pressed...
+
+</section>
+</main>
+  <script src="js/prism.js"></script>
+</body>
+
+</html>

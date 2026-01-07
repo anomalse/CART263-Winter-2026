@@ -1,48 +1,28 @@
 :root {
     /* --body-color: #cce6ff; */
-       --body-color: #ffffff;
-    --text-color: #003366;
+       --body-color: #4CAF50;
+    --text-color: #4CAF50;
     --line-color: #e6f2ff;
-    --nav-back-color: #99ccff;
+    --nav-back-color: #ffffff;
      --contents-color: #b30086;
     --contents-h3-color: #99ccff;
     --contents-h4-color: #88acd3;
     --padding-vert: 2vh;
     --padding-vert-p: .5rem;
-      --padding-vert-ul: 1rem;
+    --padding-vert-ul: 1rem;
     --margin-vert: 2vh;
-    --padding-nav-vert: 1vw;
-     --code-t1-color: #b30086;
+    --padding-nav-vert: 1.5vh;
+    --code-t1-color: #b30086;
     --code-t1-bkcolor: #d8a0ca;
-      --code-l-bkcolor: #ecbde0;
+    --code-l-bkcolor: #ecbde0;
 
 
 
-}
-
-p {
-  line-height: 1.8; /* Sets line height to 1.8 times the current font size */
-  margin-bottom: var(--padding-vert-p);
-
-}
-li{
-    line-height: 1.8; /* Sets line height to 1.8 times the current font size */
-}
-ul{
-    margin-bottom: var(--padding-vert-ul);
 }
 
 * {
     margin: 0;
     /* padding:0; */
-}
-/* html{
-    font-size:20px;
-   
-} */
-pre{
-     /* font-size: 62.5%; */
-    background-color:red;
 }
 
 body {
@@ -51,43 +31,164 @@ body {
     color: var(--text-color);
 }
 
-h1 {
-    padding-top: var(--padding-vert);
-    padding-bottom: var(--padding-vert);
+
+header h1{
+    background:white;
+    width:max-content;
+    padding-left:16px;
+    padding-right:16px;
+    padding-top:16px;
+    padding-bottom:16px;
+    /* margin-bottom:24px; */
 }
 
-h1,
-h2 {
-    /* The font size will be at least 2rem (32px), at most 5rem (80px),
-     and scale with 4% of the viewport width in between. */
-    font-size: clamp(1.0rem, 4vw, 1.5rem);
+
+.inner-head h1{
+    background:white;
+    width:max-content;
+   padding-left:12px;
+    padding-right:12px;
+    padding-top:4px;
+    padding-bottom:4px;
+    margin-top:24px;
+    margin-bottom:24px;
 }
 
-.inner-head {
-    padding-top: var(--padding-vert);
-    padding-bottom: var(--padding-vert);
+.sched-mod{
+    background-color: rgba(255,255,255,0.2);
+    padding-bottom:4px;
 
 }
-/* 
-.inner-descript p {
-    padding-top: var(--padding-vert-p);
-    padding-bottom: var(--padding-vert-p);
-} */
+.sched-mod a{
+    color:white;
+    padding:6px;
 
-main {
-    margin-left: 10vw;
-    margin-right: 10vw;
+}
+.sched-mod a:hover{
+    color:green;
+    background-color: white;
+    padding:6px;
+    
+}
+.sched-mod h2{
+    background:rgb(255, 255, 255);
+    width:max-content;
+   padding-left:12px;
+    padding-right:12px;
+    padding-top:4px;
+    padding-bottom:4px;
+    margin-top:24px;
+}
+.sched-mod h3{
+    background:white;
+    width:max-content;
+   padding-left:12px;
+    padding-right:12px;
+    padding-top:4px;
+    padding-bottom:4px;
+    margin-bottom:12px;
+}
+.sched-mod ul{
+    color:white;
+
+}
+.sched-mod ul li{
+  padding-bottom:12px;
+ font-size: clamp(1.1rem, 1.1vw, 1.5rem); 
+ list-style-type: none;
 
 }
 
-header {
-    margin-left: 10vw;
-    margin-right: 10vw;
+
+
+.inner-descript h3{
+    background:white;
+    width:max-content;
+    padding-left:12px;
+    padding-right:12px;
+    padding-top:4px;
+     padding-bottom:4px;
 }
 
+.inner-descript p{
+    background-color:white;
+    width:max-content;
+    padding-left:12px;
+    padding-right:12px;
+    padding-top:4px;
+    padding-bottom:4px;
+    margin-top:4px;
+    margin-bottom:4px;
+}
+
+p {
+  line-height: 1.8; /* Sets line height to 1.8 times the current font size */
+  /* margin-bottom: var(--padding-vert-p); */
+
+}
+
+li{
+    line-height: 1.8; /* Sets line height to 1.8 times the current font size */
+}
+ul{
+    margin-bottom: var(--padding-vert-ul);
+}
+
+
+p.back-s {
+    background-color:#ffb74d;
+    font-weight: 500;
+    color:white;
+
+}
+
+.section-s{
+     /* background-color:#ffb74d; */
+        width:max-content;
+     /* padding-left:12px; */
+    padding-right:24px;
+    padding-top:24px;
+    padding-bottom:24px;
+    /* margin-bottom:12px; */
+
+}
+.section-s p{
+    background-color:#ffb74d; 
+    color:white;
+}
+
+.section-j{
+    /* background-color:#a8e6ce; */
+     width:max-content;
+     /* padding-left:12px; */
+    padding-right:24px;
+    padding-top:24px;
+    padding-bottom:24px;
+    margin-left:12px;
+
+}
+.section-j p{
+   background-color:#a8e6ce;
+    color:white;
+}
+
+p.back-j{
+     background-color:#a8e6ce;
+     font-weight: 500;
+     color:white;
+
+}
+.inner-flex{
+    display:flex;
+}
+
+a{
+    text-decoration: none;
+    color:white;
+}
 nav ul {
-    margin-top: var(--margin-vert);
-    margin-bottom: var(--margin-vert);
+    /* margin-top: var(--margin-vert);
+    margin-bottom: var(--margin-vert); */
     display: flex;
     /* justify-content:right; */
     background-color: var(--nav-back-color);
@@ -95,6 +196,7 @@ nav ul {
     /* The font size will be at least 2rem (32px), at most 5rem (80px),
      and scale with 4% of the viewport width in between. */
     font-size: clamp(1rem, 1vw, 2rem);
+    padding:0;
 }
 
 nav ul li {
@@ -103,31 +205,8 @@ nav ul li {
     list-style-type: none;
     padding: var(--padding-nav-vert);
     line-height: 1.2; /* reset line height */
-
-
-
-}
-a{
-      text-decoration: none; 
-      padding:2px;
-
-}
- a:link {
-    color: var(--code-t1-color);
-}
- a:active {
-    color: var(--body-color);
-}
- a:visited {
-     color: var(--code-t1-color)
-     
 }
 
- a:hover {
-    background-color: var(--code-l-bkcolor);
-    color: var(--code-t1-color);
-    padding:2px;
-}
 
 nav ul li a {
     text-decoration: none;
@@ -149,111 +228,72 @@ nav ul li a:visited {
 
 nav ul li a:hover {
     background-color: var(--text-color);
-    color: var(--body-color);
+    color: var(--nav-back-color);
+    padding: var(--padding-nav-vert);
+    
 }
+/* main {
+    margin-left: 10vw;
+    margin-right: 10vw;
 
-.heading-list{
-    text-transform: uppercase;
-
-}
-.heading-list li mark{
-    color: var(--code-t1-color);
-    margin:1px;
-    padding:2px;
-    background-color: var(--line-color)
-}
-.content-box {
-    display: flex;
-    width: 95%;
-}
-
-.flex-inner {
-    margin-right: 1vw;
-    width: 45%;
-}
-
-hr {
-    border: none;
-    height: 1px;
-    background-color: var(--line-color);
-}
-
-
-.customP {
-    color: var(--contents-color);
-    font-size: 16px;
-}
-
-.customH {
-    color: #992495;
-    font-size: 16px;
-}
-
-
-/* .gitC {
-    color: #01a2cd;
-    font-weight: bold;
 } */
- /* code{
-    font-size:12px;
-} */
-
-pre{
-    border-radius: 0.3em;
-}
-/* ul{
-    list-style-type: none;
-} */
-ul li{
-    padding-top:var(--padding-nav-vert)
-}
-ol li{
-    padding-top:var(--padding-nav-vert)
+.contents{
+    background:white;
+    padding-right:24px;
+    padding-top:24px;
+    padding-bottom:24px;
+    padding-left:24px;
 }
 
-section{
-    margin-top:var(--padding-nav-vert);
-    margin-bottom:var(--padding-nav-vert)
-}
-.table-contents{
-
-    color:var(--contents-color)
-}
 .contents h3{
-
     padding:var(--padding-vert-p);
-    background:var(--contents-h3-color);
-    margin-bottom:var(--padding-nav-vert)
+    color:white;
+    background:var(--body-color);
+    margin-top:12px;
+    margin-bottom:12px;
+  
+    width:max-content;
 }
 
 .contents h4{
-    margin-top:var(--padding-vert-p);
-    margin-bottom:var(--padding-vert-p);
-    background:var(--contents-h4-color);
     padding:var(--padding-vert-p);
+    color:white;
+    background:var(--body-color);
+    margin-top:12px;
+    margin-bottom:12px;
+  
+    width:max-content;
+}
+.contents a{
+    text-decoration: none;
+    color:var(--body-color);
 }
 
-
-code{
-    color:var(--text-color);
-    background-color: var(--contents-h3-color);
-    font-size:14px;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+.contents h3 a{
+    text-decoration: none;
+    color:white;
+}
+.contents a:hover{
+    text-decoration: none;
+    background:var(--body-color);
+    color:white;
 }
 
-.code-task{
-    color:var(--code-t1-color);
-    /* background-color: var(--code-t1-bkcolor); */
-    background-color: var(--body-color);
-    font-size:14px;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+.contents h3 a:hover{
+    text-decoration: none;
+    color:var(--body-color);
+    background:white;
 }
-
-
-
-
-
-
-
-
-
+.customP{
+    color:white;
+    background:var(--body-color);
+}
+.table-grade{
+    /* border:1px;
+    border-color:var(--body-color);
+    border-style: solid; */
+    padding:12px;
+    font-weight: 500;
+    background:var(--body-color);
+    color:white;
+}
