@@ -118,7 +118,7 @@ p.back-s {
     /* background-color:#ffb74d; */
     width: max-content;
     padding-right: var(--space-24);
-    padding-top: var(--space-24);
+    /* padding-top: var(--space-24); */
     padding-bottom:var(--space-24);
 
 }
@@ -133,7 +133,7 @@ p.back-s {
     width: max-content;
     /* padding-left:12px; */
     padding-right: var(--space-24);
-    padding-top: var(--space-24);
+    /* padding-top: var(--space-24); */
     padding-bottom: var(--space-24)x;
     margin-left: var(--space-12);
 
