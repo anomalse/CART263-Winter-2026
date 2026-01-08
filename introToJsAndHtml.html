@@ -114,8 +114,7 @@ console.log("Hello World in the console");
  <li>Due to the existence of the DOM - we can use JavaScript to manipulate and alter the HTML elements in an HTML page.</li>
 </ul>
 <h4>Trees &amp; Branches</h4>
-<ul>
-HTML has a structure where the HTML elements form a structure of parents’ nodes with children, like the branches of a tree. There is one root element:<code> html</code> with branches like <code>head and body</code>, each with their own branches. For this reason, the DOM is also called the <span class = "customP">DOM tree</span>.
+<p>HTML has a structure where the HTML elements form a structure of parents’ nodes with children, like the branches of a tree. There is one root element:<code> html</code> with branches like <code>head and body</code>, each with their own branches. For this reason, the DOM is also called the <span class = "customP">DOM tree</span>.</p>
 <pre data-line="1,3,5,7,9,11,13" class="language-html line-numbers">
 <code>
 &lt;html&gt;
@@ -132,8 +131,8 @@ HTML has a structure where the HTML elements form a structure of parents’ node
 &lt;/html&gt;
 </code> 
 </pre>
-</ul>
-<h4>The important points about the above example tree structure is the following:</h4>
+
+<p><span class = "customP">The important points about the above example tree structure is the following:</span></p>
 <ul>
 <li>The <code>&lt;html&gt;</code> is the ancestor (parent) of all the other elements; and therefore: all the other elements are descendants (children) of <code>&lt;html&gt;</code>.
 </li>
@@ -338,8 +337,8 @@ Add the following to the setup() in the <span class = "customP">2_dom.js</span><
  <p>But outside of the <code>setup()</code> the element is NULL... why because we are trying to access it before it has loaded...</p>
 <p><span class = "customP">From this moment onwards we will always follow this pattern:</span></p>
 <p><span class = "customP">Try to use/access/change html elements (which pre-exist in the document) in JavaScript only once the page has completed loading.:)</span> </span></p>
-<p>**Note:** <br/>
-<code>document.getElementById()</code> returns ONLY the <span class = "customP">1st element</span> it encounters in the DOM tree with the matching ID. 
+<br/>
+<p>Note:<code>document.getElementById()</code> returns ONLY the <span class = "customP">1st element</span> it encounters in the DOM tree with the matching ID. 
 Ensure that all your elements have unique ID's (if you are using them to access in js).</p>
 <h4>Getting an Element By ID II </h4>
 <p>You can also use the more generic  JavaScript method for getting hold of an element by its ID: <code>document.querySelect()</code>. 
@@ -384,9 +383,10 @@ console.log(document.querySelectorAll("div")[0]);
 </code>
 </pre>
 <h4>Getting Elements by CLASS NAME</h4>
-<p>The JavaScript method for getting hold of an element(s) by the tag name is: <code>document.getElementsByClassName()</code>. This method returns the same kind of list as <code>getElementsByTagName()</code>, except that you pass a class name to be matched, not a tag name.</p>
-<span class="customP">Task: Modify your current example to use this method ...</span>
-Add the following to the setup():
+<p>The JavaScript method for getting hold of an element(s) by the tag name is: <code>document.getElementsByClassName()</code>. 
+<br/>This method returns the same kind of list as <code>getElementsByTagName()</code>, except that you pass a class name to be matched, not a tag name.</p>
+<p><span class="customP">Task: Modify your current example to use this method ...</span>
+Add the following to the setup():</p>
 <pre data-line = "2,4,6" class="language-javascript line-numbers">
 <code>
 console.log(document.getElementsByClassName("square_shape"));
