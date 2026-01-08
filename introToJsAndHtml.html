@@ -16,28 +16,24 @@
 <body>
     <header>
         <h1> CART 263 WINTER 2026</h1>
-        <hr />
-
+   
         <nav id = "cart263Nav"></nav>
            <script src = "js/loadNav.js"></script>
        <div class="inner-head">
-                <h2>Intro to JavaScript with HTML</h2>
-                <hr />
+                <h1>Intro to JavaScript with HTML</h1>
+            
             </div>
     </header>
     <main>
-<section class = "table-contents">
+<section class="contents-notes">
 <h3>GOALS OF THIS AND THE NEXT TWO CLASSES:</h3>
 <ul class = "heading-list">
  	<li> <mark>Accessing and Updating The DOM</mark> </li>
  	<li> <mark>Basic Timing Functions in JavaScript</mark></li>
- 	<li><mark>Events + Callbacks</mark></li>
+ 	<li><mark>Events & Callbacks</mark></li>
   	<li><mark>Local Storage</mark></li>
 </ul>
-</section>
-<hr/>
-<section class="contents">
-<h3>SetUp a "hello world" Example</h3>
+<h3>HELLO WORLD EXAMPLE</h3>
 <ul>
 <li>Create a new project in VS Code.</li>
 <li>Next create a new HTML file: <span class = "customP">index.html</span></li>
@@ -70,12 +66,12 @@ document.write("&lt;h2&gt;HELLO WORLD DYNAMIC&lt;/h2&gt;");
 </pre>
 </li>
 <li>
-Explanation: within the &lt;script&gt; tags is a single line of JavaScript code:
-<span class = "customP"> document.write() </span> is a <strong> method</strong> belonging to the <span class = "customP"> HTML DOM <strong>Document</strong> object </span>, which effectively outputs anything within the parentheses to the browser.
+Explanation: within the <code>&lt;script&gt;</code> tags is a single line of JavaScript code:
+<code> document.write() </code> is a <strong> method</strong> belonging to the <span class = "customP"> HTML DOM <strong>Document</strong> object </span>, which effectively outputs anything within the parentheses to the browser.
 In addition to placing a script in the <strong> body </strong> of a document, you can also put it in the <strong>head</strong> section. The <span class = "customP">location</span> of any JavaScript code, (i.e within the head or body tags) is the <strong>default location</strong> on the page where JavaScript will write to.
 </li>
 <li>
-<span class="customP">Add an additional document.write() example in the head tag - don't forget the script tags.</span>
+<span class="customP">Add an additional <code>document.write()</code> example in the head tag - don't forget the script tags.</span>
 <pre data-line="2,4" class="language-javascript line-numbers">
 <code>
 &lt;script type="text/javascript"&gt;
@@ -87,8 +83,6 @@ In addition to placing a script in the <strong> body </strong> of a document, yo
 So, what does this show? Well simply: <span class="customP">order matters</span> ... why? Because HTML is parsed by the browser top-down, and when a script is encountered it will be dealt with <strong>there and then</strong>.
 </li>
 </ul>
-</section>
-<section class="contents">
 <h3>Debugging JavaScript: - a small review :)</h3>
 <ul>
 <li>
@@ -97,7 +91,7 @@ Most browsers offer the functionality to debug and access JavaScript error messa
 <li> <span class="customP"><strong>In Chrome:</strong></span> right click on the webpage, from the sub menu select <span class="customP"> Inspect</span>.
 </li>
 <li><span class="customP">Activate the <strong>console</strong> tab.</span></li>
-<li>Use the <span class = "customP"> document.write()</span> method  again but this time, add an error:
+<li>Use the <code> document.write()</code> method  again but this time, add an error:
 <pre data-line="2" class="language-javascript line-numbers">
 <code>
 document.write("Hello World)
@@ -112,8 +106,6 @@ console.log("Hello World in the console");
 </pre>
 </li>
 </ul>
-</section>
-<section class="contents">
 <h3>The DOM</h3>
 <ul>
  <li>The <span class="customP"><strong> DOCUMENT OBJECT MODEL (DOM) </strong></span> defines the rules by which an HTML document can be broken down:</li>
@@ -122,6 +114,7 @@ console.log("Hello World in the console");
  <li>Due to the existence of the DOM - we can use JavaScript to manipulate and alter the HTML elements in an HTML page.</li>
 </ul>
 <h4>Trees &amp; Branches</h4>
+<ul>
 HTML has a structure where the HTML elements form a structure of parents’ nodes with children, like the branches of a tree. There is one root element:<code> html</code> with branches like <code>head and body</code>, each with their own branches. For this reason, the DOM is also called the <span class = "customP">DOM tree</span>.
 <pre data-line="1,3,5,7,9,11,13" class="language-html line-numbers">
 <code>
@@ -139,6 +132,7 @@ HTML has a structure where the HTML elements form a structure of parents’ node
 &lt;/html&gt;
 </code> 
 </pre>
+</ul>
 <h4>The important points about the above example tree structure is the following:</h4>
 <ul>
 <li>The <code>&lt;html&gt;</code> is the ancestor (parent) of all the other elements; and therefore: all the other elements are descendants (children) of <code>&lt;html&gt;</code>.
@@ -175,8 +169,6 @@ function setup(){
 </code> 
 </pre>
 <p>So - essentially - we are controlling when to run the js code... and note how the <code>document.write()</code> overwrites everything previously written in the document.</p>
-</section>
-<section class="contents">
 <h3> Accessing Elements in the DOM </h3>
 <p>Let's start with a new html page (same project): called <span class = "customP">AccessDOM.html</span>- and insert:</p>
 <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-html line-numbers">
@@ -420,7 +412,7 @@ Add the following to the setup():
 </code>
 </pre>
 <h4> Access HTML content (.innerHTML)</h4>
-The <code>innerHTML</code> property holds a <span class = "customP">reference</span> to the HTML content within a particular element, allowing you to easily access or change the content. The example below  prints the HTML within the element with the id "two".<span class="customP">Note: how the <code>.innerHTML</code> property outputs also all the HTML markup within the specified element.</span>
+<p>The <code>innerHTML</code> property holds a <span class = "customP">reference</span> to the HTML content within a particular element, allowing you to easily access or change the content. The example below  prints the HTML within the element with the id "two".<span class="customP">Note: how the <code>.innerHTML</code> property outputs also all the HTML markup within the specified element.</span></p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
 console.log(document.getElementById("two").innerHTML);
@@ -483,8 +475,6 @@ console.log(document.querySelector("#six").style.background);
 console.log(document.querySelector("#six").style.width);
 </code>
 </pre>
-</section>
-<section class="contents">
 <h3> Modifying DOM elements </h3>
 <p>Not only can we access properties of elements - we can also alter them ... though <span class = "customP">remember the changes you make to the document are not persistent</span>...</p>
 <h4> Parents and Children </h4>
@@ -584,8 +574,6 @@ Fourth-ly: let's dynamically change the style attribute of an element. Note that
  document.querySelector("#one").style.borderColor = "darkblue";
 </code>
 </pre>
-</section>
-<section class = "contents">
 <h3>Adding elements to the DOM</h3>
 To add a new element to the HTML DOM:
 <ul>
@@ -623,8 +611,6 @@ let parentElementAgain = document.querySelector(".wrapper_flex_box")
 parentElementAgain.insertBefore(newDivTwo,sibling);
 </code>
 </pre>
-</section>
-<section class = "contents">
 <h3>Removing elements from the DOM</h3>
 <p>You can also remove existing elements from the DOM using the <code>removeChild()</code> method. 
 The following example removes an element in the setup() - a bit redundant as an example - but will be more useful when more interesting events are introduced ;)</p>

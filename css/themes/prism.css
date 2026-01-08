@@ -55,7 +55,10 @@ pre[class*=language-] {
 :not(pre)>code[class*=language-],
 pre[class*=language-] {
     /*sabine changed*/
-    background: #e6f2ff;
+    /* background: #e6fff0; */
+    border-color: #4CAF50;
+    border-width: 1px;
+    border-style: dashed;
 }
 
 :not(pre)>code[class*=language-] {

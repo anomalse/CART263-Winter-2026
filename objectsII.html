@@ -16,18 +16,15 @@
 <body>
     <header>
         <h1> CART 263 WINTER 2026</h1>
-        <hr />
-
          <nav id = "cart263Nav"></nav>
         <script src = "js/loadNav.js"></script>
        <div class="inner-head">
-                <h2>Objects II</h2>
-                <hr />
+                <h1>Objects II</h1>
             </div>
     </header>
     <main>
 
-<section class="contents">
+<section class="contents-notes">
 <h3> Continuing with objects </h3>
 <p>Objective: build a more customizable flower  ... we will use parameters :) 
 The Flower object that we built previously is kind of limited: it cannot be easily customized. If you want a flower to be a specific color, say, or if you want it to start in a specific position - its not possible... 
@@ -102,7 +99,7 @@ this.flowerPetalDiv = document.createElement("div");
  </code>
 </pre> 
 <p><span class = "customP">So: very easily we can add the relevant event listeners & callback functions inside the constructor() function!</span>...
-<br/>Let's start by a standard event listener for when we click on the flower stem inside the constructor():</p>
+<br/>Let's start by a standard event listener for when we click on the flower stem inside the <code>constructor()</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
   //add event listener and the call back
@@ -114,7 +111,7 @@ this.flowerPetalDiv = document.createElement("div");
 </pre>
 <p>Now when you click on the stem ... well we print out the target associated with the click event: <span class = "customP"> the div element </span> 
 <br>YAY... but wait... 
-<br>If we change the growStem() and instead have:</p>
+<br>If we change the <code>growStem()</code> and instead have:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
   function growStem(e) {
@@ -122,8 +119,7 @@ this.flowerPetalDiv = document.createElement("div");
    }
 </code>
 </pre>
-<p>Well that is ALSO the div. Why? 
-<br>Because in the context of the event listener:<span class = "customP"> this</span> refers to the div ... NOT the flower object...  help?
+<p>Well that is ALSO the div. Why? Because in the context of the event listener:<code> this</code> refers to the div -> NOT the flower object...help?
 </p>
 <h4> Updating flower properties INSIDE the event handler </h4>
 <p>One solution: we make a copy of <span class = "customP"> the flower instance </span> in the constructor() - so that when it gets overriden in the event handler we use the copy...
@@ -172,8 +168,8 @@ We output the flower instance INSIDE the event handler -- so we can now update t
 <li> Turn the sun into another <code>object</code>... </li>
 <li> And allow for it to respond to <code>key events (move)</code>... </li>
 </ul>
-<p>First, let's start with a new class: <span class="customP"> Create the <strong>Sun.js</strong> + in index.html add the ref in a <strong> script tag </strong></span>
-<br/>Next: lets create the <span class = "customP"> Sun </span> class + constructor + a <code>renderSun()</code> method:</p>
+<p>First, let's start with a new class: Create the <code>Sun.js</code> and in index.html add the ref in a <code> script</code> tag.
+<br/>Next: lets create the <code> Sun </code> class and <code>constructor</code> and a <code>renderSun()</code> method:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
 class Sun{
@@ -225,7 +221,7 @@ window.addEventListener("keydown", function handleKeyDown(event) {
   });
   </code>
 </pre>
-Next - we create the <span class="customP">local member method: handleKeyDownInSUn()</span> in the sun class (sun.js):
+Next - we create the local member method: <code>handleKeyDownInSUn()</code> in the sun class (sun.js):
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
 <code>
 handleKeyDownInSUn(event) {
@@ -260,10 +256,10 @@ handleKeyDownInSUn(event) {
 </pre>
 <ol>
 <li> We check which key was pressed and have an if statement for "w" or "a" or "s" or "d"</li> 
-<li> Each if statement changes either the x or y position in a <strong> linear manner </strong></li>
+<li> Each if statement changes either the x or y position in a <span class = "customP"> linear manner </span></li>
 <li> then we call <code>this.updateDivPos();</code></li>
 </ul>
-We need thus to add <span class="customP">local member method: updateDivPos()</strong></span>:
+We need thus to add local member method: <code>updateDivPos()</code>:
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
  updateDivPos() {
@@ -283,7 +279,7 @@ window.addEventListener("keydown", function handleKeyDown(event) {
 </code>
 </pre>
 
-And voila you should now have linear movement of a single sun when the relevant keys are pressed...
+<span class = "customP"> And voila you should now have linear movement of a single sun when the relevant keys are pressed...</span>
 
 </section>
 </main>

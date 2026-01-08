@@ -15,16 +15,14 @@
 <body>
     <header>
         <h1> CART 263 WINTER 2026</h1>
-        <hr />
       <nav id = "cart263Nav"></nav>
         <script src = "js/loadNav.js"></script>
        <div class="inner-head">
-                <h2>Objects I</h2>
-                <hr />
+                <h1>Objects I</h1>
             </div>
     </header>
     <main>
-    <section class = "table-contents">
+    <section class = "contents-notes">
 <h3>CLASS GOALS:</h3>
 <ul class = "heading-list">
 <li><mark> We will use HTML, CSS and Vanilla JS</mark> </li>
@@ -34,11 +32,6 @@
 <li><mark>Creating a class</mark></li>
 <li><mark>Creating new objects from a class</mark></li>
 </ul>
-</section>
-
-<hr/>
-
-<section class="contents">
 
 <h3>Set up a new project:</h3>
 <ul>
@@ -128,7 +121,7 @@ window.onload = function (){
 </pre>
 </li>
 <li> Next: we want to output our initial garden without the any flowers :)
-<h4> Render the Initial Garden using a <code>function</code>: </h4>
+<h4> Render the Initial Garden using a function: </h4>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
   function createAndRenderTheGarden() {
@@ -165,7 +158,7 @@ window.onload = function (){
 </pre>
 Before calling it - apply the following css
 Note: how we are using the <code>properties</code> of the garden object.
-Add the following to<span class = "customP"> styles/garden_style.css</span>:
+Add the following to<span class = "customP">styles/garden_style.css</span>:
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-css line-numbers">
 <code>
 body{
@@ -207,7 +200,7 @@ And then call the render function ...
 Super ... you should have your basics ... 
 </li>
 <li>
-<h4> Create a flower using a function that <code>RETURNS</code> the flower object</h4>
+<h4> Create a flower using a function that RETURNS the flower object</h4>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35" class="language-javascript line-numbers">
 <code>
   // Creates a new JavaScript Object describing a flower and returns it
@@ -327,8 +320,7 @@ call inside the  <code>createAndRenderTheGarden()</code>:
 </li>
 </ul>
 YAhoo. We should now have one flower in our garden :)
-</section>
-<section class = "contents">
+
 <h3>Each flower is an OBJECT</h3>
 <p>We already know that each of our flowers in the flowers array is a JavaScript object, 
 created using <code>createFlower()</code>. 
@@ -443,9 +435,9 @@ class Flower {
 }
 </code>
 </pre>
-The biggest difference you probably notice here is the use of the word <code>this</code>. 
+<p>The biggest difference you probably notice here is the use of the word <code>this</code>. 
 In a class definition, <code>this</code> refers to the object that will be created with the class.
-So in the constructor, <code>this</code> means “this object we are constructing from the class”.
+So in the constructor, <code>this</code> means <span class="customP">"this object we are constructing from the class".</span></p>
 
 <h4> Can the flower object do anything? </h4>
 <p>The <code>constructor()</code> is used to <span class = "customP">create a Flower object</span>, but to get it to do something, <span class = "customP"> we need to add a method</span> 
@@ -525,12 +517,12 @@ let flower = createFlower();
 </code>
 </pre>
 with 
-<pre data-line="1,3,5" class="language-javascript line-numbers"></pre>
+<pre data-line="1,3,5" class="language-javascript line-numbers">
 <code>
 let flower = new Flower();
 </code>
 </pre>
- Let's look at the pieces of the new version…
+ <p>Let's look at the pieces of the new version:</p>
 <ol>
 <li><code>let</code> tells JavaScript a new variable is being created</li>
 <li><code>flower</code> is the name of the variable being creating to temporarily store a new flower in before being put into the array</li>
@@ -538,14 +530,13 @@ let flower = new Flower();
 <li><code>new</code> tells JavaScript a new object is going to be created using a class definition</li>
 <li><code>Flower()</code> tells JavaScript to use the constructor() of the Flower class to create a new object</li>
 </ol>
-Note:: the constructor() is not explicitly called ... 
-Why? -> because when the name of the class is used along with the <span class = "customP"> new </span> keyword - the constructor is being called <em>automatically</em>.
-
+<p>Note: the <code>constructor()</code> is not explicitly called.
+Why? -> because when the name of the class is used along with the <span class = "customP"> new </span> keyword - the constructor is being called <em>automatically</em>.</p>
 <h4> I see no flowers in the browser ?! </h4>
 <p>You have all your flowers objects, created with the Flower class, in the array. </p>
 <p>You just need to display them.</p>
-<p>The Flower class has a <code>renderFlower()</code> method, so let us use that to display all our flowers in a for loop that goes through the array.</p>
-<p>To call a method that is part of an object created with a class, use dot notation just like when accessing an object's properties:</p>
+<p>The Flower class has a <code>renderFlower()</code> method, so let us use that to display all our flowers in a <code>for loop</code> that goes through the array.</p>
+<p>To call a method that is part of an object created with a class, use <span class="customP">dot notation</span> just like when accessing an object's properties:</p>
 <pre data-line="1,3,5" class="language-javascript line-numbers">
 <code>
 for (let i = 0; i < garden.numFlowers; i++) {
@@ -556,11 +547,11 @@ for (let i = 0; i < garden.numFlowers; i++) {
 </code>
 </pre>
 <h4> We did it! </h4>
-The garden is back! This time it's being done through a class called Flower! How?
+<p>The garden is back! This time it's being done through a class called Flower! How?</p>
 <ul>
-<li> A class called Flower was defined which provides a <code>constructor()</code> to set all the properties of a flower and a <code>renderFlower()</code> method to render a flower in the browser</li>
-<li>New Flower objects were created using the <code>new</code>keyword and the <code>constructor</code> (written as Flower()), storing them in the array</li>
-<li>The <code>renderFlower()</code> method of the flowers was called to render them to the browser...</li>
+<li> A class called Flower was defined which provides a <code>constructor()</code> to set all the properties of a flower and a <code>renderFlower()</code> method to render a flower in the browser.</li>
+<li>New Flower objects were created using the <code>new</code>keyword and the <code>constructor</code> (written as Flower()), storing them in the array.</li>
+<li>The <code>renderFlower()</code> method of the flowers was called to render them to the browser.</li>
 </ul>
 <h4> But why do it this way? </h4>
 <p>Using <span class = "customP">OOP</span> in this way by creating a class brings us back to the concepts of <code>modularity and reusability</code>.</p>
