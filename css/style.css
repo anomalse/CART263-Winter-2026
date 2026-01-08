@@ -252,7 +252,7 @@ nav ul li a:hover {
 
 .contents a, .contents-tasks a, .contents-notes a {
     text-decoration: none;
-    color: var(--body-color);
+    color: var(--code-color);
 }
 
 .contents h3 a, .contents-tasks h3 a{
@@ -262,7 +262,7 @@ nav ul li a:hover {
 
 .contents a:hover,.contents-tasks a:hover,.contents-notes a:hover {
     text-decoration: none;
-    background: var(--body-color);
+    background: var(--code-color);
     color: white;
 }
 

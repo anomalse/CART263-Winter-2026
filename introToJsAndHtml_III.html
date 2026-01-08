@@ -256,7 +256,7 @@ Here - we will see that we can schedule functions (callbacks) to be executed som
   }
   </code>
 </pre>
-<p>So, let's do something more interesting with the <code>setInterval()</code> ... and it will hopefully also help you understand the <a href = "https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/what-is-modular-arithmetic">MOD</a>operator and why it is useful.
+<p>So, let's do something more interesting with the <code>setInterval()</code> ... and it will hopefully also help you understand the <a href = "https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/what-is-modular-arithmetic">MOD</a> operator and why it is useful.
 <br/>As usual lets start with some html:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-html line-numbers">
 <code>
@@ -771,24 +771,26 @@ Ok - so at some point we want to cancel the animation -> lets do that when we pr
   })
 </code>
 </pre>
-</section>
 
 <h3> WEB STORAGE API </h3>
 <p>
 <a href = "https://en.wikipedia.org/wiki/Web_storage">What is web storage ...</a>
 HTML5 provides two ways to store data: <span class = "customP">localStorage and sessionStorage</span>. Data saved as localStorage is available to the browser at any point, even when the browser closes or the system is restarted. Data saved as sessionStorage is lost when the browser is closed.
 A good use case for using web storage is when you want to have variables which are accessible and shared across html pages (of the same website)... or you want to store info regarding the user of the site (client side - not server side)...This API is relatively simple to use - the main point is that <span class = "customP">you store and retrieve values to/from local storage as key/value pairs</span>.
-We will do some LIVE coding examples for this: please use the starting files <a href = "resources/localStorage - cart263 -start.zip">linked here...</a></p>
-<ul class = "heading-list">
-<li><mark>create a single key-value pair and store in local storage</mark></li>
-<li><mark>Use the browser to assist in debugging</mark></li>
-<li><mark>Saving and retrieving a list of items associated with a single key</mark></li>
-<li><mark>Input using an input field</mark></li>
-<li><mark>Checking if an item exists in local storage</mark></li>
-<li><mark>Resetting local storage</mark></li>
-<li><mark>Multiple key/value pairs</mark></li>
-<li><mark>Retrieving items from local storage (same page)</mark></li>
-<li><mark>Save/retrieve from local storage on different pages</mark></li>
+<br/>Please use the starting files <a href = "resources/localStorage - cart263 -start.zip">linked here...</a></p>
+<h4>WE WILL LIVE CODE THE FOLLOWING:</h4>
+<ul>
+<li>create a single key-value pair and store in local storage</li>
+<li>Use the browser to assist in debugging</li>
+<li>Saving and retrieving a list of items associated with a single key</li>
+<li>Input using an input field</li>
+<li>Checking if an item exists in local storage</li>
+<li>Resetting local storage</li>
+<li>Multiple key/value pairs</li>
+<li>Retrieving items from local storage (same page)</li>
+<li>Save/retrieve from local storage on different pages</li>
+</ul>
+</section>
 </main>
   <script src="js/prism.js"></script>
 </body>
