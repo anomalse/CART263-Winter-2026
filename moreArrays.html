@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+      <link href="css/themes/prism.css" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
+
+         <nav id = "cart263Nav"></nav>
+        <script src = "js/loadNav.js"></script>
+       <div class="inner-head">
+                <h1>MORE ARRAYS</h1>
+            </div>
+    </header>
+    <main>
+
+<section class="contents-notes">
+<p><a href = "resources/arrays-cart263-start.zip">PLEASE DOWNLOAD THE STARTING FILES FROM HERE</a></p>
+<h3>ARRAY FUNCTIONS </h3>
+<p>So - you have learnt to <span class  = "customP">define arrays, push, pop, access elements via index , iterate over forwards, backwards etc... </span></p>
+<br/>We will today - look at some <span class  = "customP">SUPER USEFUL functions</span> that you can apply to arrays. 
+<br/>As JS evolves there are more and more new functions available... See <a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">here</a> to start :)
+<br/>We will only go over the most commonly used (and in case you use REACT or similar framework these become very important ) ...
+<h4> map() </h4>
+<p>The <code>map()</code> method creates a new array by applying a <span class ="customP">provided function</span> to each element of the original array. 
+<br/>It <span class ="customP">transforms the elements without modifying the original array</span>.
+Lets look at a simple example:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const numbers = [1, 2, 3, 4, 5];
+const squaredNumbers = numbers.map(
+    function (num) { 
+        return(
+        num * num
+        )
+    }
+);
+</code>
+</pre>
+<p>Ok: but what if the array contains more complex things then just numbers?
+For example: lets make a new array to hold ShapeDef objects that are circular:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+function mapArraysShape() {
+    console.log(arrayOfShapes);
+    // MAP ONE
+    let arrayOfShapesNew = arrayOfShapes.map(changeShape);
+    add_New_Els_ToDOM(arrayOfShapesNew, originalRow);
+    function changeShape(el){
+        return (
+        /* need to make a copy */
+        new ShapeDef(el.x, el.y+100, el.shapeClass,"circle",el.color)
+        )
+       
+      }
+
+  }
+</code>
+</pre>
+<p>Or then for color:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+  function mapArraysColor() {
+    console.log(arrayOfShapes);
+    // MAP TWO
+    let arrayOfShapesNew = arrayOfShapes.map(changeColor);
+    add_New_Els_ToDOM(arrayOfShapesNew, originalRow);
+    console.log(arrayOfShapesNew)
+
+    function changeColor(el){
+        let temp = getColorObj(el.color);
+        let color = `rgb(${temp [1]},${temp[0]},${temp[2]})`
+        return (
+        /* need to make a copy */
+        new ShapeDef(el.x, el.y+200, el.shapeClass,el.customShapeClass,color)
+        )
+       
+      }
+  }
+ </code>
+</pre>
+<h4> filter() </h4>
+<p>The <code>filter()</code> method creates a new array <span class = "customP">containing all elements that match the provided condition</span>. 
+<br/>It helps to extract all elements that satisfy specific criteria from an array.
+Lets look at a simple example:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+const numbers_filter = [1, 28, 355, 44, 51, 78];
+const evenNumbers = numbers_filter.filter(
+    function(num) {
+    return  (num % 2 === 0)
+})
+console.log(evenNumbers); 
+</code>
+</pre>
+<p>Or an example for comparing strings:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+const strings_filter = ["banana", "oranges", "peppers", "tamatoes", "peas", "pears", "kiwi"];
+const startsWithP = strings_filter.filter(
+    function(str) {
+    return  (str.startsWith("p"))
+})
+console.log(startsWithP);
+</code>
+</pre>
+
+<p>If we have objects in the array -> back to the shapes: lets filter the array on x position:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+function filterArraysX(){
+    console.log(arrayOfShapesTwo);
+    // FILTER ONE
+    let filterArraysX= arrayOfShapesTwo.filter(smaller_posX);
+    
+    function smaller_posX(el){
+        return(
+            (el.x > 200)
+        )
+    }
+    console.log(filterArraysX);
+    //then we can map - to change the y :)
+    let arrayOfShapesNew = filterArraysX.map(
+        function(el){
+            return (new ShapeDef(el.x, el.y+100, el.shapeClass,el.customShapeClass,el.color))
+
+    });
+    add_New_Els_ToDOM(arrayOfShapesNew, secondRow);
+
+}
+</code>
+</pre>
+<p>Or then by Shape ;)</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+function filterArraysByShape(){
+    // FILTER ONE
+    let filterArraysShape= arrayOfShapesTwo.filter(shape_filter);
+    
+    function shape_filter(el){
+        return(
+            (el.customShapeClass ==='circle')
+        )
+    }
+
+    //then we can map - to change the y :)
+    let arrayOfShapesNew = filterArraysShape.map(
+        function(el){
+            return (new ShapeDef(el.x, el.y+200, el.shapeClass,el.customShapeClass,el.color))
+
+    });
+    add_New_Els_ToDOM(arrayOfShapesNew, secondRow);
+
+
+}
+</code>
+</pre>
+<h4> reduce() </h4>
+<p>The <code>reduce()</code> method applies a provided function <span class = "customP">to reduce an array to a single value.</span> 
+<br/>It iterates over the array, accumulating the result of each iteration.
+<br/>The <span class ="customP">accumulator is the end value</span>, and the <span class ="customP">reducer is the action (i.e. adding) you perform to get to one value</span>.</p>
+<p>Note: The first time that the callback is run there is no  <code> return value of the previous calculation</code>. 
+<br/>If supplied, an initial value may be used in its place. Otherwise the array element at index 0 is used as the initial value and iteration starts from  the next element (index 1 instead of index 0).</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+/** REDUCE */
+const numbers_n = [11, 2, 32, 4, 5,70];
+
+const sum = numbers_n.reduce(
+    function (accum, initval) 
+    {
+        return(accum + initval)
+    },0)
+
+console.log(sum);
+</code> 
+</pre>
+<p>We can also apply the <span class = "customP">reduce </span> to objects.... i.e. if we have a circumstance where we are reducing an array of objects to a single object...:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+const donuts = [
+    { name: 'mondays_donut', type: 'sparkly' },
+    { name: 'tuesdays_donut', type: 'shiny' },
+    { name: 'wednesdays_donut', type: 'squashy' }
+  ];
+  
+    const newObjectFromArray = donuts.reduce((accum, item) => {
+        /* accumulator is the array building */
+        console.log(accum)
+      // add object key to our object i.e. mondays_donut: { type: 'sparkly' }
+      accum[item.name] = {type: item.type };
+      return accum;
+    },{});
+  console.log(newObjectFromArray)
+</code>
+</pre>
+<p>** Note: we pass an <span class = "customP">empty object as the initial accumulator value</span></p>
+<h4> forEach() </h4>
+<p>Most of you  have already used this one :) The <code>forEach()</code> method executes a provided function <span class = "customP">once</span> for each array element. 
+<br/>It allows us to execute an action on each element without creating a new array. Lets start with a simple array:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+const numbers_forEach = [12, 26, 37, 43, 52];
+numbers_forEach.forEach(function(num){
+console.log(` nummmm: ${num*2}`)
+});
+</code>
+</pre>
+<p>Lets now use our shapes array with <code>forEach()</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+function forEachCallBackA(){
+    document.querySelector("#pSpan").innerHTML=""
+    arrayOfShapesThree.forEach(addPTags)
+
+    function addPTags(el){
+        document.querySelector("#pSpan").innerHTML+= `<span> x:${el.x} <span>`
+            
+    }
+}
+</code>
+</pre>
+OR
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+function forEachCallBackB(){
+    document.querySelector("#pSpan").innerHTML=""
+    arrayOfShapesThree.forEach(addPTags)
+
+    function addPTags(el){
+        document.querySelector("#pSpan").innerHTML+= `<span> y:${el.y} </span>`
+            
+    }
+}
+</code>
+</pre>
+
+<h4> find()</h4>
+<p>The <code>find()</code> method returns <span class ="customP">the first element in an array that satisfies a provided condition</span>. 
+<br/>It stops searching as soon as it finds an element that matches the condition... Again - a simple ex first: an array of numbers:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const numbers_toFind = [24,67,45,95];
+const multipleOfFive = numbers_toFind.find(
+    function(num) {
+    return(num % 5 === 0)
+});
+console.log(multipleOfFive); 
+</code>
+</pre>
+Or with strings:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const strings_toFind = ["hell","hello","today", "is", "wednesday", "hello"];
+const foundString = strings_toFind.find(
+    function(str) {
+    return(str.startsWith("h"))
+   // return(str.endsWith("ay"))
+       
+});
+console.log(foundString)
+</code>
+</pre>
+<p>Or even with the shapes array: lets find an object based on the 'x':</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+function findCallBackA(){
+    //get an object back whose x> 200
+    const foundObj = arrayOfShapesFour.find(
+        function(el){
+            return(el.x>200)
+        })
+        console.log(foundObj)
+        if(foundObj)
+        add_SingleToDOM(foundObj, fourthRow)
+
+    }
+</code>
+ </pre>
+or possibly the y:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+function findCallBackB(){
+      //get an object back whose y> 40
+      const foundObj = arrayOfShapesFour.find(
+        function(el){
+            return(el.y>40)
+        })
+        console.log(foundObj)
+        if(foundObj)
+        add_SingleToDOM(foundObj, fourthRow)
+
+    }
+</code>
+ </pre>
+ <h4> some() </h4>
+<p>The <code>some()</code> method checks if <span class = "customP">at least one element</span> in an array satisfies a provided condition. 
+<br/>It returns true if any element matches the condition, otherwise false. Lets try it on a simple example:</p>
+
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const numbers_some = [24,67,45,95];
+const hasMultiplesOfFive = numbers_some.some(
+    function (num){
+        return(num % 5 === 0)
+    });
+console.log(hasMultiplesOfFive);
+</code>
+</pre>
+OR what about:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+const numbers_some = [24,67,45,95]
+const hasMultiplesOfTen = numbers_some.some(
+    function (num){
+        return(num % 10 === 0)
+    });
+console.log(hasMultiplesOfTen); 
+</code>
+</pre>
+
+<p><span class = "customP">QU 1: </span>Does the array contain at least one circle shape?</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const hasCircleShape = arrayOfShapesTwo.some(
+    function(el){
+        return (el.customShapeClass==="circle")
+    }
+)
+console.log(hasCircleShape)
+</code>
+</pre>
+<p><span class = "customP">QU 2: </span>Does another array have at least one rectangle shape?</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const hasRectShape = arrayOfShapesThree.some(
+    function(el){
+        return (el.customShapeClass==="rectangle")
+    }
+)
+console.log(hasRectShape)
+</code>
+</pre>
+<h4> every()</h4>
+<p>The <code>every()</code> method checks if <span class = "customP">all elements</span> in an array satisfy a provided condition. 
+<br/>It returns true if all elements match the condition, otherwise false. Let's use similar examples to <code>some()</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
+const numbers_all = [24,67,45,95];
+
+const hasALLMultiplesOfFive = numbers_all.every(
+    function (num){
+        return(num % 5 === 0)
+    });
+console.log(hasALLMultiplesOfFive); 
+
+
+const hasALLMultiplesOfTen = numbers_all.every(
+    function (num){
+        return(num % 10 === 0)
+    });
+console.log(hasMultiplesOfTen); 
+
+const hasALLCircleShapes = arrayOfShapesTwo.every(
+    function(el){
+        return (el.customShapeClass==="circle")
+    }
+)
+console.log(hasALLCircleShapes)
+
+
+const hasAllRectShapes = arrayOfShapes.every(
+    function(el){
+        return (el.customShapeClass==="rectangle")
+    }
+)
+console.log(hasAllRectShapes)
+</code>
+</pre>
+<h4> sort () </h4>
+<p>The <code>sort()</code> method will sort the elements of an array <span class = "customP">in place and returns the reference to the same array, now sorted</span>. 
+<br/>The default sort order is ascending, built upon converting the elements into strings, then comparing their sequences of UTF-16 code unit values. 
+<br/>The time and space complexity of the sort cannot be guaranteed as it depends on the implementation. So let's start with a simple example with numbers:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
+let testArray = [2,89,78,89,3,45]
+console.log (testArray.sort())
+console.log (testArray) // IS NOW CHANGED
+</code>
+</pre>
+<p>With strings... Note - that uppercase is not the same as lowercase letters ;)</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
+let stringSortArray = ["ABS","giraffe","Giraffe","apple","orange","tortoise","peanut", "penguin", "hare"]
+console.log (stringSortArray.sort())
+console.log(stringSortArray);
+</code>
+</pre>
+<p>But what if we have an array of objects? How do we sort those? i.e. does this do anything?</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
+//sorting objects
+console.log(arrayOfShapesTwo);
+console.log(arrayOfShapesTwo.sort())
+</code>
+</pre>
+<p>No, here we need to define out own <span class = "customP">comparison function</span> :-> but we need to abide by the following constraints:
+<br/>Given 2 values <code>[a,b]</code>(that we are comparing):</p>
+<ul>
+<li>If a is to come AFTER b -> compare function should a return a value > 0 </li>
+<li>If a is to come BEFORE b -> compare function should a return a value < 0 </li>
+<li>If maintain original order -> compare function should return a value === 0 </li>
+</ul>
+<p>So lets say we will decide we want to <span class = "customP">sort by the custom shape class name</span>: let's define our comparison function:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
+function compareShapeClass(a, b) {
+const classA = a.customShapeClass.toUpperCase(); // ignore upper and lowercase
+const classB = b.customShapeClass.toUpperCase(); // ignore upper and lowercase  
+if(classA < classB){
+return -1;
+}
+if (classA > classB) { 
+    return 1; 
+}
+//equal
+return 0;
+ }
+ </code>
+</pre>
+ And then call it :)
+<pre data-line="1, 3" class="language-javascript line-numbers">
+<code>
+ console.log(arrayOfShapesTwo.sort(compareShapeClass))
+ </code>
+</pre>
+
+<h4> toSorted () </h4>
+<p>The <code>toSorted()</code>method is the copying version of the sort() method. 
+<br/>It returns a new array with the elements sorted in ascending order. i.e: </p>
+<pre data-line="1, 3,5,7,9,11,13,15" class="language-javascript line-numbers">
+<code>
+let testArray_2 = [2,89,78,89,3,45]
+console.log (testArray_2.toSorted())
+console.log(testArray_2); // DOES NOT CHANGE
+//SO:: 
+let sortedArray = testArray_2.toSorted()
+console.log(sortedArray)
+
+let stringSortArray_2 = ["ABS","giraffe","Giraffe","apple","orange","tortoise","peanut", "penguin", "hare"]
+console.log (stringSortArray_2.toSorted())
+console.log(stringSortArray_2);
+let sortedStringArray = stringSortArray_2.toSorted()
+console.log(sortedStringArray)
+</code>
+</pre>
+<p>And obviously - you can define your own custom comparison functions as before.</p>
+<h4> spread (...)  ON ARRAYS </h4>
+<p>The <a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">spread operator (...)</a>  - this is an ES6 (ECMAScript 6) specific feature -> is a powerful tool for expanding elements of an array.
+i.e:</p>
+<pre data-line="1, 3,5,7,9,11,13,15" class="language-javascript line-numbers">
+<code>
+const fruits = ["apples", "grapes", "pears"];
+const colors = ["blues", "reds", "oranges", "purples", "yellows"]
+const food= [...fruits, "carrots", "patatoes", "turnips"];
+console.log(food)
+</code>
+</pre>
+<p>... and careful  what does this do?</p>
+<pre data-line="1, 3,5,7,9,11,13,15" class="language-javascript line-numbers">
+<code>
+const moreFoodAndColor = [...food,colors]
+console.log(moreFoodAndColor)
+</code>
+</pre>
+<p>Is it the same as this?</p>
+<pre data-line="1, 3,5,7,9,11,13,15" class="language-javascript line-numbers">
+<code>
+const moreFoodAndColorAgain= [...food,...colors]
+console.log(moreFoodAndColorAgain)
+</code>
+</pre>
+<h4>Destructuring (Arrays)</h4>
+<p><a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring">Destructuring</a> simplifies the process of extracting values from arrays.
+For example:</p>
+<pre data-line="1, 3,5,7,9,11,13,15" class="language-javascript line-numbers">
+<code>
+const [first, second, ...rest] = ["fruits","poppyseeds",5,6,"Tuesday"];
+console.log(first); // 1
+console.log(second); // 2
+console.log(rest); // [3, 4, 5]
+</code>
+</pre>
+
+</section>
+</main>
+  <script src="js/prism.js"></script>
+</body>
+
+</html>
