@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+      <link href="css/themes/prism.css" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
+
+         <nav id = "cart263Nav"></nav>
+        <script src = "js/loadNav.js"></script>
+       <div class="inner-head">
+                <h1> HTML 5 CANVAS & VIDEO</h1>
+            </div>
+    </header>
+    <main>
+
+<section class="contents-notes">
+<h3>What is an API?</h3>
+<p><span class = "customP"> API</span> stands for <span class = "customP">Application Programming Interface</span>. In essence they allow one to create applications using pre-built components and are not unique to web development, or even to scripting languages.
+ <br/>Websites such as Twitter (aka X), YouTube, Flickr, Twitter, Google, Amazon ...  and LOTS of others provide APIs to the public so designers and developers can integrate features into their own websites (or for other purposes such as mobile or desktop applications). </p>
+<p>One of the main goals of an API is to standardize how certain mechanics work and to simplify otherwise complicated programming tasks. 
+<br/>APIs are very significant in the world of <span class = "customP">HTML5</span> and there a number of them to explore, including the <span class = "customP">Canvas, Media Capture,Drag and Drop, Web storage, Geolocation </span>, among others.</p>
+<p>If you are interested in what Web API's are in development and are available to use:: here is a good <a href = "https://developer.mozilla.org/en-US/docs/Web/API">starting point from Mozilla</a>.  Also useful is <a href = "https://whatwebcando.today/">https://whatwebcando.today/</a>. And note that you can always go ahead and <span class = "customP">develop your own API ;) </span></p>
+<h3> THE HTML 5 CANVAS </h3>
+<p>The HTML 5 <code> canvas</code> element creates a fixed-size drawing surface that exposes one or more rendering contexts, which are used to create and manipulate the content shown.
+<br/>In this class we will focus on the 2D rendering context. 
+<br/>Other contexts may provide different types of rendering; for example, WebGL uses a 3D context based on OpenGL ES.</p>
+
+<h4>Canvas Properties & Usage:</h4>
+<ul>
+<li>You use the <code> canvas</code> element to create graphics "on the fly" with JavaScript </li>
+<li>You must use JavaScript to actually draw the graphics.</li>
+<li>The <code> canvas</code> element is ONLY a container for graphics</li>
+<li>The canvas is initially blank. </li>
+<li>To display something: a script first needs to access the rendering context and draw on it.</li> 
+<li>The <code> canvas</code>  element has a method called <code>getContext()</code>, used to obtain the rendering context and its drawing functions</li>
+<li><code>getContext()</code> takes one parameter: the type of context.</li>
+ <li>In case of 2D the paramter value is <code>"2D"</code>which is equivelent to <a href = "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">CanvasRenderingContext2D </a></li>
+<li>The <code> canvas</code> element has only two attributes: <code>width</code> and <code>height</code>. These are both optional and can also be set using DOM properties & CSS.</li>
+<li>When no width and height attributes are specified -> <span class = "customP">default is 300px (w) *150px (h) </span></li> 
+</ul>
+<p>The first example for using the canvas  is basically template html markup & initial JS for setting up and initalizing the canvas element:</p>
+<p>Create a new project in VS Code.</p>
+<p>Next create a new HTML file: <code>index.html</code></p>
+<p>In the <code>index.html</code> page add:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt; Examples &lt;/title&gt;
+    &lt;style&gt;
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        /* CAN ADD CSS  - &gt; just like any other HTML element */
+        canvas {
+            background: black;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+        }
+    &lt;/style&gt;
+    &lt;script src="js/canvas_setup.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;canvas id="testCanvas" width=500 height=500&gt;&lt;/canvas&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+
+<p>Then the js: <code>js/canvas_setup.js </code>:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+window.onload = function () {
+  // get the canvas
+  let canvas = document.getElementById("testCanvas");
+  //get the context
+  let context = canvas.getContext("2d");
+};
+</code>
+</pre>
+
+<h4> Drawing </h4>
+<p>Let's do some basic drawing: a <span class = "customP">rectangle</span>, an <span class = "customP">ellipse</span> and a <span class = "customP">line</span> & <span class = "customP">connecting lines</span> ... 
+<br/>To draw a rectangle, the important methods to remember are:</p>
+<ul>
+<li><code>fillRect(x, y, width, height)</code>. -> Draw a filled rect </li>
+<li><code>strokeRect(x, y, width, height)</code> -> Draw an outlined rect </li>
+<li><code>clearRect(x, y, width, height)</code> -> clears/cuts out the rectangular area </li>
+</ul>
+<p>And an example: append to the <code>canvas_setup.js</code>:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+  //a draw a rect:
+  context.fillStyle = "rgba(255,0,0,255)";
+  // draw a rect
+  context.fillRect(canvas.width / 2, canvas.height / 2, 50, 50);
+  // cut out a rect inside
+  context.clearRect(canvas.width / 2 + 12.5, canvas.height / 2 + 12.5, 25, 25);
+  </code>
+</pre>
+
+<p>Next: the ellipse which essentially starts as an arc that spans 2PI Radians or 360 degrees:</p>
+<ul>
+<li><code>arc (x,y,radius, startAngle,endAngle,isCounterClockwise)</code></li>
+</ul>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+  context.fillStyle = "#8ED6FF"; // change the color we are using
+  let xPos = canvas.width / 3;
+  let yPos = canvas.height / 2;
+  let radius = 40;
+  let startAngle = 0;
+  let endAngle = Math.PI * 2; //full rotation
+  context.strokeStyle = "#FF0000"; // change the color we are using
+  context.arc(xPos, yPos, radius, startAngle, endAngle, true);
+  context.fill(); // set the fill
+  context.lineWidth = 2; //change stroke
+  context.stroke(); //set the stroke
+  </code>
+</pre>
+<p><span class = "customP">*Watch out*:</span>
+<br/>The <code>context.fill()</code> and <code>context.stroke()</code> statements need to occur AFTER you draw the ellipse....
+<br/>*AND*
+<br/>If we now try to draw a second ellipse - we would get errors in our drawing -  WHY? 
+<br/>Because we need to specify to <span class = "customP">officially open and close the shape</span> - : the <code>arc()</code> is really a specific type of <span class="customP">path method</span> ... which we will come to next...</p>
+<p>Here is an example of using the <code>beginPath()</code> and <code>closePath()</code> functions: in order to define the begin and end of the shape drawing:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+context.beginPath();
+context.arc(xPos,yPos,radius,startAngle,endAngle, true);
+context.fill(); // set the fill
+context.lineWidth=2; //change stroke
+context.stroke();//set the stroke
+context.closePath();
+
+//SECOND
+context.strokeStyle = "#0000FF"; // change the color we are using
+context.beginPath();
+context.arc(xPos+200,yPos,radius,startAngle,endAngle, true);
+context.fill(); // set the fill
+context.lineWidth=2; //change stroke
+context.stroke();//set the stroke
+context.closePath();
+</code>
+</pre>
+<p>The ONLY other primitive shape is a Path:</p>
+<ul>
+<li>Path methods: Access more detailed descriptions <a href = "https://developer.mozilla.org/enUS/docs/Web/API/CanvasRenderingContext2D#Paths">here</a></li>
+<li><code>beginPath()</code> ->  Creates a new path. Once created, future drawing commands are directed into the path and used to build the path up.</li>
+<li><code>closePath()</code> -> connects to the start</li>
+<li><code>stroke()</code> -> Draws the shape by stroking its outline.</li>
+<li><code>fill()</code> ->  Draws a solid shape by filling the path's content area. </li>
+<li><code>lineTo(x,y) </code> -> draw a line from where we were with the last command.</li>
+<li><code>moveTo(x, y)</code> -> A useful function, which doesn't actually draw anything but becomes part of the path list described above. You can probably best think of this as lifting a pen or pencil from one spot on a piece of paper and placing it on the next. -> very useful if you want to draw more complex shapes.</li>
+</ul>
+<p>As an example  - lets append our current sketch to include a triangle:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+let lineLength = 100;
+let x1 = canvas.width/2;
+let y1 =canvas.height/2;
+let x2 = x1+lineLength;
+let y2 = canvas.height/2;
+let x3 = x1+(lineLength/2);
+let y3 = y1-lineLength;
+
+// lets draw a triangle:
+//The lineTo() method adds a new point and creates a line
+//TO that point FROM the last specified point in the canvas
+//(this method does not draw the line) -rather the stroke/fill does.
+context.beginPath(); //start a path
+context.moveTo(x1,y1); //where to start drawing
+context.lineTo(x2,y2); //lineTo(where to go from last...)
+context.lineTo(x3,y3);
+context.lineTo(x1,y1);
+context.fill();
+context.strokeStyle = "#FFFFFF"; // change the color we are using
+context.lineWidth =2;
+context.stroke();
+context.closePath(); //end a path ...
+</code>
+</pre>
+<p>Next: let's now try and animate our triangle :)
+<br>First set up an link a new js script to the html: <code> js/tri_ani.js</code> and add:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+window.onload = function () {
+    // get the canvas
+    let canvas = document.getElementById("testCanvas");
+    //get the context
+    let context = canvas.getContext("2d");
+    let lineLength =50;
+}
+</code>
+</pre>
+<p>Now: let's group the triangle coords, color, stroke etc into an <code>js object</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+// triangle obj 1:
+let triangle_1= {
+    x1: canvas.width/2,
+    y1: canvas.height/2,
+    x2: canvas.width/2+lineLength,
+    y2: canvas.height/2,
+    x3: canvas.width/2+(lineLength/2),
+    y3:canvas.height/2-lineLength,
+    strokeColor:"#FFFFFF",
+    fillColor:"#C81582",
+    lineWidth:2,
+    xSpeed:1, 
+    ySpeed:1,
+    xRef:1,
+    yRef:1,
+
+    };
+    </code>
+</pre>
+<p>Then - we can create a display function that will execute the necessary drawing functions to display a triangle:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+  function display(tri){
+    context.beginPath(); //start a path
+    context.moveTo(tri.x1,tri.y1); //where to start drawing
+    context.lineTo(tri.x2,tri.y2); //lineTo(where to go from last...)
+    context.lineTo(tri.x3,tri.y3);
+    context.lineTo(tri.x1,tri.y1);
+    context.fillStyle = tri.fillColor; // change the color we are using
+    context.fill();
+    context.strokeStyle = tri.strokeColor; // change the color we are using
+    context.lineWidth =tri.lineWidth;
+    context.stroke();
+    context.closePath(); //end a path ...
+   }
+   </code>
+</pre>
+<p>Now: call the <code>display()</code></p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+ display(triangle_1);
+ </code>
+</pre>
+<p>Ok! We are ready to animate ... </p>
+<h4>ANimate the Triangle </h4>
+<p>Remember when we introduced the <code>requestAnimationFrame()</code> function? 
+<br/>We will now use it again in order to animate the triangle in the canvas...
+<br/>Let's set up an <code>animate()</code> function:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+requestAnimationFrame(animate);
+function animate(){
+console.log("go")
+requestAnimationFrame(animate);
+}
+</code>
+</pre>
+<p>Then: within the <code>animate()</code>, we want to <span class = "customP"> update the triangle and then re-display .. </span>
+<br/>So - first lets write a function that will update ALL the points of a triangle given one (x,y) pair:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+  //method to update the points ... of triangle given one x and one y
+      function setPoints(tri){
+        //p1
+        tri.x1 = tri.xRef;
+        tri.y1 = tri.yRef;
+        //p2
+        tri.x2 = tri.x1+lineLength;
+        tri.y2 = tri.y1;
+        //p3
+        tri.x3 = tri.x1+(lineLength/2);
+        tri.y3 = tri.y1-lineLength;
+}
+</code>
+</pre>
+<p>Then ... we can add to the <code>animate()</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+ function animate(){
+        setPoints(triangle_1);
+        display(triangle_1);
+        triangle_1.xRef+=triangle_1.xSpeed;
+        triangle_1.yRef+=triangle_1.ySpeed;
+        requestAnimationFrame(animate);
+    }
+</code>
+</pre>
+<p>Nice..... 
+<br/>Just like in p5 where you recall the <code> background()</code> in order to clear the canvas; here the implementation is:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+//repaint with a black rect..
+context.clearRect(0,0,canvas.width,canvas.height);
+</code>
+</pre>
+<p>Ok - we can test the flexibility of the code by adding a second triangle:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+  let triangle_2 = {
+    x1: canvas.width / 2,
+    y1: canvas.height / 2,
+    x2: canvas.width / 2 + lineLength,
+    y2: canvas.height / 2,
+    x3: canvas.width / 2 + lineLength / 2,
+    y3: canvas.height / 2 - lineLength,
+    strokeColor: "#FFFFFF",
+    fillColor: "#156cc8",
+    lineWidth: 2,
+    xSpeed:-1, 
+    ySpeed:1,
+    xRef:100,
+    yRef:100,
+  };
+  </code>
+</pre>
+<p>And change the <code>animate()</code> to include the second triangle :</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+function animate() {
+    //repaint with a black rect..
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    setPoints(triangle_1);
+    display(triangle_1);
+    triangle_1.xRef+=triangle_1.xSpeed;
+    triangle_1.yRef+=triangle_1.ySpeed;
+ 
+
+   setPoints(triangle_2);
+   display(triangle_2);
+   triangle_2.xRef+=triangle_2.xSpeed;
+   triangle_2.yRef+=triangle_2.ySpeed;
+
+   requestAnimationFrame(animate);
+  }
+</code>
+</pre>
+<p>We can go even furthur here - and implement our triangle object using a <span class = "customP">class</span>. 
+<br/>This would allow us to put the animation code, <code>setPoints()</code>, and <code>display()</code> all into the class - making more much more organized code...
+<br/>Lets start with a basic class with a <code>constructor</code>and a <code>display()</code> with a new js file: <code>triangle.js</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+class Triangle {
+  constructor(
+    xRef,
+    yRef,
+    lineLength,
+    strokeColor,
+    fillColor,
+    lineWidth,
+    xSpeed,
+    ySpeed
+  ) {
+    this.xRef = xRef;
+    this.yRef = yRef;
+    this.lineLength = lineLength;
+    this.strokeColor = strokeColor;
+    this.fillColor = fillColor;
+    this.lineWidth = lineWidth;
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
+
+    // the points
+    this.x1 = this.xRef;
+    this.y1 = this.yRef;
+    this.x2 = this.xRef + this.lineLength;
+    this.y2 = this.yRef;
+    this.x3 = this.xRef + this.lineLength / 2;
+    this.y3 = this.yRef - this.lineLength;
+  }
+
+  display(context) {
+    context.beginPath(); //start a path
+    context.moveTo(this.x1, this.y1); //where to start drawing
+    context.lineTo(this.x2, this.y2); //lineTo(where to go from last...)
+    context.lineTo(this.x3, this.y3);
+    context.lineTo(this.x1, this.y1);
+    context.fillStyle = this.fillColor; // change the color we are using
+    context.fill();
+    context.strokeStyle = this.strokeColor; // change the color we are using
+    context.lineWidth = this.lineWidth;
+    context.stroke();
+    context.closePath(); //end a path ..
+  }
+}
+</code>
+</pre>
+<p>Make sure to include the new file in the html page:)
+<br/>and - lets make another js file - i.e. <code>main.js</code> ** also linked in the html ** that will USE the triangle class:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+window.onload = function(){
+    let canvas = document.getElementById("testCanvas");
+    //get the context
+    let context = canvas.getContext("2d");
+}
+</code>
+</pre>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+Then lets make two triangle objects:
+window.onload = function () {
+  let canvas = document.getElementById("testCanvas");
+  //get the context
+  let context = canvas.getContext("2d");
+
+  let triangleA = new Triangle(
+    canvas.width / 2,
+    canvas.height / 2,
+    50,
+    "#FFFFFF",
+    "#156cc8",
+    2,
+    1,
+    1
+  );
+  triangleA.display(context);
+
+   let triangleB = new Triangle(
+    400,
+    10,
+    25,
+    "#FFFFFF",
+    "#C81582",
+    2,
+    -1,
+    1
+  );
+  triangleB.display(context);
+};
+</code>
+</pre>
+
+<p>Ok... lets add the methods to the triangle class in order to update the triangle:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+  setPoints() {
+    //p1
+    this.x1 = this.xRef;
+    this.y1 = this.yRef;
+    //p2
+    this.x2 = this.x1 + this.lineLength;
+    this.y2 = this.y1;
+    //p3
+    this.x3 = this.x1 + this.lineLength / 2;
+    this.y3 = this.y1 - this.lineLength;
+
+  }
+  update(){
+    this.xRef+=this.xSpeed;
+    this.yRef+=this.ySpeed;
+  }
+  </code>
+</pre>
+<p>And - then in <code>main.js</code> we can set up the animation.</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
+<code>
+requestAnimationFrame(animate);
+
+  function animate() {
+    //repaint with a black rect..
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    triangleA.setPoints();
+    triangleA.update();
+    triangleA.display(context);
+    
+    triangleB.setPoints();
+    triangleB.update();
+    triangleB.display(context);
+
+    requestAnimationFrame(animate);
+  }
+  </code>
+</pre>
+<h3> HTML 5 VIDEO </h3>
+<p>As you probably already know: the <code>&lt;video&gt;</code> HTML element embeds a media player which supports video playback in the HTML document. 
+<br/>You can use the <code>&lt;video&gt;</code> for audio content as well, but the <code>&lt;audio&gt;</code> element will provide a more appropriate user experience.
+<br/>An example:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+    &lt;link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;main&gt;
+        &lt;video id="video" src="videos/b1_s.mov" controls="true"&gt;&lt;/video&gt;
+    &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+<p>To run: make sure you downlaod a video <a href = "resources/b1_s.mov">(or this one)</a> and link appropriately.
+<br/>Similar to the <code>&lt;img&gt;</code> element, a path to the media we want to display is included inside the src attribute; we can include other attributes to specify information such as video width and height, whether we want it to autoplay and loop, or to show the browser's default video controls, etc... 
+<br/>For more info on the video element itself you can reference <a href ="https://www.w3schools.com/html/html5_video.asp">w3schools</a>.
+<br/>Of course - you can control the <code>&lt;video&gt;</code> element using javascript... i.e. to create your own controls for interacting/ loading the video content etc... 
+<br/>Here: we extend upon the previous example to include some buttons. First though let's implement the html and css:</p>
+<pre id = "writeA" data-line="" class="language-html line-numbers">
+<script>
+let s = ""
+for(let i = 1; i< 90; i++){
+    if(i%2 ===0){
+        s+=`${i},`
+    }
+}
+document.querySelector("#writeA").setAttribute("data-line",s)
+</script>
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+    &lt;link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /&gt;
+    &lt;style&gt;
+        body {
+            background: rgb(52, 52, 52);
+            margin: 0;
+            padding: 0;
+            color: rgb(42, 38, 38);
+            opacity: .85;
+            font-family: 'Roboto', sans-serif;
+            width: 100vw;
+        }
+
+        h1 {
+            color: rgb(226, 43, 141);
+        }
+
+        main {
+            width: 50vw;
+            margin: 0 auto;
+            text-align: center;
+        }
+          #nav-box {
+            display: flex;
+            background-color: rgb(226, 43, 141);
+            justify-content: space-around;
+            width: 640px;
+            margin: 0 auto;
+        }
+
+        #nav-box&gt;span {
+            margin: 1%;
+            min-width: 20%;
+            display: inline-block;
+            background-color: white;
+            text-align: center;
+            padding-top: 5px;
+            padding-bottom: 2px;
+            border: 1px;
+            border-style: solid;
+            border-color: rgb(42, 38, 38);
+        }
+
+        input {
+            display: inline-block;
+            margin: 1%;
+            margin-left: 2%;
+            width: 25%;
+        }
+
+        #nav-box&gt;span:hover {
+            background: rgb(42, 38, 38);
+            cursor: pointer;
+            color: rgb(226, 43, 141);
+        }
+    &lt;/style&gt;
+    &lt;script type="text/javascript" src="js/controlVideo.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;main&gt;
+        &lt;h1&gt;Control Video Example&lt;/h1&gt;
+        &lt;div id="nav-box"&gt; &lt;span id="play"&gt; play&lt;/span&gt; &lt;span id="pause"&gt; pause &lt;/span&gt;
+            &lt;span id="filter_button_blur"&gt;
+                &lt;span&gt; add blur&lt;/span&gt;
+                &lt;input id="blurnum" type="number" min="0" max="8" /&gt;
+            &lt;/span&gt;
+            &lt;span id="filter_button_hue"&gt;
+                &lt;span&gt; alter hue&lt;/span&gt;
+                &lt;input id="huenum" type="number" min="0" max="360" /&gt;
+            &lt;/span&gt;
+        &lt;/div&gt;
+        &lt;video id="video" src="videos/b1_s.mov"&gt;&lt;/video&gt;
+    &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;   
+</code>
+</pre>
+<p>And the initial js: (<code>js/controlVideo.js</code>):</p>
+<pre data-line="1, 3" class="language-javascript line-numbers">
+<code>
+window.onload = function(){
+    console.log("go")
+}
+</code>
+</pre>
+<p>Ok - so note how we have now removed the default controls... but added our own buttons.
+<br/>We will use the JS DOM Library -> ( see <a href = "https://www.w3schools.com/TAgs/ref_av_dom.asp"> w3 schools </a> for more info ).. to play/pause the video:</p>
+<pre data-line="1, 3,5,7,9,11,13,15,17,19" class="language-javascript line-numbers">
+<code>
+window.onload = function () {
+  console.log("go");
+  let video = document.getElementById("video");
+  let playButton = document.getElementById("play");
+  let pauseButton = document.getElementById("pause");
+  
+  playButton.addEventListener("click", function () {
+    video.play();
+  });
+
+  pauseButton.addEventListener("click", function () {
+    video.pause();
+  });
+
+  //set video.loop to true by default... BUT could be a button :)
+
+  video.loop = true;
+};
+</code>
+</pre>
+
+<p>All of this should be pretty clear :) we add <code>event listeners</code> to our buttons and then within the callback functions, we call the video <code>play</code> or <code>pause</code> functions...</p>
+<h3> HTML Video and Filters</h3>
+<p>You will find many libraries and plugins etc for manipulating html 5 video content... 
+<br/>BUT since we are here let's give you a <span class = "customP">small background intro in case you wish to apply some simple filters etc yourself</span>.
+<br/>Also, it is useful to understand the basic concepts. We will do this in combination with the HTML 5 canvas. 
+<br/><span class = "customP">Specifically: we sill use the HTML 5 <code>&lt;canvas&gt;</code> to display every frame of video (and run it in a <code>requestAnimationFrame()</code>)</span> - so  then we can also manipulate/change/adapt the video pixels! ... 
+<br/>We will still use the video element as the container to hold the source content - but then we will display the video content using the canvas context (essentially a copy).
+<br/>Let's extend upon the previous example. Below the <code> video </code> element in the html, add a new canvas element:</p>
+<pre data-line="1, 3,5,7,9,11,13,15,17,19" class="language-html line-numbers">
+<code>
+ &lt;canvas id="videoCanvas" width=640 height=360&gt;&lt;/canvas&gt;
+</code>
+</pre>
+<p>This will be the element that will display the modified video :)
+Next, let's set up the video to ALSO play in the canvas element. 
+<br/>In the js - add a reference to the canvas element as well as the context:</p>
+<pre data-line="1, 3,5,7,9,11,13,15,17,19" class="language-javascript line-numbers">
+<code>
+  let canvas = document.getElementById("videoCanvas");
+  let context = canvas.getContext("2d");
+</code>
+</pre>
+<p>Then - we will access each frame of the video playing and use the <code> context.drawImage()</code> function to render the frame to the canvas as an image :) - then we will draw a small rect on top so that you can see this is working superly; 
+<br/>We run this all within a <code>requestAnimationFrame()</code>:</p>
+<pre data-line="1, 3,5,7,9,11,13,15,17,19" class="language-javascript line-numbers">
+<code>
+/*** instead of using the video object we can use the canvas **/
+  requestAnimationFrame(run);
+  function run() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.save(); //like push() in p5
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    context.fillStyle = "#FFFFFF";
+    context.restore();//like pop() in p5
+    context.fillRect(canvas.width/2+50, canvas.height/2,50,50);
+    requestAnimationFrame(run);
+  }
+  </code>
+</pre>
+<p>Neat:) - we can also hide the original video:</p>
+<pre data-line="1, 3,5,7,9,11,13,15,17,19" class="language-html line-numbers">
+<code>
+ &lt;video id="video" src="videos/b1_s.mov"  hidden="true"&gt;&lt;/video&gt;
+ </code>
+</pre>
+<p>Ok - lets add a blur and a hue filter to the video:
+<br/>You can find out more about apply filters to the context at the <a href = "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter"> mozilla page</a> 
+<br/>We will look at a couple of the examples - AND we will take user input :-
+<br/>So first: let's access references to the html elements (buttons + input fields), and we make two new variables:</p>
+<pre data-line="1, 3,5,7,9,11,13,15,17,19" class="language-javascript line-numbers">
+<code>
+  let filterButton_blur  = document.getElementById("filter_button_blur");
+  let blurInput = document.getElementById("blurnum");
+
+  let filterButton_hue  = document.getElementById("filter_button_hue");
+  let hueInput = document.getElementById("huenum");
+
+  let userProvidedBlur = 0;
+  let userProvidedDeg =0;
+</code>
+</pre>
+<p>Now: <span class = "customP"> let's add some event listeners and callback functions to the blur and hue buttons </span>:</p>
+<pre data-line="1, 3,5,7,9,11,13,15,17,19" class="language-javascript line-numbers">
+<code>
+filterButton_blur.addEventListener("click", function () {
+    //get value from input field
+    userProvidedBlur = blurInput.value;
+    console.log(userProvidedBlur)
+  });
+
+  filterButton_hue.addEventListener("click", function () {
+    //get value from input field
+    userProvidedDeg = hueInput.value;
+    console.log(userProvidedDeg)
+  });
+  </code>
+</pre>
+<p>Now if you test - you will see that as we click the buttons - we access the values from the input fields and store them in the assigned variables.
+<br/>We are ready to apply the filters. If we want to apply the blur then all we need to do is add the following BEFORE  the <code>context.drawImage() </code> instruction.<br/>
+<pre data-line="1, 3,5," class="language-javascript line-numbers">
+<code>
+context.filter = `blur(${userProvidedBlur}px)`;
+</code>
+</pre>
+<p>YAYAY.And to add the hue its just as straightforward:</p>
+<pre data-line="1, 3,5," class="language-javascript line-numbers">
+<code>
+  context.filter = `hue-rotate(${userProvidedDeg}deg)`
+</code>
+</pre>
+<p>AND if we want to apply both filters then just do the following:</p>
+<pre data-line="1, 3,5," class="language-javascript line-numbers">
+<code>
+context.filter = `blur(${userProvidedBlur}px)`;
+context.filter += `hue-rotate(${userProvidedDeg}deg)`
+</code>
+</pre>
+<p>You can also apply SVG (custom) filters - I will not go into those here. You can also look into those your selves - a good starting point is <a href = "https://www.w3schools.com/graphics/svg_filters_intro.asp">w3schools</a>.</p>
+</section>
+</main>
+  <script src="js/prism.js"></script>
+</body>
+
+</html>
