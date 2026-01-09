@@ -26,8 +26,510 @@
     <main>
 
 <section class="contents-notes">
-</section>
+<h3> The Media Capture API </h3>
+<p>This lesson will demonstrate how to use the the <a href = "https://developer.mozilla.org/en-US/docs/Web/API/Media_Streams_API">Media Capture API</a> in order to be able to capture live streaming video and audio media.</p>
+<h4> Capture Live Video I </h4>
+<p>The <code>getUserMedia API</code> provides access to multimedia streams (video, audio, or both) from local devices. Previously, we needed a 3rd party plugin - now HTML 5 has support. You need to use this API to access the camera, microphone etc... </p> 
+<p>The <code>getUserMedia API</code> exposes just one method called <code>getUserMedia()</code>.</p>
+<p>The first example, seen below demonstrates how to setup the basic code template for capturing video from the users web cam, storing it, and displaying it using the <span class = "customP">html5 video</span> element:</p>
+<pre id = "writeA" class="language-html line-numbers">
+<script>
+let s = ""
+for(let i = 1; i< 47; i++){
+    if(i%2 ===0){
+        s+=`${i},`
+    }
+}
+document.querySelector("#writeA").setAttribute("data-line",s)
+</script>
+<code>
+&lt;!DOCTYPE html&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
+    &lt;title&gt;getUserMedia Demo&lt;/title&gt;
+
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+    &lt;link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /&gt;
+
+    &lt;style&gt;
+        body {
+            background: rgb(52, 52, 52);
+            margin: 0;
+            padding: 0;
+            color: rgb(42, 38, 38);
+            opacity: .85;
+            font-family: 'Roboto', sans-serif;
+            width: 100vw;
+        }
+
+        h1 {
+            text-align: center;
+            color: rgb(226, 43, 141);
+
+        }
+    main{
+      width:50%;
+      margin:0 auto;
+      background:grey;
+    }
+      #video
+      {
+        display: block;
+      }
+ &lt;/style&gt;
+ &lt;script type="text/javascript" src="js/getUserMedia.js"&gt;&lt;/script&gt;
+ 
+  &lt;/head&gt;
+  &lt;body&gt;
+ 
+    &lt;h1&gt;Access Camera Example&lt;/h1&gt;
+    &lt;main&gt;
+    &lt;video id="video" autoplay="autoplay" controls="true"&gt;&lt;/video&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+
+<p>The HTML page sets up the necessary video element - without a source. 
+Why? Because we will set up the source using javascript:<code> js/getUserMedia.js: </code></p>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-javascript line-numbers">
+<code>
+window.onload = getLiveVideo;
+
+window.onload = getLiveVideo;
+
+async function getLiveVideo() {
+  console.log("loaded");
+  let video = document.getElementById("video");
+  console.log(video.srcObject);
+
+  try {
+    let stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        width: 320,
+        height: 240,
+      },
+    });
+    video.srcObject = stream;
+    console.log(video.srcObject) //here there is something
+  } catch (err) {
+    /* handle the error */
+    console.log("had an error getting the camera");
+  }
+}
+</code>
+</pre>
+<p>The <a href = "https://developer.mozilla.org/en-US/docs/Web/API/Navigator">navigator object</a> in a nutshell contains information about the browser- and exposes properties and methods that one can program against.</p>
+<p>The <code>MediaDevices.getUserMedia()</code> method prompts the user for permission to use a media input which produces a <code>MediaStream </code> with tracks containing the requested types of media. 
+<br/>That stream can include a video track (produced by video source such as a camera), an audio track (produced by a physical or virtual audio source like a microphone).</p>
+<p>It returns a <a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> that resolves to a MediaStream object.</p>
+<p>If the user denies permission, or matching media is not available, then the promise is rejected with <code>NotAllowedError</code> or <code>NotFoundError</code> respectively.
+<br/><span class = "customP">Upon success we thus assign the stream object to the srcObject of the video element.</span>
+<br/>So:: instead of feeding the video the URL of a media file, we're giving it a MediaStream from the webcam.
+<br/>Note: we also set the <code>video</code> to autoplay, otherwise it would be frozen on the first frame and we would need to specify it to play within the code. 
+<br/><span class = "customP"> It is beyond the scope of this class to delve into javascript <code>Promises</code></span>. 
+<br/>Please, just think of it here as a mechanism to <em> wait </em> for the user to give permission  or for the video source to be available before the code continues to execute.</p>
+<h4> Capture Live Video II </h4>
+<p>The <code>getUserMedia()</code> allows for one to specify if one also requires  <span class = "customP">audio</span> as well as properties like  <span class = "customP">size</span>. 
+<br/>Lets alter the function call to include parameters for  <span class = "customP">width and height </span>.</p>
+<pre data-line="1,3,5,7,9,11,13" class="language-javascript line-numbers">
+<code>
+let stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        width: 320,
+        height: 240,
+      },
+    });
+</code>
+</pre>
+<h4> Capture Live Video III and the Canvas </h4>
+<p>We can now show live video displayed using the video element. 
+<br/>But we can do even better -- we can <span class = "customP">also use the canvas to display every frame of video and then we can also manipulate/change/adapt the video pixels!</span> 
+<br/>We will still use the video element as the container to hold the streaming content - but then we will display the video content using the canvas context.
+The new HTML markup:</p>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49" class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;getUserMedia Demo II&lt;/title&gt;
+
+
+  &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /&gt;
+
+  &lt;style&gt;
+    body {
+      background: rgb(52, 52, 52);
+      margin: 0;
+      padding: 0;
+      color: rgb(42, 38, 38);
+      opacity: .85;
+      font-family: 'Roboto', sans-serif;
+      width: 100vw;
+    }
+
+    h1 {
+      text-align: center;
+      color: rgb(226, 43, 141);
+
+    }
+
+    main {
+      width: 50%;
+      margin: 0 auto;
+      background: grey;
+    }
+
+    #video {
+      display: block;
+    }
+  &lt;/style&gt;
+  &lt;script type="text/javascript" src="js/getUserMediaAndCanvas.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h1&gt;Access Camera and Show on Canvas&lt;/h1&gt;
+  &lt;main&gt;
+    &lt;!-- set video to hidden - we only  want it as a temp container for streaming  --&gt;
+    &lt;video id="video" autoplay="autoplay" controls="true" hidden="true"&gt;&lt;/video&gt;
+    &lt;canvas id="videoCanvas" width=640 height=240&gt;&lt;/canvas&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+<p>Note how we have set the video element to be hidden.</p>
+Lets write the js: first we set up the canvas and context, set up an animation loop and within that use the context's drawImage() method to display the next video frame:
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31" class="language-javascript line-numbers">
+<code>
+window.onload = getLiveVideo;
+
+async function getLiveVideo() {
+  console.log("loaded");
+  let video = document.getElementById("video");
+  let canvas = document.getElementById("videoCanvas");
+  let context = canvas.getContext("2d");
+
+  try {
+    let stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        width: 320,
+        height: 240,
+      },
+    });
+    video.srcObject = stream;
+    console.log(video.srcObject); //here there is something
+    /*** instead of using the video object we can use the canvas **/
+    requestAnimationFrame(run);
+    function run() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(video, 0, 0, canvas.width / 2, canvas.height);
+      context.fillStyle = "#FFFFFF";
+      context.fillRect(10, canvas.height / 2, 50, 50);
+      requestAnimationFrame(run);
+    }
+  } catch (err) {
+    /* handle the error */
+    console.log("had an error getting the camera");
+  }
+}
+</code>
+</pre>
+<p>If you run the page - you should now see the video displaying in the canvas .. 
+<br/><span class = "customP">Let's now go one step further and use some <span class="customP">inbuilt methods to access the pixels in the canvas</span> and modify them</span>.
+<br/>The new <code>run()</code> will now be <code>run_pixels()</code>:</p>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31" class="language-javascript line-numbers">
+<code>
+requestAnimationFrame(run_pixels);
+ function run_pixels() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(video, 0, 0, canvas.width / 2, canvas.height);
+      context.fillStyle = "#FFFFFF";
+      context.fillRect(canvas.width / 2 + 50, canvas.height / 2, 50, 50);
+      let frame = context.getImageData(0, 0, canvas.width / 2, canvas.height);
+      // every pixel has an r,g,b,a value ... and so in the array - every 4 values== 1 pixel
+      for (let i = 0; i < frame.data.length; i += 4) {
+        let r = frame.data[i];
+        let g = frame.data[i + 1];
+        let b = frame.data[i + 2];
+        let a = frame.data[i + 3];
+        frame.data[i] = r;
+        frame.data[i + 1] = 0;
+        frame.data[i + 2] = 0;
+        // make every 8th pixel have an alpha of 0/
+        if (i % 32 == 0) {
+          frame.data[i + 3] = 0;
+        }
+      }
+      context.putImageData(frame, 0, 0);
+      //can draw on top ...
+      context.fillRect(0, canvas.height / 2, 50, 50);
+
+      requestAnimationFrame(run_pixels);
+    }
+</code>
+</pre>
+<p>Two new functions have been introduced here: <code>the getImageData()</code> returns an <span class = "customP">ImageData object</span>.
+<br/>The ImageData object represents the underlying pixel data of an area of a canvas object. It contains the following read-only attributes:</p>
+<ul>
+<li>width:: The width of the image in pixels.</li>
+<li>height:: The height of the image in pixels.</li>
+<li>data: An integer array representing a one-dimensional array containing the data in the RGBA order,
+    with integer values between 0 and 255 (included).</li>
+</ul>
+<p>And we use this function to access the specific pixel data that we want to manipulate. 
+<br/>Second: the <code>putImageData(img, dx,dy)</code> function is used to paint pixel data into a context.
+<br/>The dx and dy parameters indicate the device coordinates within the context that you want to draw into.</p>
+
+<h4>The Microphone and the Web Audio API</h4>
+<p>You can also get <span class = "customP">live microphone input</span> from the <code>getUserMedia()</code> method - and then if you want to  - you can pipe the stream to the Web Audio API in order to create and output some real-time effects.</p>
+<p>We use the same <code>navigator.mediaDevices.getUserMedia()</code> method - which once again will return the media stream. 
+<br/>Now, though, instead of just assigning the stream to the source object associated with an audio element, we can pipe the stream to the <span class = "customP">Web Audio API</span>:
+<br/>The <span class = "customP">Web Audio API</span> is a high-level JavaScript library for processing and synthesizing audio in web applications. 
+<br/>The goal of this library is to include capabilities found in modern game audio engines and some of the mixing, processing, and filtering tasks that are found in modern desktop audio production applications.
+<br/><span class = "customP">The basic setup for the Web Audio API is as follows:</span>
+<ol>
+<li>An AudioContext is needed for managing and playing all sounds.</li>
+<li>To produce a sound using the Web Audio API, create one or more sound sources and
+connect them to the sound destination provided by the AudioContext instance.</li>
+<li>A single instance of AudioContext can support multiple sound inputs -> sources could be
+files, microphone, self-creation ...</li>
+</ol>
+In this next sketch: we will see how to:
+<ol>
+<li> Capture the audio source</li>
+<li> Access the frequency spectrum </li>
+<li>Visualize the data representation on the canvas</li>
+</ol>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+  &lt;title&gt; Microphone Tutorial &lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /&gt;
+  &lt;style&gt;
+        body {
+            background: rgb(200,200,200);
+            margin: 0;
+            padding: 0;
+            color: rgb(52,52,52);
+            font-family: 'Roboto', sans-serif;
+            width: 100vw;
+        }
+
+        h1 {
+            color: rgb(226, 104, 43);
+
+        }
+
+        main {
+            width: 50vw;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        canvas {
+        width:500px;
+        height:500px;
+        background:black;
+        }
+
+  &lt;/style&gt;
+  &lt;!-- REFERENCE OUR SCRIPTS --&gt;
+  &lt;script type="text/javascript" src="js/microphoneEx_Init.js"&gt;&lt;/script&gt; 
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+&lt;h1&gt; Microphone Example Init&lt;/h1&gt;
+  &lt;canvas id="drawingCanvas" width =500 height=500&gt;&lt;/canvas&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+<p>So first we will implement the basic functionality to access the microphone data and then pass on the audio stream to the <code>webAudio API</code>:
+<br/>The js: <span class = "customP">(js/microphoneEx_Init.js)</span></p>
+ <pre id = "writeB" class="language-javascript line-numbers">
+<script>
+let s1 = ""
+for(let i = 1; i< 120; i++){
+    if(i%2 ===0){
+        s1+=`${i},`
+    }
+}
+document.querySelector("#writeB").setAttribute("data-line",s1)  
+</script> 
+<code>
+window.onload = getMicrophoneInput;
+
+async function getMicrophoneInput() {
+  console.log("here we are ");
+
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  let audioContext = new AudioContext(); //using the web audio library
+  try {
+    //returns a MediaStreamAudioSourceNode.
+    let audioStream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    // console.log(audioStream)
+    //pass the microphone input to the web audio API
+    let microphoneIn = audioContext.createMediaStreamSource(audioStream);
+    console.log(microphoneIn);
+}
+catch (err) {
+    /* handle the error */
+    console.log("had an error getting the microphone");
+  }
+} 
+</code>
+</pre>
+<p>So next - we want to do something with this data - namely analyze it and visualize it ... so we use the <code>webAudio API</code> make filter and analyser objects.
+<br/> Then, we will connect the microphone data to the filter and the filtered data then to the analyser ...
+<br/>Add the following code after <code>let microphoneIn =...</code></p>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-javascript line-numbers">
+<code>
+const filter = audioContext.createBiquadFilter();
+const analyser = audioContext.createAnalyser();
+// microphone -> filter ->  analyzer->destination
+microphoneIn.connect(filter);
+//use the analyzer object to get some properties ....
+filter.connect(analyser);
+</code>
+</pre>
+<p> So - the analyser object will allow us to analyze the data (i.e. the frequencies in the stream) ... 
+<br/>which we can then visualize as a graph ... using the HTML Canvas!
+<br/> Let's add the following function after the previous code:</p>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-javascript line-numbers">
+<code>
+    visualizeTimeAndFreq();
+    function visualizeTimeAndFreq() {
+      const WIDTH = 500;
+      const HEIGHT = 500;
+
+      analyser.fftSize = 1024; // fft conversion from time to frequency samples
+      //console.log (analyser.frequencyBinCount) //half of fft size
+      const bufferLength = analyser.fftSize;
+      const dataArrayFreq = new Uint8Array(bufferLength); //array
+
+      let drawVisual = requestAnimationFrame(animateVisual);
+      function animateVisual() {
+        analyser.getByteFrequencyData(dataArrayFreq);
+        //each respective frequency goes in its own bin
+        //lowest to highest frequency domain
+
+        /* looking for dominant frequencies*/
+        /* higher bars === more dominant frequency  (db)*/
+
+        //each bin represents a given frequency
+        //get only the first
+        for (let i = 0; i < 1; i++) {
+          //frequency value in that bin (more dominant will be higher)
+          console.log(dataArrayFreq[i]);
+        }
+        drawVisual = requestAnimationFrame(animateVisual);
+      }
+    }
+</code>
+</pre>
+<p> If you run now in your browser(enable the microphone :) - and activate the console - you should see the <span class = "customP">first frequency value from the sample set</span> for each frame over time ... </p>
+<p> SO now we will visualize this... First: we will need to add a reference to the <code>canvas</code> and the <code> context</code>. Add the following just after the code declaring the <code>audioContext</code>:</p>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-javascript line-numbers">
+<code>
+// get the canvas
+let canvas = document.getElementById("drawingCanvas");
+//get the context
+let context = canvas.getContext("2d");   
+</code>
+</pre>
+<p> Then: inside the for loop ... draw :) - so replace with:</p>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-javascript line-numbers">
+<code>
+//each bin represents a given frequency
+//get only the first
+for (let i = 0; i < bufferLength; i++) {
+    //frequency value in that bin (more dominant will be higher)
+    console.log(dataArrayFreq[i]);
+    //frequency value in that bin (more dominant will be higher)
+    barHeight = dataArrayFreq[i];
+    context.fillStyle = `rgb(${barHeight + 100} 50 50)`;
+    context.fillRect(x2, HEIGHT - barHeight, barWidth, barHeight);
+    x2 += barWidth + 1;
+}
+    </code>
+    </pre>
+<p>And at the top of the <code>animateVisual()</code>  - lets reset/clear the canvas every frame:</p>
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-javascript line-numbers">
+<code>
+//clear with each frame
+context.fillStyle = "rgb(0 0 0)";
+context.fillRect(0, 0, WIDTH, HEIGHT);
+</code>
+</pre>
+
+<p>The following references are useful here:</p>
+<ul>
+<li> <a href = "https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode">AnalyserNode</a></li>
+<li> <a href = "https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData">getByteFrequencyData</a></li>
+</ul>
+<p> Super.... well we can also use the frequency data in a less obvious way - i.e. we can use the data as a variable to animate a shape...</p>
+<p> In this case - instead of taking the entire frequency spectrum - we will <span class = "customP">calculate the average frequency per frame</span> and use that value to animate the shape:)</p>
+<p> Lets start with the HTML :</p>
+
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45" class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+  &lt;title&gt; Microphone Tutorial &lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /&gt;
+  &lt;style&gt;
+        body {
+            background: rgb(200,200,200);
+            margin: 0;
+            padding: 0;
+            color: rgb(52,52,52);
+            font-family: 'Roboto', sans-serif;
+            width: 100vw;
+        }
+
+        h1 {
+            color: rgb(226, 104, 43);
+
+        }
+
+        main {
+            width: 50vw;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        canvas {
+        width:500px;
+        height:500px;
+        background:black;
+        }
+
+  &lt;/style&gt;
+  &lt;!-- REFERENCE OUR SCRIPTS --&gt;
+  &lt;script type="text/javascript" src="js/microphoneEx.js"&gt;&lt;/script&gt; 
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+&lt;h1&gt; Microphone Example&lt;/h1&gt;
+  &lt;canvas id="drawingCanvas" width =500 height=500&gt;&lt;/canvas&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
 </main>
+</section>
   <script src="js/prism.js"></script>
 </body>
 
