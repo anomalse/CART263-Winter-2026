@@ -380,6 +380,20 @@ nav ul li a:hover {
     color: white;
 }
 
+.sched-mod .due_over{
+    text-decoration: none;
+    background: rgba(221, 126, 219,0.5);
+    color: white;
+
+}
+
+.sched-mod .due_over:hover{
+    text-decoration: none;
+    background: rgba(221, 126, 219,1.0);
+    color: white;
+
+}
+
 
  .sched-mod h2 {
     background: rgb(255, 255, 255);
