@@ -312,7 +312,7 @@ nav ul li a:hover {
     padding:var(--space-4);
 }
 .contents-notes .customP{
-     background:rgba(76, 175, 80,0.2);
+     background:rgba(76, 116, 175, 0.2);
      color: var(--body-color);
     padding:var(--space-4);
 
