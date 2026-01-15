@@ -140,12 +140,14 @@ p.back-j {
 }
 
 .section-s p {
-    background-color: #a8e6ce;
+    /* background-color: #a8e6ce; */
+     background-color: #af4c98;
     color: white;
 }
 
 p.back-s {
-    background-color: #a8e6ce;
+    /* background-color: #a8e6ce; */
+    background-color: #af4c98;
     font-weight: 500;
     color: white;
 
