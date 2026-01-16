@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+      <link href="css/themes/prism.css" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
+         <nav id = "cart263Nav"></nav>
+        <script src = "js/loadNav.js"></script>
+       <div class="inner-head">
+                <h1>Objects III</h1>
+            </div>
+    </header>
+    <main>
+
+<section class="contents-notes">
+<h3> A Dog </h3>
+<p>Let's begin by creating a class that represents an a dog. Visually, we'll just focus on the idea of a circle object -> 'the dog' that can move in a straight line to the right and will wrap back to the left when it 
+    reaches the right edge of the canvas.
+    <br/> Start with the the garden example provided <a href = "#"> here </a>.
+    <br/> Create a file called <code>Dog.js</code> and link to it in the html.
+</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41" class="language-javascript line-numbers">
+<code>
+class Dog {
+  // Create a new Dog object that moves to the right
+  constructor(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.vx = Math.random() * 5 + 1;
+    this.vy = 0;
+    this.animalBody = document.createElement("div");
+  }
+
+  // Move the Dog according to its velocity
+  move() {
+    this.x += this.vx;
+    this.y += this.vy;
+    //update the actual div...
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+  }
+
+  // Wrap the dog if it reaches the right edge
+  wrap() {
+    if (this.x > window.innerWidth) {
+      this.x -= window.innerWidth;
+    }
+  }
+
+  // Display the dog as a ellipse
+  renderAnimal() {
+    this.animalBody.classList.add("animal");
+    this.animalBody.style.width = this.width + "px";
+    this.animalBody.style.height = this.height + "px";
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+    this.animalBody.style.borderRadius = this.width + "px";
+    //add to the DOM
+    document.getElementsByClassName("grass")[0].appendChild(this.animalBody);
+  }
+}
+</code>
+</pre>
+<p>Then, replace the following code in garden.js:</p>
+<pre id = "write_a" class="language-javascript line-numbers">
+<script>
+let s_a = ""
+for(let i = 1; i< 79; i++){
+    if(i%2 ===0){
+        s_a+=`${i},`
+    }
+}
+document.querySelector("#write_a").setAttribute("data-line",s_a)
+</script>
+<code>
+window.onload = function (){
+// Our garden
+let garden = {
+    // An array to store the individual dogs
+    dogs: [],
+    // How many dogs in the garden
+    numDogs: 10,
+    /*grass object */
+    grass: {
+      // The color of the grass (background)
+      grassColor: {
+        r: 120,
+        g: 180,
+        b: 120,
+      },
+      //the grass element
+      grassDiv: document.createElement("div"),
+    },
+ 
+    /*sky object */
+    sky: {
+      // The color of the sky (background)
+      skyColor: {
+        r: 83,
+        g: 154,
+        b: 240,
+      },
+      //the sky element
+      skyDiv: document.createElement("div"),
+    },
+  };
+  // new  sun instancce
+  let sun =  new Sun(10,10,{r: 240, g: 206,b: 83})
+
+
+  // Create the correct number of animals and put them in our array
+  for (let i = 0; i < garden.numDogs; i++) {
+    let x = Math.random()*window.innerWidth;
+    let y = Math.random()*100;
+    let dog = new Dog(x, y,15,15);
+    garden.dogs.push(dog);
+  }
+
+  function createAndRenderTheGarden() {
+    /* note how we use dot notation....*/
+    //sky
+    garden.sky.skyDiv.classList.add("sky");
+    garden.sky.skyDiv.style.background = `rgb(${garden.sky.skyColor.r},${garden.sky.skyColor.g},${garden.sky.skyColor.b})`;
+    document.getElementsByTagName("main")[0].appendChild(garden.sky.skyDiv);
+    //sun
+    sun.renderSun();
+
+    //grass
+    garden.grass.grassDiv.classList.add("grass");
+    garden.grass.grassDiv.style.background = `rgb(${garden.grass.grassColor.r},${garden.grass.grassColor.g},${garden.grass.grassColor.b})`;
+    document.getElementsByTagName("main")[0].appendChild(garden.grass.grassDiv);
+    updateGarden()
+}
+  
+function updateGarden(){
+  // Go through all the animals and move, wrap, and display them
+  for (let i = 0; i < garden.dogs.length; i++) {
+    let dog = garden.dogs[i];
+    dog.move();
+    dog.wrap();
+    dog.renderAnimal();
+  }
+  window.requestAnimationFrame(updateGarden)
+  }
+    createAndRenderTheGarden();
+}
+</code>
+</pre>
+<p> Lets also just add a <code>cs</code>s class for the dog:</pre>
+<br/> The <code>Bird.js</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17" class="language-css line-numbers">
+<code>
+.animal{
+     padding:0;
+    margin:0;
+    position:absolute;
+    background-color:crimson;
+}
+</code>
+</pre>
+
+
+<h3>A Bird</h3>
+<p>Let's add a bird class to this simulation! As always, we'll create a new file called <code>Bird.js</code> and add it to index.html, then update our garden.js to include birds in the simulation.
+<br/> The <code>Bird.js</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41" class="language-javascript line-numbers">
+<code>
+class Bird {
+  // Create a new bird object that moves to the right
+  constructor(x, y,width,height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.vx = Math.random() * 5 + 1;
+    this.vy = 0;
+    this.animalBody = document.createElement("div");
+  }
+
+  // Move the bird according to its velocity
+  move() {
+    this.x += this.vx;
+    this.y += this.vy;
+    //update the actual div...
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+  }
+
+  // Wrap the bird if it reaches the right edge
+  wrap() {
+    if (this.x > window.innerWidth) {
+      this.x -= window.innerWidth;
+    }
+  }
+
+ // Display the bird as a ellipse
+  renderAnimal() {
+    this.animalBody.classList.add("animal");
+    this.animalBody.style.width = this.width + "px";
+    this.animalBody.style.height = this.height + "px";
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+    this.animalBody.style.borderRadius = this.width + "px";
+    this.animalBody.style.backgroundColor = `rgb(106, 90, 205)`;
+    //add to the DOM
+    document.getElementsByClassName("grass")[0].appendChild(this.animalBody);
+  }
+}
+</code>
+</pre>
+
+<p>Then in <code>garden.js</code> add the array and number of Birds:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17" class="language-javascript line-numbers">
+<code>
+   // An array to store the individual animals
+    birds: [],
+    // How many animals in the garden
+    numBirds: 10,
+</code>
+</pre>
+<p>And the code to <code>create new Birds</code></p>:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17" class="language-javascript line-numbers">
+<code>
+ //create some birds
+   for (let i = 0; i < garden.numBirds; i++) {
+    let x = Math.random()*window.innerWidth;
+    let y = Math.random()*100;
+    let bird = new Bird(x, y,15,15);
+    garden.birds.push(bird);
+  }
+</code>
+</pre>
+<p>And the code to move and display them:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17" class="language-javascript line-numbers">
+<code>
+// Go through all the birds and move, wrap, and display them
+  for (let i = 0; i < garden.birds.length; i++) {
+    let bird = garden.birds[i];
+    bird.move();
+    bird.wrap();
+    bird.renderAnimal();
+  }
+</code>
+</pre>
+<h3>Repetitive Classes</h3>
+<p>So  - in our continuing objective to eliminate repetitive code we have found another culprit:
+<br>The Dog and Bird classes are really similar. In particular:
+<ul>
+<li>Their <code>constructor()</code> methods are identical except for their velocity and dimensions values</li>
+<li>Their move() and wrap() methods are completely identical</li>
+</ul>
+In most ways, their <code>renderAnimal()</code> method is the only really unique thing about them, although even here they both do have a method called <code>renderAnimal()</code>, so that idea is shared too.</p>
+<br/>
+<p>So then we can say that the <code>Bird</code> and the <code>Dog</code> are the <strong>same kind of thing</strong>. They share so many similarities because they are both kinds of <strong>animals</strong>.</p>
+<h3>Inheritance</h3>
+<p>In Object-Oriented Programming, <span class = "customP">inheritance</span> allows us to define a class <span class = "customP">(such as Animal)</span> that other classes <strong>inherit</strong> from. 
+<br/>That is, we can <span class = "customP">create a class that handles all of the shared qualities of a animal</span>, and then define our <code>Bird</code> and <code>Dog</code> objects based on that class.</p>
+<p>The terminology here is:
+<ul>
+<li>The <code>Animal</code> class is the <span class ="customP">superclass</span> (sometimes called the <span class ="customP">parent</span>class)</li>
+<li>The <code>Dog</code>and <code>Bird</code> classes are the <span class ="customP">subclasses</span>(sometimes called the <span class ="customP">child</span> classes)</li>
+<li>The <code>Dog</code>and <code>Bird</code> classes <span class ="customP">extend</span> the <code>Animal</code> class so that they can <span class ="customP">inherit</span> all the properties and methods of the <code>Animal</code>  class, along with anything specific of their own</li>
+</p>
+
+<h3>An Animal</h3>
+<p>The first thing we want to do is define an <code>Animal</code> class that takes care of all the shared aspects of the <code>Dog</code>and <code>Bird</code>. We do this in the same way as any other class.</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37" class="language-javascript line-numbers">
+<code>
+class Animal {
+  // Create a new Animal object t
+  constructor(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    // NOTE: We don't know how a generic animal will move
+    // so we set its velocity to 0
+    this.vx = 0;
+    this.vy = 0;
+    this.animalBody = document.createElement("div");
+  }
+
+  // Move the Animal according to its velocity
+  move() {
+    this.x += this.vx;
+    this.y += this.vy;
+    //update the actual div...
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+  }
+
+  // Wrap the animal if it reaches the right edge
+  wrap() {
+    if (this.x > window.innerWidth) {
+      this.x -= window.innerWidth;
+    }
+  }
+
+  // Display the animal 
+  renderAnimal() {
+    // We will leave this empty because we don't display a generic
+    // animal! Instead, we leave this up to the subclasses.
+  }
+}
+</code>
+</pre>
+<p>The code for our <code>Animal</code> class is very similar to the code for both the <code>Dog</code>  and the <code>Bird</code>, but it’s <strong>generic</strong>.
+<br>The <code>constructor()</code> is very similar. It has all the same properties, but doesn’t make assumptions about the <code>velocity</code> because the Dog and Bird differ on those properties.
+<br> For now: the <code>move()</code> and <code>wrap()</code> methods are identical, because those are shared by both kinds of animal (we will come back to this later :).
+<br>The <code>renderAnimal()</code> method is empty, because birds and dogs are displayed differently. We keep the empty <code>renderAnimal()</code> method because it indicates that any subclass of the <code>Animal</code> should be able to be displayed. 
+<br>Also, later we may do something common with displaying for all animals - and that code could be put there...(again more on this later).</p>
+<p>To add the <code>Animal.js</code> to the html -> <span class="customP"> add it <strong>before</strong> <code>Dog.js</code> and <code>Birds.js</code>.</span> Why?
+<br>Because they will be its <strong>subclasses</strong> and will need to know about their <strong>parent</strong> before they are defined. So the superclass (<code>Animal</code>) is included first, followed by the subclasses (<code>Dog</code> and <code>Bird</code>).
+
+<h3>Updating Dog and Bird to extend Animal</h3>
+<p>We have the definition of an <code>Animal</code> we can use this to simplify our Dog and Bird classes. 
+<br>We want to tell JavaScript that the <code>Dog</code>or <code>Bird</code>is a kind of <code>Animal</code>, that it should be a subclass (or child) of Animal.
+<br>To do this we will adapt the <code>Dog</code> and <code>Bird</code> code in the following ways:</p>
+<ol>
+ <li>Add code to specify that the <code>Dog</code> and <code>Bird</code> classes <strong>extends</strong> the <code>Animal</code> class.</li>
+<li>Change the <code>constructor()</code> to make sure that it calls the <code>Animal constructor()</code> because whenever we create a <code>Bird</code> or <code>Dog</code>, we are also creating an <code>Animal</code>...</li>
+<li>Remove methods in <code>Dog</code> and <code>Bird</code> class that are no longer needed because they are already defined in <code>Animal</code></li>
+<li>Define the <code>renderAnimal()</code> method because the <code>renderAnimal()</code> method in the <code>Animal</code> is empty and both the <code>Dog</code> and <code>Bird</code> have a specific appearance.</li>
+</ol>
+<p>The updated <span class = "customP">Dog.js</span>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43" class="language-javascript line-numbers">
+<code>
+// NEW! 1. We show that the Dog is a subclass of Animal by using the
+// key word "extends" and then the name of the class it extends
+// Our Dog extends the Animal class...
+
+class Dog  extends Animal{
+  // Create a new Dog object that moves to the right
+  constructor(x, y, width, height) {
+
+     // NEW! 2. We call the Animals's constructor() first! 
+     // Because the Animal is the superclass for our Dog, we call its constructor super()!
+    // So super(x,y) means: call the superclass' constructor with arguments
+    // x and y (values passed in as arguments when the Dog is created)
+    super(x, y);
+
+    // After using the Animals's constructor() we need to set
+    // the Animals properties to the specific values for a Dog
+    this.width = width;
+    this.height = height;
+    this.vx = Math.random() * 5 + 1;
+    this.vy = 0;
+    this.animalBody = document.createElement("div");
+  }
+  // 3. We don't need to define move() or wrap() because they are already part
+  // of the Animal class so our Dog inherits them
+  // Move the Dog according to its velocity
+
+  //  we do want to define this - as we want to visualize a dog specifically
+  renderAnimal() {
+    // Even though the Animals's version of renderAnimal() does nothing, we should STILL
+    // call it. The variable "super" contains a reference to the Animal's part of this dod,
+    // so we can call the Animal version of the renderAnimal() method by writing:
+    super.renderAnimal();
+    
+    this.animalBody.classList.add("animal");
+    this.animalBody.style.width = this.width + "px";
+    this.animalBody.style.height = this.height + "px";
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+    this.animalBody.style.borderRadius = this.width + "px";
+    //add to the DOM
+    document.getElementsByClassName("grass")[0].appendChild(this.animalBody);
+  }
+}
+</code>
+</pre>
+<p>Now our <code>Dog</code> class is a <strong>subclass</strong> of the <code>Animal</code> class. 
+  <br>It has <span class = "customP">all the properties</span> of the <code>Animal</code> class set when we called the <code>Animal</code> class’ <code>constructor()</code>. 
+  <br>It has all <span class = "customP">the methods</span> of the <code>Animal</code>  class too (notably <code>wrap()</code> and <code>move()</code> ).
+</p>
+<h3>Updating Bird</h3>
+<p>We need to do the exact same thing with the Bird class:</p>
+<p>The updated <span class = "customP">Bird.js</span>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43" class="language-javascript line-numbers">
+<code>
+class Bird extends Animal{
+  // Create a new bird object that moves to the right
+
+  constructor(x, y,width,height) {
+    // Call the Animal's constructor()
+    // Remember, it's called super() when we call it from a subclass
+    super(x, y);
+   // Set our properties to the specific bird values
+    this.width = width;
+    this.height = height;
+    this.vx = Math.random() * 5 + 1;
+    this.vy = 0;
+    this.animalBody = document.createElement("div");
+  }
+
+// Display the bird as a ellipse
+  renderAnimal() {
+    // Remember to call the superclass' version of this method!
+    super.renderAnimal();
+    this.animalBody.classList.add("animal");
+    this.animalBody.style.width = this.width + "px";
+    this.animalBody.style.height = this.height + "px";
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+    this.animalBody.style.borderRadius = this.width + "px";
+    this.animalBody.style.backgroundColor = `rgb(106, 90, 205)`;
+    //add to the DOM
+    document.getElementsByClassName("sky")[0].appendChild(this.animalBody);  
+  }
+}
+</code>
+</pre>
+<p> If we now test ... It should work ...So now when one creates Birds we’re still using the <code>Bird</code> class, but that <code>Bird</code> class extends (or inherits from) the Animal class to define its properties and methods. Same thing for the dogs.
+<br/>Note - that we do not actually create a <code>new Animal()</code>! We don’t want to create generic 'Animals' because they would have no width and height and nothing in their <code>renderAnimal()</code> method. 
+<br/>The <code>Animal</code> class is only there to collect together code that will be shared by the <code>Bird</code> and <code>Dog</code> classes.
+<!-- need to  override: first incentive:-->
+ <!-- ie the bird flies as and a bird walks ... !-->
+<h3>Overriding Methods</h3>
+<p>What if we want to change our <code>Bird</code> class to allow <span class = "customP">for bird to fly rather than walk</span>? 
+<br>But the Bird doesn’t have the <code>move()</code> method anymore! It is in the <code>Animal</code> class now. What to do? 
+<br/>What we want is to <em>still</em> use the <code>Animal</code> version of <code>move()</code>  because its useful! 
+<br>But we also want to add extra behaviour to the method so we can make our <code>Bird</code> behave in a specific way.</p>
+<h3> So how to override a method?</h3>
+<p>To create a more specific version of a superclass’ method like <code>move()</code> we can define that method in a subclass.
+<br>But: we can also call the superclass versions of the methods! This way we don’t need to repeat code already in the superclass.
+<br>To do this we use the <code>super</code> variable. <code>super</code> contains a reference to the superclass (Animal in our case).
+<br>Then, we define our own version of <code>move()</code> that can call the superclass version with super, while also adding in extra behaviour!</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71" class="language-javascript line-numbers">
+<code>
+class Bird extends Animal{
+  // Create a new bird object that moves to the right
+
+  constructor(x, y,width,height) {
+    // Call the Animal's constructor()
+    // Remember, it's called super() when we call it from a subclass
+    super(x, y);
+   // Set our properties to the specific bird values
+    this.width = width;
+    this.height = height;
+    this.vx = Math.random() * 5 + 1;
+    this.vy = 0;
+    this.animalBody = document.createElement("div");
+
+    this.originalY = this.y;
+
+    //ONLY in the Bird class : new variables
+    this.angle = 0;
+    this.sleepiness = 0.1;
+  }
+  // override A - p1
+   // Move the Animal according to its velocity
+  move() {
+    //console.log("go");
+    
+    this.y=this.originalY + Math.sin(this.angle)*8
+    this.angle+=0.05;
+    this.veer();
+    super.move();
+}
+// p2
+   // veer() causes the bird to randomly veer on the y axis
+  veer() {
+    let r = Math.random();
+    //console.log("in veer "+r)
+    if (r < this.sleepiness) {
+      this.vy += randomRange(-.1, .1);
+    }
+  }
+// Display the bird as a ellipse
+  renderAnimal() {
+    // Remember to call the superclass' version of this method!
+    super.renderAnimal();
+    this.animalBody.classList.add("animal");
+    this.animalBody.style.width = this.width + "px";
+    this.animalBody.style.height = this.height + "px";
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+    this.animalBody.style.borderRadius = this.width + "px";
+    this.animalBody.style.backgroundColor = `rgb(106, 90, 205)`;
+    document.getElementsByClassName("sky")[0].appendChild(this.animalBody);
+
+  }
+}
+
+ /*
+Math.random() generates a random decimal between 0 (inclusive) and 1 (exclusive).
+Multiply the result by (max – min + 1) to scale it to the desired range, 
+then add min to shift it to the correct starting value.
+Use Math.floor() to round down to the nearest integer, 
+ensuring the result is within the specified range.
+*/
+
+ function randomRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+  </code>
+  </pre>
+  <p>Great! This idea of <span class = "customP">overriding methods</span> from the superclass, but still calling the superclass version of those methods is central to writing well-structured object-oriented programs.</p>
+
+  <h3> Overriding the wrap()</h3>
+  <p> Ok - so we can also override the <code>wrap()</code> in much the same way ... why? Because in the <code>Bird</code> class, we again want to extend upon <code>wrap()</code> from the Animal, in order to reset the y-velocity:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71" class="language-javascript line-numbers">
+<code>
+  // Overriding the superclass' wrap() method!
+  wrap() {
+    // NEW! Call the superclass (Animal) version of wrap()
+    // This will handle wrapping on the x axis for us.
+    // We use "super" to access methods in the SUPERclass (Animal)
+    // So this calls the Animal version of wrap() after we make the specific changes 
+    // in the SUBclass.
+   
+    if (this.x > window.innerWidth) {
+      //reset
+      this.vy = 0;
+    }
+     super.wrap();
+   }
+  </code>
+  </pre>
+  <h3> Build a better renderAnimal()</h3>
+  <p>And -- We can use this idea of <span class = "customP">overriding</span> to make a much better version of <code>renderAnimal()</code> too. 
+  <br>The only differences between the <code>renderAnimal()</code> methods in Dog and Bird classes is that <span class = "customP">they use a different fill color, and attach to a different html element (grass versus sky)</span>.
+  <br>We could move the code that just renders a circular div at the position into the Animal class and just set the color and parent html element inside the subclasses <code>Bird</code> and <code>Dog</code>!
+ <br>Here’s the updated <code>Animal</code>, <code>Dog</code> and <code>Bird</code> methods:</p>
+ <p><span class = "customP">Dog.js:</span></p>
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+  //  we do want to define this - as we want to visualize a dog specifically
+  renderAnimal() {
+    super.renderAnimal();
+    //add to the DOM
+    document.getElementsByClassName("grass")[0].appendChild(this.animalBody);
+  }
+</code>
+</pre>
+<p><span class = "customP">Bird.js:</span></p>
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+   // Display the bird as a ellipse
+  renderAnimal() {
+    // Remember to call the superclass' version of this method!
+    super.renderAnimal();
+    this.animalBody.style.backgroundColor = `rgb(106, 90, 205)`;
+    document.getElementsByClassName("sky")[0].appendChild(this.animalBody);
+  }
+</code>
+</pre>
+<p><span class = "customP">Animal.js:</span></p>
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+   // Display the animal 
+  renderAnimal() {
+    this.animalBody.classList.add("animal");
+    this.animalBody.style.width = this.width + "px";
+    this.animalBody.style.height = this.height + "px";
+    this.animalBody.style.left = this.x + "px";
+    this.animalBody.style.top = this.y + "px";
+    this.animalBody.style.borderRadius = this.width + "px";
+  }
+</code>
+</pre>
+
+
+
+
+
+
+
+</section>
+</main>
+  <script src="js/prism.js"></script>
+</body>
+
+</html>
