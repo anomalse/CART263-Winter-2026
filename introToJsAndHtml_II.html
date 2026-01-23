@@ -42,13 +42,13 @@ Let's start with a new HTML Page (i.e. <span class = "customP">EventsDOM.html</s
 
 <pre id = "writeA" class="language-html line-numbers">
   <script>
-let s = ""
+let s_n = ""
 for(let i = 1; i< 78; i++){
     if(i%2 ===0){
-        s+=`${i},`
+        s_n+=`${i},`
     }
 }
-document.querySelector("#writeA").setAttribute("data-line",s)
+document.querySelector("#writeA").setAttribute("data-line",s_n)
 </script>
 <code>
 &lt;!DOCTYPE html&gt;
@@ -819,6 +819,206 @@ Append the following to the <span class = "customP">drop event handler</span>:</
   </code>
 </pre>
 <p>And we are done -- 2 boxes should now have the ability to be dragged and dropped into the relevant div ... </p>
+<h3> KEY EVENTS</h3>
+<p>Like you already learnt in p5 -  you can also control elements using the keyboard .. For  detecting real-time typing or handling specific keys, you can use JavaScript's event handling system. By listening for keyboard events (keydown, keypress, keyup), we can capture input as the user interacts with the keyboard.</p>
+<h4> Keydown event </h4>
+<p>The <span class = "customP">keydown event</span> occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys.
+We will do a series of examples with key events and so let us start with a new html, js and css:</p>
+the html <span class = "customP">keyEvent.html</span>
+<pre data-line = "2,4,6,8,10,12,14,16,18,20,22" class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;-3 NEW : EVENTS DOM PAGE&lt;/title&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+    &lt;link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    /&gt;
+    &lt;link rel="stylesheet" type="text/css" href="styles/key_events.css" /&gt;
+    &lt;script src="js/keyEx.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="parent"&gt;
+    &lt;div id  = "boxA" class = "box"  style = "left:100px;"&gt;BOX A&lt;/div&gt;
+     &lt;div  id  = "boxB" class = "box" custom-bool = "off"&gt;  BOX B&lt;/div&gt;
+    &lt;p id = "textContainer"&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+The js : <span class = "customP">js/keyEx.js</span>
+<pre data-line = "2" class="language-javascript line-numbers">
+<code>
+window.onload = function(){
+    console.log("keys");
+}
+</code>
+</pre>
+The css : <span class = "customP">styles/key_events.css</span>
+<pre id = "writeE" class="language-css line-numbers">
+<script>
+let s_n2 = ""
+for(let i = 1; i< 50; i++){
+    if(i%2 ===0){
+        s_n2+=`${i},`
+    }
+}
+document.querySelector("#writeE").setAttribute("data-line",s_n2)
+</script>
+<code>
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    background:rgb(49, 49, 49);
+    color:white;
+    font-family: 'Roboto', sans-serif;
+    position:relative;
+
+  }
+
+  #parent{
+    background:rgba(24, 24, 24);
+    width:98vw;
+    margin:0 auto;
+    /* Add oveflow auto to container */
+    overflow: auto;
+    margin-top:10px;
+    min-height:500px;
+    position:relative;
+}
+
+.box{
+    margin:10px;
+    width:max-content;
+    min-height:40px;
+    padding:15px;
+    background:rgb(112, 184, 226);
+    position: relative;
+    /* style */
+   border: solid;
+   border-width: 2px;
+   border-color: yellow;
+}
+#textContainer{
+    margin:0 auto;
+    width:45vw;
+    background:rgba(0,0,0);
+    min-height:200px;
+    text-wrap: wrap;
+    /* style */
+   border: solid;
+   border-width: 2px;
+   border-color: rgb(0, 183, 255);
+   border-radius: 5px;
+   padding:12px;
+}
+</code>
+</pre>
+OK so let's start with a <span class = "customP"> keydown</span> example. First, we need to assign an event listener to the  <span class = "customP"> window object</span>:
+<pre data-line = "2,4" class="language-javascript line-numbers">
+<code>
+window.addEventListener("keydown", function(event)
+{
+ console.log(event);
+})
+</code>
+</pre>
+<p>So: The keydown event occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys. If you run the above code and observe the console output - you will see that the resulting <span class = "customP"> event object </span> will give you all the info you need :) Also note: that as long as a key is down - the event will fire continuously.
+If we want to output the value of the key pressed  - we can use the <code>event.key</code> and/or the <code>event.code</code></p>
+<pre data-line = "2" class="language-javascript line-numbers">
+<code>
+// document.querySelector("#textContainer").textContent+=event.key;
+ document.querySelector("#textContainer").textContent+=event.code;
+ </code>
+</pre>
+<p>And: we can go furthur with this by triggering distinct <code>actions</code> depending on which key(s) are pressed i.e. lets move the first box when the <code>ArrowRight</code> or <code>ArrowLeft</code> is pressed:
+First outside of the event callback function declare a variable for the speed:</p>
+<pre data-line = "2" class="language-javascript line-numbers">
+<code>
+let speedX =5;
+</code>
+</pre>
+Then inside the event callback for keypress:
+<pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
+<code>
+if(event.key ==="ArrowRight"){
+ 
+   document.getElementById("boxA").style.left=
+   parseInt(document.getElementById("boxA").style.left)+speedX+"px";
+ }
+ else if(event.key ==="ArrowLeft"){
+  
+   document.getElementById("boxA").style.left =
+   parseInt(document.getElementById("boxA").style.left)-speedX+"px";   
+ }
+ </code>
+</pre>
+Within the same <span class = "customP"> callback function </span> we can access the other div and change a property when the <span class = "customP"> space bar</span> is pressed
+<pre data-line = "2,4,6,8" class="language-javascript line-numbers">
+<code>
+ else if(event.code ==="Space"){
+        document.getElementById("boxB").style.background = "orange";
+
+    }
+</code>
+</pre>
+<p>Let's go one step furthur and implement a <span class = "customP"> toggle </span> for the background... (switch to orange or back to blue using the same key ...:(revision from last week):
+<br/>Ok so the strategy is:</p>
+<ul>
+<li> first we access the <span class = "customP"> custom-bool </span> attribute</li>
+<li> then we build a condition for the toggle</li>
+<li>switch the background color of the element</li>
+<li>and set the <span class = "customP"> custom-bool </span> attribute  to the opposite value </li>
+</ul>
+<pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
+<code>
+else if (event.code === "Space") {
+      let bool = document.getElementById("boxB").getAttribute("custom-bool");
+      if (bool === "off") {
+        document.getElementById("boxB").style.background = "orange";
+        document.getElementById("boxB").setAttribute("custom-bool", "on");
+      } else {
+        document.getElementById("boxB").style.background = "rgb(112, 184, 226)";
+        document.getElementById("boxB").setAttribute("custom-bool", "off");
+      }
+    }
+</code>
+</pre>
+<p>Yyayay<br>
+Next - we will look at the <code>keyup</code> event -> why? well sometimes you want to not only know when a key is pressed but ALSO/OR when it is released...
+Lets add a color background change to Box A  when we press the  <code>SHIFT key </code>:</p>
+<pre data-line = "2,4" class="language-javascript line-numbers">
+<code>
+ else if (event.key === "Shift") {
+        document.getElementById("boxA").style.background ="rgb(226, 112, 177)";
+    }
+</code>
+</pre>
+And then a <span class = "customP"> new event listener + callback for <code> keyup </code> with shift:</span>
+<pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
+<code>
+ window.addEventListener("keyup", function(event){
+      console.log("keyup")
+       //2: change color when space is down
+       if(event.key ==="Shift"){
+          document.getElementById("boxA").style.background = "rgb(112, 184, 226)";
+        }
+      else{
+        console.log(`key up not shift:`)
+        console.log(event)
+      }
+
+  })
+</code>
+</pre>
+<p>The function implementation is similar  to the <code> keypress </code> : in that you specify within the callback which key has just been released....
+Something to consider: since we can capture key down and key up - we can also implement the functionality to detetch how long a key was pressed for :)</p>
 </section>
 </main>
   <script src="js/prism.js"></script>
