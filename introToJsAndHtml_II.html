@@ -291,8 +291,9 @@ Next: add the following after the background change:
 <p>As you can see - we can further refer to the id of the <span class = "customP">intro</span> element and at the same time refer to the paragraph element within the element and change its background simultaneously.... 
 Point: - you can perform as many operations as you want within a callback function - it is really just a function ...:)</p>
 <h4> Making the callback more dynamic</h4>
-<p>So - next:: the rgb values of the background color are those <span class = "customP">specifically for the intro section</span> - so if we wanted to add  the same behaviour to other elements we would need to re-write the callback function. Our current solution  is not really a modular approach and creates a lot of redundant code... so lets look at this all more closely: 
-First replace all the event listener code with the following:</p>
+<p>So - next:: the rgb values of the background color are those <span class = "customP">specifically for the intro section</span> - so if we wanted to add  the same behaviour to other elements we would need to re-write the callback function. 
+  <br/> Our current solution  is not really a modular approach and creates a lot of redundant code... so lets look at this all more closely: 
+<br/>First replace all the event listener code with the following:</p>
 <pre data-line = "2,4,6,8,10" class="language-javascript line-numbers">
 <code>
  let introSection = document.querySelector("#intro");
@@ -305,19 +306,39 @@ First replace all the event listener code with the following:</p>
 </code>
 </pre>
 <p>SO - this code does exactly the same thing as before - BUT it is more dynamic... why and how?</p>
-<h4> Setting another style property as an inline property </h4>
+<h4> Option I: Setting another style property as an inline property </h4>
 <p>Well - one option as demonstrated above - is that since we are only changing the <span class = "customP"> opacity property </span> of the element - we just dynamically set the inline style property "opacity" as opposed to the background.. so we are essentially <span class = "customP"> extending the style</span> as opposed to overwriting it...
 <br/> But - now how to set the paragraph within more dynamically?</p>
-<h4> Access the computed style of an element </h4>
+<h4> Set a style attribute of a child element </h4>
 If - we just want to set the opacity of the child paragraph element like so:
 <pre data-line = "2," class="language-javascript line-numbers">
 <code>
- document.querySelector(`#${this.id} p`).style.setProperty("opacity", .75");
+ document.querySelector(`#${this.id} p`).style.setProperty("opacity", ".75");
  </code>
 </pre>
-<p>It will not work -- because the parent elemnet has the lower opacity value....
+<p>This solution will not work -- because the parent element has the lower opacity value....
 So: we rework our solution:
-<br/>
+<h4> Add a css-class to an element</h4>
+We can access and assign any <span class = "customP">css classes</span> that are defined in a style sheet or within the <code>style tags</code> within the same html page.
+So lets do that :)
+First lets re-write the code for the <code>event listener</code>:
+<pre data-line = "2,4" class="language-javascript line-numbers">
+  <code>
+  introSection.addEventListener("click",function(e){
+    console.log(this);
+    this.style.background = `rgba(214, 110, 239, 0.5)`
+  })
+</code>
+</pre>
+And then lets add:
+<pre data-line = "2,4" class="language-javascript line-numbers">
+<code>
+document.querySelector(`#${this.id} p`).classList.add("intro-section-p-active");
+</code>
+</pre>
+And test :)
+
+<!---
 We can access the <span class = "customP">style attributes</span> of any HTML element rendered to the browser (in most modern browsers) using the <code>window.getComputedStyle()</code> function. 
 This returns an object (set of key value-pairs) of all the style attributes for that element. So , then if we want to access the background we do so by using the <code> getPropertyValue() </code> :</p>
 <pre data-line = "2" class="language-javascript line-numbers">
@@ -363,11 +384,51 @@ let introSection = document.querySelector("#intro");
                                   0.75)`;
 </code>
 </pre>
+-->
 <h4> Same Event behaviours on a group of elements</h4>
 <p>Ok. Now we are ready to apply the above callback function on all the sections ... 
-We can now do this with <span class = "customP">one piece of code</span>... Replace the above with:</p>
+We can now do this with <span class = "customP">one for loop</span>:
+<br/> First access all the <code> parent divs:</code></p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
-<code>
+  <code>
+let allSections = document.querySelectorAll(".mouseclick-active-section");
+//go through each section and apply the event listener
+for (let element of allSections) {
+  console.log(element)
+  }
+  </code>
+</pre>
+<p>Next: add an <code> event listener</code> to each div </p>
+<pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
+  <code>
+ //add click to each element
+ element.addEventListener("click", function (e) {
+  console.log(this);
+ });
+  </code>
+</pre>
+<p>OK: now within the <code>callback function</code> for the click - check if the element is <span class ="customP">inactive</span>:</p>
+<pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
+  <code>
+  //check if is inactive
+  if(this.getAttribute("custom-bool") === "inactive"){
+    console.log("is inactive");
+    console.log(this.id)
+  }
+  </code>
+</pre>
+<p>Finally: if the element is evaluated as <span class ="customP">inactive</span>, add an <em>existing css class</em> to BOTH parent and child. - and <span class = "customP">set the custom-bool to "active"</span>:</p>
+<pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
+ <code>
+ // :: new access the class of parent (this)
+let class_to_add = `${this.id}-section-active`;
+this.classList.add(class_to_add)
+// :: new access the class of child 
+let class_to_add_p = `${this.id}-section-p-active`;
+document.querySelector(`#${this.id} p`).classList.add(class_to_add_p)
+  </code>
+</pre>
+<!--<code>
   // /**** 4 Combined  */
   let allSections = document.querySelectorAll(".mouseclick-active-section");
   //   //go through each section and apply the event listener
@@ -395,6 +456,7 @@ We can now do this with <span class = "customP">one piece of code</span>... Repl
     });
   } //end for loop
 </code>
+-->
 </pre>
 So - what changed? 
 <ol>
@@ -404,9 +466,11 @@ So - what changed?
 Nice ... 
 <h4> Toggle the behaviour</h4>
 <p>A last feature that we will add to this example: <span class = "customP"> a toggle behaviour </span>.
-Essentially: we will implement a boolean toggle: when one mouse clicks on the element. - we will alternate between the darker style and the original style. Here, the easiest solution would be test the alpha value, BUT that is very specific to this example.We will look at something more generic - and useful in many instances. Let's use the <span class = "customP">custom boolean attribute: <code>custom-bool</code> that has been assigned to each element</span> and set it to either <code>active</code> or <code>inactive</code> with each mouse click. 
+<br/>Essentially: we will implement a boolean toggle: when one mouse clicks on the element. - we will alternate between the darker style and the original style. 
+<br/> Let's use the <span class = "customP">custom boolean attribute: <code>custom-bool</code> that has been assigned to each element</span> and set it to either <code>active</code> or <code>inactive</code> with each mouse click. 
 Then: we use the <code> if/else </code> construct to decide either to apply the dark or the light style:
-Below is the revised code. Note: the ONLY change is actually the implementation of the if/else...</p>
+<br/> And to apply the lighter style-> all we need to do is <span class = "customP">remove</span> the relevent css classes, and switch the <code>custom-bool</code></p>
+<p> Below is <code>else{}</code> -> to be appended to the previous code after the <code>if{}</code>:</p>
 <pre id = "writeC" class="language-javascript line-numbers">
 <script>
 let s3 = ""
@@ -418,51 +482,16 @@ for(let i = 1; i< 47; i++){
 document.querySelector("#writeC").setAttribute("data-line",s3)
 </script>
 <code>
-    let allSections = document.querySelectorAll(".mouseclick-active-section");
-    //go through each section and apply the event listener
-    for(let element of allSections ){
-        //add to each element
-        element.addEventListener("click",function(e){
-
-                    console.log('is in now active')
-                    let cssObj =  window.getComputedStyle(this, null);
-                    //get prop VALUE :: new
-                    let bgColor = cssObj.getPropertyValue("background-color");
-                    let backgroundColorArray = getColorObj(bgColor)
-                   if(this.getAttribute("custom-bool") === "inactive")
-                    {
-                        //a:
-                        this.style.background = `rgba(
-                                                    ${backgroundColorArray[0]},
-                                                    ${backgroundColorArray[1]},
-                                                    ${backgroundColorArray[2]},
-                                                    0.5)`
-                        document.querySelector(`#${this.id} p`).style.background = `rgba(
-                                                    ${backgroundColorArray[0]},
-                                                    ${backgroundColorArray[1]},
-                                                    ${backgroundColorArray[2]},
-                                                    0.75)`
-                        //mAKE active
-                        this.setAttribute("custom-bool","active")
-                    }
-                    else
-                    {
-                        console.log('is now active')
-                        this.setAttribute("custom-bool","inactive")
-                        this.style.background = `rgba(
-                            ${backgroundColorArray[0]},
-                            ${backgroundColorArray[1]},
-                            ${backgroundColorArray[2]},
-                            1.0)`
-
-                        document.querySelector(`#${this.id} p`).style.background =""
-
-                    }
-
-        })
-
-  } //end for loop
-  </code>
+else {
+  console.log("is now active");
+  this.setAttribute("custom-bool", "inactive");
+  let class_to_remove = `${this.id}-section-active`;
+  this.classList.remove(class_to_remove);
+  // :: new access the class of child
+  let class_to_remove_p = `${this.id}-section-p-active`;
+  document.querySelector(`#${this.id} p`).classList.remove(class_to_remove_p);
+ } 
+</code>
 </pre>
 
 <h4>Events affecting other elements.</h4>
@@ -475,11 +504,13 @@ document.querySelector("#writeC").setAttribute("data-line",s3)
 })
 </code>
 </pre>
-<p>This should be super familiar:::
-<br/> OK - now we will do something different ... when the button is clicked - we will generate new html elements with random colors and positions:</p>
+<p>This should now be familiar ;)
+<br/> OK - now we will do something different ... when the button is clicked - we will generate new html elements with random colors and positions.
+<br/> Add the following code snippet into the <code>callback</code>function:</p>
 <pre data-line = "2,4,6,8,10,12,14,16" class="language-javascript line-numbers">
   <code>
     //<< CREATE A NEW ELEMENT ON THE FLY >>>
+    //this could be its own custom function ... 
           let bubble =  document.createElement("div");
          bubble.classList.add("bubble");
          bubble.style.left = `${Math.random()*(window.innerWidth-200) }px`;
@@ -596,45 +627,44 @@ function moveCallBack(e){
 }
 </code>
 </pre>
-Now - if we test ... when you move the mouse <span class ="customP"> inside the div </span> the call back is triggered.
-Next ... lets capture the mouse coordinates inside this callback function 
+<p>If you test the code - you will see that when you move the mouse <span class ="customP"> inside the div </span> the <code>callback</code> function is triggered.
+<br>Next ... lets capture the mouse coordinates inside this <code>callback</code> function: </p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
-//C: get the mouse coords
-   drawBox.innerHTML= `<p> x: ${e.clientX}, y:${e.clientY} </p>`;
-//relative to the WINDOW...
+//C: get the mouse coords relative to the WINDOW...
+   drawBox.innerHTML= `x: ${e.clientX}, y:${e.clientY}`;
 </code>
 </pre>
-<p>If you now test - you will observe that the mouse coordinates (part of the event object (e)) are relative to the <span class ="customP">window </span> and not at the start of the div... 
-So, we need to so some <span class ="customP">calculations</span> and find out the <span class ="customP">rendered coordinates of the #draw-box-a div</span>.
-The function <code> element.getBoundingClientRect() </code> provided by an HTML5 Library see <a href = "https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">docs</a> allows us to access the <span class ="customP">rendered coordinates of the #draw-box-a div</span> and then we can do the following:</p>
-<pre data-line = "2,4,6,8" class="language-javascript line-numbers">
+<p>If you now test - you will observe that the mouse coordinates <span class = "customP">part of the event object `e`</span> are relative to the <span class ="customP">window </span> and not at the start of the div... 
+<br>So, we need to so some <span class ="customP">calculations</span> and find out the <span class ="customP">rendered coordinates of the <code>#draw-box-a</code>div</span>.
+<br/>The function <code> element.getBoundingClientRect() </code> provided by an HTML5 Library see <a href = "https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">docs</a> allows us to access the <span class ="customP">rendered coordinates of the <code>#draw-box-a</code> div</span> and then we can do the following:</p>
+<pre data-line = "2,4,6,8" class="language-javascript language-html line-numbers">
 <code>
 let rect = this.getBoundingClientRect();
-    console.log(rect);
-    //DIFFERENCE TO ENSURE COORDS ARE RELATIVE
-    let offsetX = e.clientX-rect.x;
-    let offsetY = e.clientY-rect.y;
-   drawBox.innerHTML+= `<p> offset_x: ${offsetX}, offset_y:${offsetY} </p>`;
+console.log(rect);
+//DIFFERENCE TO ENSURE COORDS ARE RELATIVE
+let offsetX = e.clientX-rect.x;
+let offsetY = e.clientY-rect.y;
+drawBox.innerHTML= `offset_x: ${offsetX}, offset_y:${offsetY}`;
   </code>
 </pre>
 <p>Now - if you test and compare the output ... you will see that we have calculated coordinates relative to the div ... 
 Finally - we can create  <span class ="customP"> a new element (div), apply a style and set the position at the offseted mouse coordinates:</span></p>
 <pre data-line = "2,4,6,8,10" class="language-javascript line-numbers">
 <code>
-let p = document.createElement("div");
-p.classList.add("point");
-p.style.left = offsetX+"px";
-p.style.top = offsetY+"px";
-this.appendChild(p);
+let pointDiv= document.createElement("div");
+pointDiv.classList.add("point");
+pointDiv.style.left = offsetX+"px";
+pointDiv.style.top = offsetY+"px";
+this.appendChild(pointDiv);
   </code>
 </pre>
 <p>Be sure to comment out the two  <code>drawBox.innerHTML...</code> statements before testing... otherwise you may have unexpected output.
 <br/> But ... as you can see we have created a very very simple drawing tool... :)</p>
 <h4> Responding to a Mouse Drag</h4>
 <p>This example will demo some more interesting components... :)
-This will be another example where <span class = "customP">this</span> and the <span class = "customP">event target</span> does not refer to the same element - i.e. we add an event listener to the <strong>window</strong> object - the event handler will be triggered when something is STARTING to be dragged inside the window; however the object BEING dragged will be another element. Let us start with another html page + css + js:
-The HTML: <span class = "customP"> dragEvent.html</span></p>
+<br>This will be another example where <span class = "customP">this</span> and the <span class = "customP">event target</span> does not refer to the same element - i.e. we add an event listener to the <strong>window</strong> object - the event handler will be triggered when something is STARTING to be dragged inside the window; however the object BEING dragged will be another element. Let us start with another html page + css + js:
+<br>The HTML: <span class = "customP"> dragEvent.html</span></p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-html line-numbers">
 <code>
   &lt;!DOCTYPE html&gt;
@@ -754,8 +784,8 @@ function setup() {
 }
 </code>
 </pre>
-<p>Note: an element needs to have its <span class = "customP">draggable</span> property set to true  - so in this example, the two divs can be dragged.
-Let's continue with the example and add a callback for when dragging stops:</p>
+<p>Note: an element needs to have its <code>draggable</code> property set to true  - so in this example, the two divs can be dragged.
+<br/>Let's continue with the example and add a callback for when dragging stops:</p>
 <pre data-line = "2,4,6,8,10,12,14" class="language-javascript line-numbers">
 <code>
 let handleDraggingStop = function (event) {
@@ -768,7 +798,8 @@ let handleDraggingStop = function (event) {
   window.addEventListener("dragend", handleDraggingStop);
   </code>
 </pre>
-<p>SO: we have call back functions for when an element has started to be dragged and when it has stopped dragging. We can also at an event and its associated callback function to find out if an element has been dragged to and then <span class = "customP">dropped into another element</span>:</p>
+<p>We now have <code>callback</code> functions for when an element has started to be dragged and when it has stopped dragging. 
+  <br/>We can also at an event and its associated <code>callback</code> function to find out if an element has been dragged to and then <span class = "customP">dropped into another element</span>:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
 <code>
 /** NEW:: TO HANDLE DROPPING **/
@@ -787,7 +818,8 @@ let handleDraggingStop = function (event) {
  });
 </code>
 </pre>
-<p>What is SUPER important to note is that in the case of drop - the target is WHAT THE ELEMENT WAS DROPPED INTO  -  and NOT the element being dragged as before ;) So when this event has been fired - how do we know WHO was dropped?
+<p>What is SUPER important to note is that in the case of drop: - the <code>target</code> is <span class = "customP">WHAT THE ELEMENT WAS DROPPED INTO</span>  -  and NOT the element being dragged as before ;) 
+<br>So when this event has been fired - how do we know WHO was dropped?
 <br/> We need to store the id of the element being dragged - and we have different options:
 <ol>
 <li>We could have a variable which holds the id of the element being dragged...</li>
@@ -815,16 +847,15 @@ Append the following to the <span class = "customP">drop event handler</span>:</
         // and so move it there..
        event.target.appendChild(document.getElementById(theObj));
        }
-    } 
   </code>
 </pre>
 <p>And we are done -- 2 boxes should now have the ability to be dragged and dropped into the relevant div ... </p>
 <h3> KEY EVENTS</h3>
 <p>Like you already learnt in p5 -  you can also control elements using the keyboard .. For  detecting real-time typing or handling specific keys, you can use JavaScript's event handling system. By listening for keyboard events (keydown, keypress, keyup), we can capture input as the user interacts with the keyboard.</p>
 <h4> Keydown event </h4>
-<p>The <span class = "customP">keydown event</span> occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys.
-We will do a series of examples with key events and so let us start with a new html, js and css:</p>
-the html <span class = "customP">keyEvent.html</span>
+<p>The <code>keydown event</code> occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys.
+We will do a series of examples with key events and so let us start with a new html, js and css:
+<br><span class = "customP">keyEvent.html</span></p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22" class="language-html line-numbers">
 <code>
 &lt;!DOCTYPE html&gt;
@@ -850,15 +881,15 @@ the html <span class = "customP">keyEvent.html</span>
 &lt;/html&gt;
 </code>
 </pre>
-The js : <span class = "customP">js/keyEx.js</span>
-<pre data-line = "2" class="language-javascript line-numbers">
+<p><span class = "customP">js/keyEx.js</span></p>
+<pre data-line = "2,4" class="language-javascript line-numbers">
 <code>
 window.onload = function(){
     console.log("keys");
 }
 </code>
 </pre>
-The css : <span class = "customP">styles/key_events.css</span>
+<p><span class = "customP">styles/key_events.css</span></p>
 <pre id = "writeE" class="language-css line-numbers">
 <script>
 let s_n2 = ""
@@ -920,43 +951,43 @@ body{
 }
 </code>
 </pre>
-OK so let's start with a <span class = "customP"> keydown</span> example. First, we need to assign an event listener to the  <span class = "customP"> window object</span>:
-<pre data-line = "2,4" class="language-javascript line-numbers">
+<p>OK so let's start with a <code> keydown</code> example. First, we need to assign an event listener to the  <code>window</code>object:</p>
+<pre data-line = "2,4,6" class="language-javascript line-numbers">
 <code>
-window.addEventListener("keydown", function(event)
-{
- console.log(event);
-})
+window.addEventListener("keydown", function (event) {
+  console.log(event);
+});
 </code>
 </pre>
-<p>So: The keydown event occurs when a key is pressed down, and it captures all key types, including special keys like Esc, Enter, and arrow keys. If you run the above code and observe the console output - you will see that the resulting <span class = "customP"> event object </span> will give you all the info you need :) Also note: that as long as a key is down - the event will fire continuously.
-If we want to output the value of the key pressed  - we can use the <code>event.key</code> and/or the <code>event.code</code></p>
+<p>So: The <code>keydown</code> event occurs when a key is pressed down.
+<br/> If you run the above code and observe the console output - you will see that the resulting <code> event object </code> will give you all the info you need :) 
+<br>Also note: that <span class = "customP">as long as a key is down - the event will fire continuously</span>.
+<br>If we want to output the value of the key pressed  - we can use the <code>event.key</code> and/or the <code>event.code</code></p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
-// document.querySelector("#textContainer").textContent+=event.key;
- document.querySelector("#textContainer").textContent+=event.code;
+document.querySelector("#textContainer").textContent+=`${event.key} `;
+document.querySelector("#textContainer").textContent+=`${event.code} `;
  </code>
 </pre>
-<p>And: we can go furthur with this by triggering distinct <code>actions</code> depending on which key(s) are pressed i.e. lets move the first box when the <code>ArrowRight</code> or <code>ArrowLeft</code> is pressed:
-First outside of the event callback function declare a variable for the speed:</p>
+<p>We can go furthur with this by triggering distinct <code>actions</code> depending on which key(s) are pressed. 
+<br>Let's move the first box when the <code>ArrowRight</code> or <code>ArrowLeft</code> is pressed:
+<br>First, outside of the event callback function declare a variable for the speed:</p>
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
-let speedX =5;
+let speedX=5;
 </code>
 </pre>
-Then inside the event callback for keypress:
+<p>Then inside the event callback for <code>keydown</code>:</p>
 <pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
 <code>
-if(event.key ==="ArrowRight"){
- 
-   document.getElementById("boxA").style.left=
-   parseInt(document.getElementById("boxA").style.left)+speedX+"px";
- }
- else if(event.key ==="ArrowLeft"){
-  
-   document.getElementById("boxA").style.left =
-   parseInt(document.getElementById("boxA").style.left)-speedX+"px";   
- }
+   if (event.key === "ArrowRight") {
+      document.getElementById("boxA").style.left =
+        parseInt(document.getElementById("boxA").style.left) + speedX + "px";
+
+    } else if (event.key === "ArrowLeft") {
+      document.getElementById("boxA").style.left =
+        parseInt(document.getElementById("boxA").style.left) - speedX + "px";
+    }
  </code>
 </pre>
 Within the same <span class = "customP"> callback function </span> we can access the other div and change a property when the <span class = "customP"> space bar</span> is pressed
@@ -968,7 +999,7 @@ Within the same <span class = "customP"> callback function </span> we can access
     }
 </code>
 </pre>
-<p>Let's go one step furthur and implement a <span class = "customP"> toggle </span> for the background... (switch to orange or back to blue using the same key ...:(revision from last week):
+<p>Let's go one step furthur and implement a <span class = "customP"> toggle </span> for the background: <span class = "customP">switch to orange or back to blue using the same key </span>:
 <br/>Ok so the strategy is:</p>
 <ul>
 <li> first we access the <span class = "customP"> custom-bool </span> attribute</li>
@@ -990,9 +1021,10 @@ else if (event.code === "Space") {
     }
 </code>
 </pre>
-<p>Yyayay<br>
-Next - we will look at the <code>keyup</code> event -> why? well sometimes you want to not only know when a key is pressed but ALSO/OR when it is released...
-Lets add a color background change to Box A  when we press the  <code>SHIFT key </code>:</p>
+<p>
+We will next look at the <code>keyup</code> event -> why? 
+<br>well sometimes you want to not only know when a key is pressed but ALSO/OR when it is <span class = "customP">released</span>.
+<br>Let's add a <span class="customP">color background change to Box A</span> when we press the  <code>SHIFT key </code>:</p>
 <pre data-line = "2,4" class="language-javascript line-numbers">
 <code>
  else if (event.key === "Shift") {
@@ -1000,25 +1032,25 @@ Lets add a color background change to Box A  when we press the  <code>SHIFT key 
     }
 </code>
 </pre>
-And then a <span class = "customP"> new event listener + callback for <code> keyup </code> with shift:</span>
+<p>And then a  new <code>event listener</code> and <code>callback</code> function for <code>keyup</code> with the <code>SHIFT</code>key:</p>
 <pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
 <code>
- window.addEventListener("keyup", function(event){
-      console.log("keyup")
-       //2: change color when space is down
-       if(event.key ==="Shift"){
-          document.getElementById("boxA").style.background = "rgb(112, 184, 226)";
-        }
-      else{
-        console.log(`key up not shift:`)
-        console.log(event)
-      }
+ window.addEventListener("keyup", function (event) {
+    console.log("keyup");
+    //2: change color when space is down
 
-  })
+    if (event.key === "Shift") {
+      document.getElementById("boxA").style.background = "rgb(112, 184, 226)";
+    } 
+    else {
+      console.log(`key up not shift:`);
+      console.log(event);
+    }
+  });
 </code>
 </pre>
-<p>The function implementation is similar  to the <code> keypress </code> : in that you specify within the callback which key has just been released....
-Something to consider: since we can capture key down and key up - we can also implement the functionality to detetch how long a key was pressed for :)</p>
+<p>The function implementation is similar to the <code>keydown</code> : in that you specify within the <code>callback</code>function which key has just been released.
+<br>Something to consider: since we can capture <code>keydown</code> and <code>keyup</code> - we can also implement the functionality to detect how long a key was pressed for :)</p>
 </section>
 </main>
   <script src="js/prism.js"></script>
