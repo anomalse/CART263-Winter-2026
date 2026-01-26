@@ -27,7 +27,8 @@
 <section class="contents-notes">
 <h3>Timer Events</h3>
 <p>Ok - so we have seen key events and mouse events - where the browser <span class = "customP"> waits for the user (human)</span> to interact with the keyboard or mouse in order to execute a particular callback function.
-Here - we will see that we can schedule functions (callbacks) to be executed some time in the future using <span class = "customP">Timer Events</span>.</p>
+<br/>Here - we will see that we can schedule functions (callbacks) to be executed some time in the future using <span class = "customP">Timer Events</span>.
+<br/> Lets start with the following <a href = "resources/WEEK-4-START.zip">files</a> (from last week)</p>
 <h4> setTimeout() </h4>
 <p>The first function: <code>window.setTimeout()</code> waits a given number of <span class = "customP">milliseconds</span> and then calls its associated callback function.
 <br/>For example:</p>
@@ -40,11 +41,12 @@ Here - we will see that we can schedule functions (callbacks) to be executed som
   }
 </code>
 </pre>
- <p>We call the setTimeout() and pass the callback function and the number of ms to wait before executing the given callback function. The result is that after 2 secs the function addTimeoutText() will be called and new text will appear in the parent element.</p>
+ <p>We call <code>setTimeout()</code> and pass it a <code>callback</code> function called <code>addTimeoutText</code> as well as the number of <span class="customP">milliseconds</span> to wait before executing the given callback function. 
+  <br/>The result is that after 2000 ms (2 seconds), the function <code>addTimeoutText</code> will be called and new text will appear in the parent element.</p>
 <span class = "customP">setTimeout() ones only one time</span>.
 <h4> setInterval()</h4>
-<p>While setTimeout - schedules a function to be called ONLY <span class = "customP">once</span> in the future -> the <code>window.setInterval()</code> function schedules a function to be called <span class = "customP">AND re-called</span> every set interval ...
-<br/>For example:</p>
+<p>While  the <code>setTimeout</code> function schedules a function to be called ONLY <span class = "customP">once</span> in the future; 
+<br>the <code>window.setInterval()</code> function schedules a function to be called <span class = "customP">AND re-called every set scheduled interval</span>.</p>
 <pre data-line = "2,4,6,8" class="language-javascript line-numbers">
 <code>
     window.setInterval(addTextRecur,2000);
@@ -55,31 +57,29 @@ Here - we will see that we can schedule functions (callbacks) to be executed som
   </code>
 </pre>
 <p>So, let's do something more interesting with the <code>setInterval()</code> ... and it will hopefully also help you understand the <a href = "https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/what-is-modular-arithmetic">MOD</a> operator and why it is useful.
-<br/>As usual lets start with some html:</p>
+<br/>As usual lets start with some html: <code> EventsTimers.html </code></p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-html line-numbers">
 <code>
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
-    &lt;title&gt;-3 NEW : EVENTS TIMERS PAGE&lt;/title&gt;
+    &lt;title&gt;EVENTS TIMERS PAGE&lt;/title&gt;
     &lt;meta charset="utf-8" /&gt;
     &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
     &lt;link
       href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
       rel="stylesheet"
     /&gt;
-    &lt;link rel="stylesheet" type="text/css" href="styles/timer_events.css" /&gt;
-    &lt;script src="js/6_timer.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" type="text/css" href="css/timer_events.css" /&gt;
+    &lt;script src="js/timers.js"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div id="parent"&gt;
-    &lt;div id = "particle" style="left:25px;top:25px;"&gt;&lt;/div&gt;
-    &lt;/div&gt;   
+    &lt;div id="parent"&gt;   
   &lt;/body&gt;
   &lt;/html&gt;
 </code>
 </pre>
-And css:<span class = "customP">styles/timer_events.css </span>
+And css:<span class = "customP">css/timer_events.css </span>
 <pre id = "writeB" class="language-css line-numbers">
 <script>
 let s2 = ""
@@ -106,7 +106,7 @@ body{
     background-color:#625863;
     border-top:0px;
     width:calc(100vw - 20px);
-    min-height:200px;
+    height:100vh;
     position:relative;
   }
 
@@ -125,13 +125,6 @@ body{
     font-size: 48px;
     color:rgb(239, 97, 211);
   }
-  #particle{
-    width:10px;
-    height:10px;
-    border-radius: 5px;
-    background:white;
-    position:absolute;
-  }
   .grid-cell{
     width:25px;
     height:25px;
@@ -140,11 +133,14 @@ body{
     border-color: black;
     border-style: solid;
     border-width:2px;
-    /* transform-origin: center; */
 
-    transform: translate(-50%, -50%);
-   /* transform-origin: (cen); */
-
+  }
+    #particle{
+    width:10px;
+    height:10px;
+    border-radius: 5px;
+    background:white;
+    position:absolute;
   }
 
   #particle_two{
@@ -154,21 +150,23 @@ body{
     background:rgb(239, 109, 109);
     position:absolute;
     transform: translate(-50%, -50%);
-   /* transform-origin: (cen); */
   }
+
 </code>
 </pre>
-And js: <span class = "customP">js/6_timer.js</span>
+And js: <span class = "customP">js/timers.js</span>
 <pre data-line = "2,4,6," class="language-javascript line-numbers">
 <code>
 window.onload = function () {
+  console.log("timers running");
 }
 </code>
 </pre>
-<p>OK. First we build a grid composed of <code> div</code> elements and we store all the elements in a <span class ="customP">2-Dimensional Array</span>:</p>
+<p>OK. First we build a grid composed of <code> div</code> elements using a <span class="customP">2 Dimensional Array</span>:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
-let gridArray = [];
+window.onload = function () {
+  console.log("timers running");
   for (let i = 0; i < 24; i++) {
     //for each x - make a column of changing y's
     let gridCol = [];
@@ -181,15 +179,12 @@ let gridArray = [];
 
       d.style.left = (i + 1) * 25 + "px";
       d.style.top = (j + 1) * 25 + "px";
-      gridCol[j] = d;
     }
-    //put each grid row into the grid array
-    gridArray[i] = gridCol;
   }
-  console.log(gridArray);
+}
 </code>
 </pre>
-<p>Next: we will implement the code to alternate the background color of the grid elements based on the MOD operator.
+<p>Next: we will implement the code to <span class="customP">alternate the background color of the grid elements based on the MOD operator</span>.
 <br/>First lets add an array of possible colors:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
@@ -206,137 +201,132 @@ let shades = [
 </code>
 </pre>
 <p>So there are 8 possible shades ... and we will map these colors in the different ways:
-<br/>
-<code>If the row number is a multiple of 2 (when dividing by 2 the remainder is 0) then use shades[0]<br>
-else remainder == 1 so use use shades[1]:</code></p>
+<br/> First: <span class = "customP">we will alternate between the first and the second shade by checking if the element in the grid is stored in an <strong>even</strong> or <strong>odd</strong> index</span>.
+<br/><code>If the index number is a multiple of 2 (when dividing by 2 the remainder is 0) { use shades[0] }<br>
+else remainder == 1 { use use shades[1] }:</code></p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
-//the divisor
-let num=2;
-
-  for (let i = 0; i < 24; i++) {
-    for (let j = 0; j < 24; j++) {
-      //check the j--> y value for color choice (all same ys will have the same color (a row))
-      let d = gridArray[i][j];
-      if (j % num === 0) {
-        d.style.background = shades[0];
-      } else if (j % num === 1) {
-        d.style.background = shades[1];
-      }
+  //the divisor
+  let num = 2;
+  //access the divs
+  let gridCells = document.querySelectorAll(".grid-cell");
+  for (let index = 0; index < gridCells.length; index++) {
+    if (index % num === 0) {
+      gridCells[index].style.background = shades[0];
+    } else {
+      gridCells[index].style.background = shades[1];
     }
   }
-};
 </code>
 </pre>
-Ok - change the code to work for columns:
+<p>Ok - change the code to work for columns - we know that there are 24 rows and so the strategy is to:
+<br><code> every time the index is a multpile of 24: change the shade from 0 to 1 or from 1 to 0</code></p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
-for (let i = 0; i < 24; i++) {
-  for (let j = 0; j < 24; j++) {
-    //check the i -> x value for color choice (all same xs will have the same color (a column))
-    let d = gridArray[i][j];
-    if (i % num === 0) {
-      d.style.background = shades[0];
-    } else if (i % num === 1) {
-      d.style.background = shades[1];
+let num = 24;
+  let currentShade = 0;
+  for (let index = 0; index < gridCells.length; index++) {
+    //check if we reach the 24th
+    if (index % 24 === 0) {
+        //switch the shade ...
+      if (currentShade === 0) {
+        currentShade = 1;
+      } else {
+        currentShade = 0;
+      }
     }
+    gridCells[index].style.background = shades[currentShade];
   }
-}
-};
+
 </code>
 </pre>
 <p>
 Now - we can add a sort of <span class = "customP">animation</span> using setInterval() -> whereby we will <span class = "customP">increment the divisor with each setInterval()</span> so that we can experience the magic of MOD :):
 <br>First comment out the two examples with divisor of 2...
 then create a function to test the <code>setInterval()</code>:</p>
-<pre data-line = "2,4,6,8,10" class="language-javascript line-numbers">
+<pre data-line = "2,4,6,8,10,12,14" class="language-javascript line-numbers">
 <code>
-setInterval(animate_cells_mod_rows,1000);
+let changingNum = 0;
+  setInterval(animate_cells_mod_rows, 1000);
 
-function animate_cells_mod_rows() {
-   num+=1;
-   console.log(num);
-  if(num ===9){num=1}
-}
-</code>
-</pre>
-<p>You see how the number is continuously cycling from 1-9 and again and again forever?
-<br/>Lets now use that num as the divisor - so instead of it being always 2 it will change and each time we will add in another color choice:
-<br/>Add in the following <span class = "customP">before incrementing num</span>:</p>
-<pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24" class="language-javascript line-numbers">
-<code>
- for (let i = 0; i < 24; i++) {
-  for (let j = 0; j < 24; j++) {
-      let d = gridArray[i][j]
-//check the j--> y value for color choice (all same ys will have the same color (a row))
-      if (j % num === 0) {
-        d.style.background = shades[0];
-      } else if (j % num === 1) {
-        d.style.background = shades[1];
-      } else if (j % num === 2) {
-        d.style.background = shades[2];
-      } else if (j % num === 3) {
-        d.style.background = shades[3];
-      } else if (j % num === 4) {
-        d.style.background = shades[4];
-      } else if (j % num === 5) {
-        d.style.background = shades[5];
-      } else if (j % num === 6) {
-        d.style.background = shades[6];
-      } else if (j % num === 7) {
-        d.style.background = shades[7];
-      }
+  function animate_cells_mod_rows() {
+    console.log(changingNum);
+    drawGrid();
+    changingNum += 1;
+    
+    if (changingNum === 8) {
+      changingNum = 0;
     }
   }
+
 </code>
 </pre>
+<p>You see how the number is continuously cycling from 0-7 and again and again forever?
+<br/>Lets now use that <span class="customP">changingNum as the divisor</span>: so instead of it being always 2 it will change with each scheduled interval - and we will add in another color choice:
+<br/>Add in the following function <code>drawGrid</code>:</p>
+<pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36" class="language-javascript line-numbers">
+<code>
+ /* draw the grid */
+  function drawGrid(){
+    for (let index = 0; index < gridCells.length; index++) {
+
+    //check what the remainder is ...
+      if (index % changingNum === 0) {
+        gridCells[index].style.background = shades[0];
+      } 
+      else if (index % changingNum === 1) {
+        gridCells[index].style.background = shades[1];
+      } 
+      else if (index % changingNum === 2) {
+        gridCells[index].style.background = shades[2];
+      } 
+      else if (index % changingNum === 3) {
+        gridCells[index].style.background = shades[3];
+      } 
+      else if (index % changingNum === 4) {
+        gridCells[index].style.background = shades[4];
+      } 
+      else if (index % changingNum === 5) {
+        gridCells[index].style.background = shades[5];
+      } 
+      else if (index % changingNum === 6) {
+        gridCells[index].style.background = shades[6];
+      } 
+      else if (index % changingNum === 7) {
+        gridCells[index].style.background = shades[7];
+      } 
+
+    }
+ }
+ /* hmmm : we could just remove the if /else and write:
+  gridCells[index].style.background = shades[index%changingNum];
+  */
+</code>
+</pre>
+<p>And then call <code>drawGrid()</code> inside <code>animate_cells_mod_rows</code> before incrementing<code>changingNum</code></p>
+<pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24" class="language-javascript line-numbers">
+<code>
+function animate_cells_mod_rows() {
+    console.log(changingNum);
+    drawGrid();
+    changingNum += 1;
+    
+    if (changingNum === 8) {
+      changingNum = 0;
+    }
+  }
+  </code>
+  </pre>
  Want it faster? just update the interval:
 <pre data-line = "2" class="language-javascript line-numbers">
 <code>
 setInterval(animate_cells_mod_rows,200);
 </code>
 </pre>
-Want to do columns instead? - comment out the above <code>setInterval()</code> and add:
-<pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32" class="language-javascript line-numbers">
-<code>
-setInterval(animate_cells_mod_cols,500);
-
-function animate_cells_mod_cols() {
-
-    for (let i = 0; i < 24; i++) {
-      for (let j = 0; j < 24; j++) {
-  
-        //check the i--> x value for color choice (all same xs will have the same color (a column))
-        let d = gridArray[i][j]
-        if (i % num === 0) {
-          d.style.background = shades[0];
-        } else if (i % num === 1) {
-          d.style.background = shades[1];
-        } else if (i % num === 2) {
-          d.style.background = shades[2];
-        } else if (i % num === 3) {
-          d.style.background = shades[3];
-        } else if (i % num === 4) {
-          d.style.background = shades[4];
-        } else if (i % num === 5) {
-          d.style.background = shades[5];
-        } else if (i % num === 6) {
-          d.style.background = shades[6];
-        } else if (i % num === 7) {
-          d.style.background = shades[7];
-        }
-      }
-    }
-    num+=1;
-    if(num ===9){num=1}
-  }
-</code>
-</pre>
 <p>
-Nice..:)
-<br/>
-What if we want to chnage the delay dynamically within a setInterval()? - i.e. <span class = "customP">we want with each call the delay to accelerate</span>?
-Comment out all the grid code and then add the following:</p>
+What if we want to change the delay dynamically within a <code>setInterval()</code>? 
+Let's say <span class = "customP">we want with each scheduled call,  the delay to accelerate ...</span>
+<br>Comment out all the code within the <code>window.onload callback function</code> and then add the following:</p>
 <pre data-line = "2,4,6,8,10" class="language-javascript line-numbers">
 <code>
  window.setInterval(addText, 1000);
@@ -349,45 +339,48 @@ Comment out all the grid code and then add the following:</p>
   }
 </code>
 </pre>
-Will this work?
+<p>Will this work instead?</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
 <code>
-let speed =1000;
- window.setInterval(addText, speed);
-    function addText() {
+let speed = 1000;
+  window.setInterval(addText, speed);
+  function addText() {
     console.log("adding");
     console.log(speed);
     let sp = document.createElement("span");
     sp.textContent = " adding Text ";
     sp.classList.add("appearInText");
     document.getElementById("parent").appendChild(sp);
-    if(speed>100)speed -=100;
+    if (speed > 100) {
+      speed -= 100;
+    }
   }
 </code>
 </pre>
-<p>No. Why? Because the setInterval() takes the value of the speed ONLY ONE TIME - not every time the function is called...
-So - instead we can use a setTimeout() - and call it continuously BUT each time updating the delay:</p>
+<p>No. Why? Because the <code>setInterval()</code> takes the value of the speed <span class="customP">ONLY ONE TIME</span> - not every time the function is called!
+<br/>So - instead we can use a <code>setTimeout()</code> - and call it continuously AND each time updating the delay:</p>
 <pre data-line = "2,4,6,8,10,12,14,16," class="language-javascript line-numbers">
 <code>
-let speed = 1000;
-  window.setTimeout(addTextDynamic, speed);
-
-  function addTextDynamic() {
+function addTextDynamic() {
     console.log("adding");
     console.log(speed);
     let sp = document.createElement("span");
     sp.textContent = " adding Text ";
     sp.classList.add("appearInText");
     document.getElementById("parent").appendChild(sp);
-    if (speed > 20) speed -= 20;
+    if (speed > 20) {
+      speed -= 20;
+    }
     setTimeout(addTextDynamic, speed);
   }
-  </code>
+</code>
 </pre>
+<!--SABS-->
 <p>This leads us to another issue:how do we stop a <code>setInterval()</code> from running....?</p>
 <h4> clearInterval() & clearTimeout()</h4>
-Well there is the <code>clearInterval()</code> - which takes a reference to the setInterval() that you want to stop. The important thing here is that when you set up the <code> setInterval()</code> -> you need to set a <span class = "customP">variable</span> to reference it so that you can clear it later ... 
-Start with a new <code> setInterval() </code> -> comment out everything else:
+<p>Well there is the <code>clearInterval()</code> - which takes a reference to the <code>setInterval()</code> that you want to stop. 
+<br>The important thing here is that when you set up the <code> setInterval()</code> -> you need to set a <span class = "customP">variable</span> to reference it so that you can clear it later.
+<br>Start with a new <code> setInterval() </code> -> comment out everything else:</p>
 <pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
 <code>
 window.setInterval(addOtherText, 500);
@@ -397,7 +390,6 @@ window.setInterval(addOtherText, 500);
       sp.classList.add("appearInStarText");
       document.getElementById("parent").appendChild(sp);
     }
-  }
 </code>
 </pre>
 Ok - to stop it: 1/ we assign a variable to the <code> setInterval()</code>:
@@ -421,12 +413,14 @@ let counter =0;
         clearInterval(ref);
       }
     }
-  }
 </code>
 </pre>
-<p>Note:) you can have  more than one setInterval()/setTimeout() call -> it is up to you, the resources available and what you want to to do :)
-<br/>Another use case: we can also <span class = "customP">clear a setTimeout()</span> -> but why? When would you want to clear something that is scheduled to run once? Well - <span class = "customP">when you run 0 times</span>...
-Meaning: you schedule a setTimeout - but then you actually DECIDE to cancel it :) i.e.:</p>
+<p><span class="customP">Note:</span> you can have more than one <code>setInterval()</code> or <code>setTimeout()</code> call. 
+<br/>It is up to you, the resources available and what you want to to do :)
+<br/><span class="customP">Another use case:</span> We can also <span class = "customP">clear</span> a <code>setTimeout()</code> -> but why? 
+<br/> When would you want to clear something that is scheduled to run once? Well - <span class = "customP">when you run 0 times</span>...
+<br/> Meaning: you schedule a <code>setTimeout</code> - but then you actually <span class="customP">DECIDE to cancel it :) </span>
+<br/>Comment out the previous code and lets add:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24" class="language-javascript line-numbers">
 <code>
 let randomChanceToRun = setTimeout(oneTimeText, 500);
@@ -452,49 +446,50 @@ console.log(num);
     sp.classList.add("timeOutText");
     document.getElementById("parent").appendChild(sp);
   }
-};
 </code>
 </pre>
 In this case sometimes it runs and sometimes not (reload page every time to test)
 <!--SABINE -->
 <h4> requestAnimationFrame() </h4>
 <p>
-<span class = "customP">setInterval()</span> and <span class = "customP">setTimeout()</span> are a useful functions to be able to execute some code once a timer has expired (one time, many times, or forever...). 
-However, setInterval() is not very reliable if we were to use it for proper animations (where we repaint the screen every frame.
+<code>setInterval()</code> and <code>setTimeout()</code> are a useful functions to be able to execute some code once a timer has expired (one time, many times, or forever...). 
+<br>However, <code>setInterval()</code> is not very reliable if we were to use it for proper animations (where we repaint the screen every frame).
 <br>Why?
 <br>The time specified by the delay is not always honoured, as is dependent on the users' resources at the given time (may be unavailable) - 
 this leads to inconsistent delay intervals.
-<br>Also - continuously using <span class="customP">setInterval()</span> can lead to <span class = "customP">layout thrashing</span> -> when the web browser has to reflow or repaint a web page many times before the page is 'loaded' - 
-i.e. you want an animation at 60fps but it takes the browser longer to load a frame and will not reach that frame rate (take longer then (1000/60) 16ms to "load" a frame.
-<br>So, we have the <span class="customP">requestAnimationFrame()</span> function instead.
+<br>Also - continuously using <code>setInterval()</code> can lead to <span class = "customP">layout thrashing</span> -> when the web browser has to reflow or repaint a web page many times before the page is 'loaded' - 
+i.e. you want an animation at 60fps but it takes the browser longer to load a frame and will not reach that frame rate (takes longer then (1000/60) 16ms to "load" a frame).
+<br>So, we have the <code>requestAnimationFrame()</code> function instead.
 <br>This function allows one to execute code on the next available screen repaint.
-When you call <span class="customP">requestAnimationFrame()</span> repeatedly to create an animation, you can be confident that the  animation code is called <span class="customP">only when the browser is actually ready to make those changes</span>, 
+<br>When you call <code>requestAnimationFrame()</code> repeatedly to create an animation, you can be confident that the  animation code is called <span class="customP">only when the browser is actually ready to make those changes</span>, 
 resulting in a smoother, more efficient animation.
 <br>The following example demonstrates the basic usage. Comment out the other code in the script - or start with a new script:</p>
 <pre data-line = "2,4,6,8,10,12" class="language-javascript line-numbers">
 <code>
-window.onload = function () {
+
+  //create a particle div
+  let particleDiv = document.createElement("div");
+  particleDiv.id = "particle";
+  document.querySelector("#parent").appendChild(particleDiv);
+  particleDiv.style.left = "25px";
+  particleDiv.style.top = "25px";
+
   window.requestAnimationFrame(animate);
 
   function animate() {
-  let p = document.getElementById("particle");
-  p.style.left = parseInt(p.style.left) + 2+ "px";
-  p.style.top = parseInt(p.style.top) + 3 + "px";
- }
-}
+    let p = document.getElementById("particle");
+    p.style.left = parseInt(p.style.left) + 2 + "px";
+    p.style.top = parseInt(p.style.top) + 3 + "px";
+  }
 </code>
 </pre>
-<p>This example shows the requestAnimation() function being called ONCE. But there is no animation :(
+<p>This example shows the <code>requestAnimation()</code> function being called <span class="customP">ONCE</span>. But there is no animation :(
 <br>We need to call the function <span class="customP">recursively</span> to construct the desired animation frame by frame, with each frame being called only when the browser is ready for it.
 <br>This this how <span class = "customP">requestAnimationFrame()</span> becomes superior to <span class = "customP">setTimeout()</span> or <span class = "customP">setInterval()</span> when it comes to handling animation related code efficiently.
-The following example demonstrates just that:</p>
+<br>The following example demonstrates just that:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38" class="language-javascript line-numbers">
 <code>
-window.onload = function () {
-
-  window.requestAnimationFrame(animate);
-
-  let speedX = 2;
+let speedX = 2;
   let speedY =3;
 
   function animate() {
@@ -512,11 +507,9 @@ function checkBounds(parent, p) {
   if (parseInt(p.style.left) > bounds.right) {
     speedX*=-1;
   
-
   } else if (parseInt(p.style.left) < bounds.left) {
     speedX*=-1;
-
-  }
+    }
 
   if (parseInt(p.style.top) > bounds.bottom) {
     speedY*=-1;
@@ -525,12 +518,12 @@ function checkBounds(parent, p) {
     speedY*=-1;
   }
  }
-}
+
 </code>
 </pre>
 <p>So - you can see that we can animate as smoothly as one did in p5 ;)
-And - we also have a <span class  = "customP">cancelAnimationFrame()</span> ... which will stop therequestAnimationFrame() from running... i.e.:
-Start with an animation that uses <span class = "customP"> Math.sin() </span> to animate the width/height of the circle... and a custom mapping function .. super useful:</p>
+<br> And - we also have a <code>cancelAnimationFrame()</code> ... which will stop the <code>requestAnimationFrame()</code> from running.
+<br>For example: start with an animation that uses <code> Math.sin() </code> to animate the <span class = "customP">width/height</span> of the particle, and a <code>custom mapping function </code>.. super useful:</p>
 <pre data-line = "2,4,6,8,10,12,14,16,18,20,22,24,26" class="language-javascript line-numbers">
 <code>
 let aniRef = null;
@@ -573,9 +566,27 @@ Ok - so at some point we want to cancel the animation -> lets do that when we pr
 <h3> WEB STORAGE API </h3>
 <p>
 <a href = "https://en.wikipedia.org/wiki/Web_storage">What is web storage ...</a>
-HTML5 provides two ways to store data: <span class = "customP">localStorage and sessionStorage</span>. Data saved as localStorage is available to the browser at any point, even when the browser closes or the system is restarted. Data saved as sessionStorage is lost when the browser is closed.
-A good use case for using web storage is when you want to have variables which are accessible and shared across html pages (of the same website)... or you want to store info regarding the user of the site (client side - not server side)...This API is relatively simple to use - the main point is that <span class = "customP">you store and retrieve values to/from local storage as key/value pairs</span>.
-<br/>Please use the starting files <a href = "resources/localStorage - cart263 -start.zip">linked here...</a></p>
+<p>HTML5 provides two ways to store data: <code>localStorage</code> and <code>sessionStorage</code>. 
+<br/> Data saved as <code>localStorage</code> is available to the browser at any point, even when the browser closes or the system is restarted. 
+<br/> Data saved as <code>sessionStorage</code>is lost when the browser is closed.
+<br/>A good use case for using web storage is when you want to have variables which are accessible and shared across html pages (of the same website)... or you want to store info regarding the user of the site (client side - not server side)...This API is relatively simple to use - the main point is that <span class = "customP">you store and retrieve values to/from local storage as key/value pairs</span>.
+<br/>Please use the starting files <a href = "resources/LOCAL-STORAGE-START.zip">linked here...</a></p>
+
+<h4>Saving items to local storage</h4>
+<p>We will start by taking input from the user: using the <code>input elements </code> with id's <code>inputField_a</code>,<code>inputField_b</code>or <code>inputField_c</code> respectively
+  <br>So, in the javascript file (<code>js/localStrorageTests.js</code>), add the following:</p>
+  <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+<code>
+  let theButtons = document.getElementsByClassName("titleBar");
+  for (let i = 0; i < theButtons.length; i++) {
+    theButtons[i].addEventListener("click", saveStateHandler);
+  }
+</code>
+</pre>
+
+
+
+
 <h4>WE WILL LIVE CODE THE FOLLOWING:</h4>
 <ul>
 <li>create a single key-value pair and store in local storage</li>
