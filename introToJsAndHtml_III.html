@@ -581,24 +581,197 @@ Ok - so at some point we want to cancel the animation -> lets do that when we pr
   for (let i = 0; i < theButtons.length; i++) {
     theButtons[i].addEventListener("click", saveStateHandler);
   }
+
+// the callback function
+  function saveStateHandler(event) {
+   console.log(this.parentElement); // get parent element
+    let buttonID = this.parentElement.id;
+    let inputValue = this.parentElement.querySelector("input").value;
+    console.log(inputValue);
+  }
 </code>
 </pre>
-
-
-
-
-<h4>WE WILL LIVE CODE THE FOLLOWING:</h4>
+<p>If you now test the example -> whenever you enter some text into the text field and then click on the corresponding button we access the inputted text :) </p>
+<h4>Saving Single Items</h4>
+<p> Ok - so next we will store the data from the input fields into local storage:
+  Add the following to the <code>saveStateHandler</code> function:</p>
+    <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+<code>
+   if (inputValue !== "") {
+      // save the value to local storage -> NOTE it is saved a key-value pair
+      localStorage.setItem(buttonID, inputValue);
+      //reset input val
+      inputValue = "";
+    }
+</code>
+</pre>
+<p> Now - when you run the example - chack the browser to see if a message is successfully being saved to <code>local storage</code>.
+  <br>In the <span class = "customP">Chrome Inspector</span> select: <code>Application > Storage > localStorage</code>: You should see a key/value pair entry... :) Test with the other buttons and inputs. 
+  <br>Note the following:
 <ul>
-<li>create a single key-value pair and store in local storage</li>
-<li>Use the browser to assist in debugging</li>
-<li>Saving and retrieving a list of items associated with a single key</li>
-<li>Input using an input field</li>
-<li>Checking if an item exists in local storage</li>
-<li>Resetting local storage</li>
-<li>Multiple key/value pairs</li>
-<li>Retrieving items from local storage (same page)</li>
-<li>Save/retrieve from local storage on different pages</li>
+  <li> every input has a unique id and so each input will save to a new entry</li>
+  <li> If you type a second ... nth time into a given input field, you will <span class = "customP">OVERWRITE</span> the value</li>
+  </ul>
+</p>
+<h4>Retrieving Single Items </h4>
+Ok -  before considering how to store multiple entries with a single key ...
+Lets look at <span class = "customP">retrieving</span> values from <code>localStorage</code>...
+<ul>
+  <li>First we add an <code>eventListener</code> to the <span class = "customP">refresh button</span> -> so that we can retrieve the most current values stored in local storage ;)
+  <br><pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+    <code>
+    document.getElementById("refresh").addEventListener("click", retrieveHandler);
+    
+    // callBack function
+    function retrieveHandler(){
+      console.log("refresh pressed");
+    }
+    </code>
+  </pre>
+</li>
+<li>Now within the <code>retrieveHandler</code> function, use the <code>localStorage.getItem</code> function to retrieve an item.
+<br> The function requires one to pass the appropriate <code>key</code> i.e.:
+<pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+    <code>
+      let valueA = localStorage.getItem("a");
+      console.log(valueA);
+    </code>
+  </pre>
+</li>
+<li>And .. instead of retrieving a <strong>single</strong> item, we can also retrieve <strong>all</strong> the items in <code>localStrorage</code>:
+  <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+    <code>
+      //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+      for (let [key, value] of Object.entries(localStorage)) {
+        console.log(`${key}: ${value}`);
+      }
+    </code>
+  </pre>
+ </li>
+ <li>
+  So the last part is then to place the values into the relevent boxes:
+  <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+    <code>
+     for (let [key, value] of Object.entries(localStorage)) {
+          let textBox = document.querySelector(`div[data-ref=${key}]`);
+          //clear
+          textBox.innerHTML = value;
+      }
+    </code>
+  </pre>
+  </li>
 </ul>
+<h4>Saving Multiple Items </h4>
+<p> Ensure that you clear (delete) the entries in local storage first  - either within the browser ... or you can use the following instruction:<code>localStorage.clear();</code></p>
+<p>So - the next question is how can one <span class="customP">save multiple items to one key?</span>
+<br>The solution is straightforward: one can create  <code>arrays</code> which are then assigned to  specific <code>keys</code>.
+<br>Then, we can add items to the relevent array ... Let's do this step-by-step:</p>
+<ul>
+  <li>First: lets create a new callback function for saving the data (and comment out the old one): 
+     <br>So, in the javascript file (<code>js/localStrorageTests.js</code>), add the following:</p>
+  <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+<code>
+  let theButtons = document.getElementsByClassName("titleBar");
+  for (let i = 0; i < theButtons.length; i++) {
+    theButtons[i].addEventListener("click", saveStateHandlerMultiple);
+  }
+
+// the callback function
+  function saveStateHandlerMultiple(event) {
+   console.log(this.parentElement); // get parent element
+    let buttonID = this.parentElement.id;
+    let inputValue = this.parentElement.querySelector("input").value;
+    console.log(inputValue);
+  }
+</code>
+</pre>
+  </li>
+  <li>
+    Next: lets consider how to create and maintain these arrays. 
+    <br>Let's consider when to create a <strong>new array</strong>:
+    <br> if the array does not already exist in localStorge...
+      <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+  <code>
+    let item = localStorage.getItem(buttonID);
+    if (item === null) {
+      let newArr = [];
+      newArr.push(inputValue);
+      console.log(newArr);
+    }
+
+  </code>
+</pre>
+  </li>
+  <li>
+    Next - once we have created the array, and pushed a value into the array - one needs to save it to localStorage.
+    <br>The issue is that - we need to <span class="customP">convert</span> the array into a <span class = "customP">JSON string</span> to be able to save it.
+    <br>A <span class = "customP">JSON string</span>  adheres to the rules of the JSON format - allowing one to convert to and from JS values consistently.
+    <br>If we do not convert the array first, <span class = "customP">the array will not be stored in a format that can be easily parsed when we retieve it </span>.
+    <br> So we need to utilize the <code><a href = "//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+">JSON.stringify</a></code> function:
+     <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+  <code>
+    let arr_as_string = JSON.stringify(newArr);
+    localStorage.setItem(buttonID, newArr);
+  </code>
+</pre>
+  </li>
+  <li>
+    So - now we need to deal with the case where the <code>key</code> has not been used yet...
+    <br>And the issue is: we need to do the following: 
+    <ol>
+  <li>Retrieve the data from local storage</li>
+  <li>Convert it from a string back to a JavaScript Array: using <code><a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse">JSON.parse</a></code></li> 
+  <li>Add the new string to the array</li>
+  <li>Convert back to a JSON string and save to local storage</li>
+    </ol>
+      <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+  <code>
+    else{
+      //opposite of stringify ... 
+        let arr = JSON.parse(item);
+        // add 
+        arr.push(inputValue)
+        let arr_as_string = JSON.stringify(arr);
+        localStorage.setItem(buttonID, arr_as_string);
+    }
+  </code>
+</pre>
+</li>
+</ul>
+
+<h4>Retieving multiple Items </h4>
+<p>So - to retrieve the arrays of values from local storage - we can repeat the code above  - but within the callback function for the <code>refresh</code> button.
+<br> Start by making a new callback function:</p>
+ <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+  <code>
+     document.getElementById("refresh").addEventListener("click", retrieveHandlerMultiple);
+
+   function retrieveHandlerMultiple() {
+    console.log("in retrieval")
+      for (let [key, value] of Object.entries(localStorage)) {
+      console.log(`${key}: ${value}`);
+      let textBox = document.querySelector(`div[data-ref=${key}]`);
+      //clear
+      textBox.innerHTML = "";
+      
+    }
+   }
+  </code>
+  </pre>
+
+<p> Next add the following code:
+  <pre data-line = "2,4,6,8,10,12,14,16,18,20" class="language-javascript line-numbers">
+  <code>
+    // parse Value into an array
+      let tempArray = JSON.parse(value);
+      for (let arr_value of tempArray) {
+        textBox.innerHTML += arr_value;
+        textBox.innerHTML += "<br>";
+      }
+  </code>
+</pre>
+<p>And we are done!</p>
 </section>
 </main>
   <script src="js/prism.js"></script>
