@@ -58,10 +58,44 @@
 </code>
 </pre>
 </li>
+<li>
+  Add the following to <span class = "customP">css/garden_style.css</span>:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-css line-numbers">
+<code>
+body{
+    padding:0;
+    margin:0;
+
+  }
+.sky{
+    width: 100vw;
+    height:280px;
+    position:relative;
+    padding:0;
+    margin:0;
+}
+.grass{
+    width: 100vw;
+    height:calc(100vh - 280px);
+    position:relative;
+    padding:0;
+    margin:0;
+}
+.sun{
+    width: 100px;
+    height: 100px;
+    border-radius:50px;
+    position:absolute;
+    left:10px;
+    top:10px;
+}
+</code>
+</pre>
+</li>
 <li> Next we will create a <span class = "customP"> Garden <em>Object</em> in Javascript</span>:
 First we need a variable with a JavaScript object that will keep track of our garden’s properties;
 most importantly the <span class = "customP">array of flowers in the garden as well as the sky, sun, and grass</span>.  
-Lets add the following to <span class = "customP">js/garden.js</span>:
+Let's add the following to <span class = "customP">js/garden.js</span>:
 <pre id = "writeA" class="language-javascript line-numbers">
 <script>
 let s = ""
@@ -120,9 +154,9 @@ window.onload = function (){
 </code>
 </pre>
 </li>
-<li> Next: we want to output our initial garden without the any flowers :)
+<li> Next: we want to output our initial garden without any flowers :)
 <h4> Render the Initial Garden using a function: </h4>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31" class="language-javascript line-numbers">
 <code>
   function createAndRenderTheGarden() {
     /* note how we use dot notation....*/
@@ -156,40 +190,6 @@ window.onload = function (){
   }
   </code>
 </pre>
-Before calling it - apply the following css
-Note: how we are using the <code>properties</code> of the garden object.
-Add the following to<span class = "customP">styles/garden_style.css</span>:
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-css line-numbers">
-<code>
-body{
-    padding:0;
-    margin:0;
-
-  }
-.sky{
-    width: 100vw;
-    height:280px;
-    position:relative;
-    padding:0;
-    margin:0;
-}
-.grass{
-    width: 100vw;
-    height:calc(100vh - 280px);
-    position:relative;
-    padding:0;
-    margin:0;
-}
-.sun{
-    width: 100px;
-    height: 100px;
-    border-radius:50px;
-    position:absolute;
-    left:10px;
-    top:10px;
-}
-</code>
-</pre>
 And then call the render function ... 
 <pre data-line="1, 3, 5" class="language-javascript line-numbers">
 <code>
@@ -201,6 +201,8 @@ Super ... you should have your basics ...
 </li>
 <li>
 <h4> Create a flower using a function that RETURNS the flower object</h4>
+<p> Lets create a <strong> new file </strong>:<code>FlowerStuff.js</code>in the <code>js</code> folder, and link it in the <code>index.html</code>. Then add the following to the <strong>new js file</strong> </p>
+
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35" class="language-javascript line-numbers">
 <code>
   // Creates a new JavaScript Object describing a flower and returns it
@@ -258,6 +260,7 @@ And some css ...
 </li>
 <li>
 <h4> And we need a JS Function to RENDER the flower: </h4>
+<p>Add to the <code>FlowerStuff.js</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
 <code>
 //to render a flower (passed as an argument)
@@ -295,15 +298,13 @@ And some css ...
         )`;
      //add to the DOM
      document.getElementsByClassName("grass")[0].appendChild(flower.flowerPetalDiv);
-
-
-  }
+}
 </code>
 </pre>
 </li>
 <li>
-Finally - we can add new flowers to the flowers array and then show them -  
-call inside the  <code>createAndRenderTheGarden()</code>:
+<p>Finally - we can add new flowers to the flowers array and then show them -  
+call inside the  <code>createAndRenderTheGarden()</code> in the <code>garden.js</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11" class="language-javascript line-numbers">
 <code>
 // add numFlowers at one time
@@ -324,25 +325,28 @@ YAhoo. We should now have one flower in our garden :)
 <h3>Each flower is an OBJECT</h3>
 <p>We already know that each of our flowers in the flowers array is a JavaScript object, 
 created using <code>createFlower()</code>. 
-<span class = "customP">That object keeps track of the specific properties of a flower (like its position and colors)</span>.</p>
-<p> Objects created by writing out the properties inside curly brackets as in <code>createFlower()</code> are technically called <span class = "customP"> JavaScript object literals</span>. (Because we literally write out all the properties AT THE SAME TIME AS WHEN we create them.)</p>
-<br/>
+<br><span class = "customP">That object keeps track of the specific properties of a flower (like its position and colors)</span>.</p>
+<p> Objects that are created by writing out the properties inside curly brackets as in <code>createFlower()</code> are technically called <span class = "customP"> JavaScript object literals</span>. 
+<br>(Because we literally write out all the properties AT THE SAME TIME AS WHEN we create them.)</p>
+<br>
 <p>However, in our program there are other places that are directly related to our flowers:  
 </p>
 <ul>
 <li> The <code>createFlower()</code> function is devoted to creating a flower </li>
 <li> The <code>renderFlower()</code> function is devoted to rendering a flower to the browser window</li>
 </ul>
-<br/>
-So those parts of our code basically <span class = "customP"> belong </span> to the flower objects. 
-They're essentially things that a flower can <strong> DO </strong> (be created and be displayed).
+<p>So those parts of our code basically <span class = "customP"> belong</span> to the flower objects. 
+<br/>They're essentially things that a flower can <strong> DO </strong> (be created and be displayed).</p>
 <h4> Combining properties and functions</h4>
-<p>The fact that in our program we have both properties that provide information about flowers and functions for dealing with flowers leads toward another way of thinking about these flowers (and JavaScript Objects in general).</p>
+<p>The fact that in our program we have both <code>properties</code> that provide information about flowers and <code>functions</code> for dealing with flowers:
+<br/> leads toward another way of thinking about these flowers (and JavaScript Objects in general).</p>
+<br>
 <p>In particular, it might be nice to be able to <span class = "customP">combine the properties and functions related to a flower into one place </span>.</p> 
 <p>This would potentially make our program <span class = "customP">even clearer, more modular, and perhaps more reusable</span>.</p>
 <br/>
 <p>This is the idea behind <code>Object-Oriented Programming (OOP)</code>.</p>
-<p>In <span class = "customP">OOP</span> we think about our program as being explicitly organized according to different kinds of objects, each of which has its own set of properties (which we already do) but also its own set of functions that control how it behaves.</p>
+<p>In <span class = "customP">OOP</span> we think about our program as being explicitly organized according to different kinds of objects, 
+<br>each of which has its own set of properties (which we already do) but also its own set of functions that control how it behaves.</p>
 <p>To do this we write <code>classes</code> that describe how a particular kind of object (like a flower) behaves (its properties and functions).</p>
 <p><code> A class is like a template/ blueprint for an object</code>.</p>
 <h4> Creating a Flower class </h4>
@@ -369,7 +373,8 @@ class Flower {
 <p>To do this, we have to go into our <span class = "customP">index.html</span> to add our Flower.js file to the set of scripts (JavaScript) that our project knows about. </p>
 <p>Importantly, our new script should be added <span class = "customP">before the garden script</span>.</p>
 <p>As a rule of thumb, you should add new scripts so that they come before any script that needs to use them. </p>
-<p>We put <span class = "customP">Flower.js before garden.js</span>, because the main program in garden.js will be using the class we're going to define in Flower.js (it needs to create and display flowers which will rely on the Flower class in Flower.js).</p>
+<p>We put <code>Flower.js</code> before <code>garden.js</code>, because the main program in <code>garden.js</code> will be using the class we're going to define in <code>Flower.js</code> 
+<br>(it needs to create and display flowers which will rely on the Flower class in Flower.js).</p>
 <pre data-line="1, 3" class="language-html line-numbers">
 <code>
 &lt;script src="js/Flower.js"&gt;&lt;/script&gt;
@@ -378,8 +383,9 @@ class Flower {
 </pre>
 <p>This class will be used to <span class = "customP">create new Flower objects that will be part of our running program</span>. </p>
 <p>Our class describes how these objects will work when they are created.</p>
-<p>In order to create a new Flower object from our class, the first thing we will need is a special function that will construct (create) the Flower when asked. It's called the <code>constructor</code>:</p>
-<pre data-line="1, 3" class="language-javascript line-numbers">
+<p>In order to create a <code>new Flower</code> object from our class, the first thing we will need is a special function that will construct (create) the Flower when asked. 
+<br>It's called the <code>constructor</code>:</p>
+<pre data-line="1, 3,5,7,9" class="language-javascript line-numbers">
 <code>
 class Flower {
     constructor() {
@@ -389,12 +395,13 @@ class Flower {
 </code>
 </pre>
 <ul>
-<li>We do not write function in front of the constructor function, even though we are clearly defining a function. Because it's inside our class definition for Flower, it's already understood by JavaScript that we are defining functions.</li>
+<li>We do not write function in front of the constructor function, even though we are clearly defining a function. 
+  <br>Because it's inside our class definition for Flower, it's already understood by JavaScript that we are defining functions.</li>
 <li>Terminology: we don't actually call the functions in a class <code>functions</code>, we call them <code>methods</code>.</li>
 </ul>
 <h4> But how???? </h4>
-In the <code>constructor</code>, we want to write code that can <span class = "customP"> set up a prospective Flower with the properties it needs to work ->  ===  the <code>createFlower()</code> function!</span>.
-Our constructor will be highly similar to <code>createFlower()</code>, with a couple of key differences:
+<p>In the <code>constructor</code>, we want to write code that can <span class = "customP"> set up a prospective Flower with the properties it needs to work ->  ===  the <code>createFlower()</code> function!</span>.
+<br>Our constructor will be highly similar to <code>createFlower()</code>, with a couple of key differences:</p>
 <ol>
 <li>No need to declare a variable to store the object, there is a special variable called <code>this</code> that automatically refers to the flower being created in the constructor.</li>
 <li> No need to return the flower being created because the constructor just does that automatically.</li>
@@ -436,14 +443,14 @@ class Flower {
 </code>
 </pre>
 <p>The biggest difference you probably notice here is the use of the word <code>this</code>. 
-In a class definition, <code>this</code> refers to the object that will be created with the class.
-So in the constructor, <code>this</code> means <span class="customP">"this object we are constructing from the class".</span></p>
+<br>In a class definition, <code>this</code> refers to the object that will be created with the class.
+<br>So in the constructor, <code>this</code> means <span class="customP">this object we are constructing from the class.</span></p>
 
 <h4> Can the flower object do anything? </h4>
-<p>The <code>constructor()</code> is used to <span class = "customP">create a Flower object</span>, but to get it to do something, <span class = "customP"> we need to add a method</span> 
- (remember this is just the name for a function inside a class) to the Flower class.</p>
+<p>The <code>constructor</code> is used to <span class = "customP">create a Flower object</span>, but to get it to do something, 
+<br><span class = "customP"> we need to add a method</span>,(remember this is just the name for a function inside a class) to the Flower class.</p>
 <p>Specifically, let's write a <code>render</code> method that handles displaying the flower (using its properties) and rendering it to the browser window.
-<span class = "customP">This code will be very similar to the code we used in <code>renderFlower()</code> in our initial program!</span></p>
+<br><span class = "customP">This code will be very similar to the code we used in <code>renderFlower()</code> in our initial program!</span></p>
 <pre data-line="1, 3,5,7,9,11,13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
   //render method
@@ -490,16 +497,16 @@ The <code>renderFlower()</code> method here is identical to the <code>renderFlow
 <li>Use <code>this</code> to access the properties of the Flower set up in the <code>constructor()</code></li>
 </ul>
 <h4>Finally - create a flower! </h4>
-<p>A complete Flower class is defined in Flower.js. </p>
-<p>It replicates all the properties and functions as in the initial program.</p>
-<p>It sets all the the same properties from <code>createFlower()</code> in its <code>constructor()</code></p>
-<p>It does all the same things in <code>renderFlower()</code> that we were doing in <code>renderFlower()</code> initially...</p>
-<p><span class ="customP">Now: To actually use this class, we need to create (construct) flowers with it</span>.</p>
-<p>To do this we use another special word called <code>new</code>.</p> 
-<p>This makes sense, because we want to create new Flower…
-We do this back in our main script (garden.js):</p>
+<p>In Summary: 
+  <ul>
+ <li>A complete Flower class is defined in Flower.js. </li>
+<li>It replicates all the properties and functions as in the initial program.</li>
+<li>It sets all the the same properties from <code>createFlower()</code> in its <code>constructor()</code></li>
+<li>It does all the same things in <code>renderFlower()</code> that we were doing in <code>renderFlower()</code> initially...</li>
+  </ul>
+<p><span class ="customP">To actually use this <code>class</code>, we need to create (construct) flowers with it</span>.</p>
+<p>To do this we use another special word called <code>new</code>. We do this back in our main script (garden.js):</p>
 <pre data-line="1, 3,5,7,9,11" class="language-javascript line-numbers">
-
 <code>
   // Create our flowers by counting up to the number of the flowers
     for (let i = 0; i < garden.numFlowers; i++) {
@@ -549,15 +556,16 @@ for (let i = 0; i < garden.numFlowers; i++) {
 <h4> We did it! </h4>
 <p>The garden is back! This time it's being done through a class called Flower! How?</p>
 <ul>
-<li> A class called Flower was defined which provides a <code>constructor()</code> to set all the properties of a flower and a <code>renderFlower()</code> method to render a flower in the browser.</li>
-<li>New Flower objects were created using the <code>new</code>keyword and the <code>constructor</code> (written as Flower()), storing them in the array.</li>
+<li> A class called Flower was defined which provides a <code>constructor()</code> to set all the properties of a flower 
+<br>and a <code>renderFlower()</code> method to render a flower in the browser.</li>
+<li>New Flower objects were created using the <code>new</code> keyword and the <code>constructor</code> (written as Flower()), storing them in the array.</li>
 <li>The <code>renderFlower()</code> method of the flowers was called to render them to the browser.</li>
 </ul>
 <h4> But why do it this way? </h4>
 <p>Using <span class = "customP">OOP</span> in this way by creating a class brings us back to the concepts of <code>modularity and reusability</code>.</p>
 <p>By consolidating <span class = "customP">all the aspects of a flower</span> into one location in a separate file, the Flower class is really helpful.</p>
 <p>If you ever want to change what a Flower does or what properties it has, you can just change the <span class = "customP">class</span>.</p>
-This is a highly <span class = "customP">modular</span>way of writing this program.
+<p>This is a highly <span class = "customP">modular</span>way of writing this program.
 And, the Flower class is <span class = "customP">reusable</span>.</p>
 <br/>
 <p>We made many Flower objects and stored them in our array, with each one working in the way the Flower class defines.</p>
