@@ -27,13 +27,17 @@
 <section class="contents-notes">
 <h3> Continuing with objects </h3>
 <p>Objective: build a more customizable flower  ... we will use parameters :) 
-The Flower object that we built previously is kind of limited: it cannot be easily customized. If you want a flower to be a specific color, say, or if you want it to start in a specific position - its not possible... 
-Why? Well because the <span class = "customP">constructor</span> always does the same thing. It always sets the position randomly, it always sets the size to 50, it always sets the stemColor to a specific set of RGB values, etc.</p>
-<p>The Goal: <br/>You want to specify a bunch of the properties of a flower when its created, right?
+<br>The Flower object that we built previously is kind of limited: it cannot be easily customized. 
+<br>If you want a flower to be a specific color, say, or if you want it to start in a specific position - its not possible... 
+<br>Why? Well because the <span class = "customP">constructor</span> always does the same thing. 
+<br>It always sets the position randomly, it always sets the size to 40, it always sets the stemColor to a specific set of RGB values, etc.</p>
+<p><strong>The Goal:</strong> <br/>You want to specify a bunch of the properties of a flower when its created, right?
 <br/>Let's say the <span class = "customP">position, size, stem length, and petal color</span> for now:
-This problem was seen before with functions and we solved it then with … parameters!</p>
+This problem was seen before with functions and we solved it then with … <span class = "customP">parameters!</span></p>
 <h4> Using Parameters</h4>
-<p>In exactly the same way one uses parameters with functions to make them more powerful and flexible, you can use parameters in a class's constructor to configure an object at creation time. So, if you want to specify position, size, stem length, and petal color, you can change the constructor accordingly:</p>
+<p>In exactly the same way one uses parameters with functions to make them more powerful and flexible, 
+<br>you can use parameters in a <code>class's constructor</code> to configure an object at creation time. 
+<br>So, if you want to specify <span class="customP">position, size, stem length, and petal color</span>, you can change the constructor accordingly:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
 constructor(x,y,size,stemLength,petalColor) {
@@ -63,13 +67,15 @@ constructor(x,y,size,stemLength,petalColor) {
   }
 </code>
 </pre>
-<p>Note - <span class = "customP">the list of parameters inside the parentheses of the constructor’s definition</span>. Those parameters are then used to set the values in the Flower’s properties - i.e. the x parameter is used to set the x property (this.x) and the size parameter to set the size property (this.size), and so on...
-This new version of the <code>constructor()</code> can be used when creating a new flower by specifying the arguments appropriately:</p>
+<p><span class = "customP">The list of parameters inside the parentheses of the constructor’s definition</span>. 
+<br/>Those parameters are then used to set the values in the Flower’s properties - 
+<br/>i.e. the <code>x</code> parameter is used to set the x property (<code>this.x</code>) and the <code>size</code> parameter to set the size property (<code>this.size</code>), and so on...
+<br/>This new version of the <code>constructor()</code> can be used when creating a new flower by specifying the arguments appropriately:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
    for (let i = 0; i < garden.numFlowers; i++) {
       // Create variables for our arguments for clarity
-      let x = Math.random() * (window.innerWidth);
+      let x = Math.random() * (window.innerWidth-100);
       let y = Math.random() * 120;
       let size = Math.random() * 30 + 50;
       let stemLength = Math.random() * 50 + 50;
@@ -88,28 +94,28 @@ This new version of the <code>constructor()</code> can be used when creating a n
 </pre>
 <h4> Adding mouse events ... to objects </h4>
 <p>As we know, an important part of programming is the ability to respond to events. 
-When interacting with the DOM through javascript, we do this by defining event handler functions for our HTML elements (i.e. click, mouseover...)
+<br/>When interacting with the DOM through javascript, we do this by defining event handler functions for our HTML elements (i.e. <code>click, mouseover</code>...)
 <br/>So, Now that we’re defining classes - how can we incorporate these events? 
 <br/>What if we wanted to be able to click a flower in order to make it taller? (Maybe a bit like we’re helping it grow…)
-<br/>Well .... <span class = "customP">recall in the class definition for the Flower in Flower.js -> we have defined member properties in the <code>constructor()</code></span>:</p>
+<br/>Well .... recall in the class definition for the <code>Flower</code> in <code>Flower.js</code> -> we have defined member properties in the <code>constructor</code></span>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
 this.flowerStemDiv = document.createElement("div");
 this.flowerPetalDiv = document.createElement("div");
  </code>
 </pre> 
-<p><span class = "customP">So: very easily we can add the relevant event listeners & callback functions inside the constructor() function!</span>...
-<br/>Let's start by a standard event listener for when we click on the flower stem inside the <code>constructor()</code>:</p>
+<p>So: very easily we can add the relevant <code>event listeners & callback functions</code> inside the <code>constructor</code> function!...
+<br/>Let's start by a standard <code>event listener</code> for when we <code>click</code> on the flower stem:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
-  //add event listener and the call back
+  //add event listener and the call back in constructor
     this.flowerStemDiv.addEventListener("click", growStem);
     function growStem(e) {
       console.log(e.target);
    }
    </code>
 </pre>
-<p>Now when you click on the stem ... well we print out the target associated with the click event: <span class = "customP"> the div element </span> 
+<p>Now when you click on the stem, we print out the <code>target</code> associated with the click event: <span class = "customP"> the div element </span> 
 <br>YAY... but wait... 
 <br>If we change the <code>growStem()</code> and instead have:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
@@ -119,11 +125,12 @@ this.flowerPetalDiv = document.createElement("div");
    }
 </code>
 </pre>
-<p>Well that is ALSO the div. Why? Because in the context of the event listener:<code> this</code> refers to the div -> NOT the flower object...help?
+<p>Well, <code>this</code> is  the same div as the <code>target</code>. Why? Because in the <strong>context</strong> of the event listener:<code>this</code> refers to the div -> NOT the flower object.
+  <br>So the question is ... <span class="customP">how do we access the flower's member properties inside the event listener's callback function?</span>
 </p>
 <h4> Updating flower properties INSIDE the event handler </h4>
-<p>One solution: we make a copy of <span class = "customP"> the flower instance </span> in the constructor() - so that when it gets overriden in the event handler we use the copy...
-<br>Add in the <code>constructor()</code>:</p>
+<p>One solution: we make a copy of <span class = "customP"> the flower instance </span> in the <code>constructor</code> - so that when it gets overriden in the event handler we use the copy...
+<br>Add in the <code>constructor</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
 let self = this;//keep a copy of 'this'
@@ -156,13 +163,12 @@ We output the flower instance INSIDE the event handler -- so we can now update t
     }
 </code>
 </pre>
-<p><span class = "customP">Note: we have to update the actual div styles as well NOT just the member properties ...</span>
+<p>Note: <span class = "customP">we have to update the actual div styles as well, <strong>NOT</strong> just the member properties ...</span>
 <br>But - it works :) 
-<br>And see how the event listener is attached to each individual flower stem and updates only the properties for the clicked on flower...
-<br><span class = "customP">Note:: what we just did is NOT TRIVIAL AT ALL...</span></p>
+<br>And see how the event listener is attached to each individual flower stem and updates only the properties for the clicked on flower...</p>
 <h4> Adding KeyBoard events ... to objects </h4>
-<p>Similarly: we can incorporate <a href = "https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent"> keyboard events</a> with objects ... 
-<br>We can capture a <span class = "customP"> key event </span> and then execute some instruction based on that event...
+<p>Similarly: we can incorporate <code><a href = "https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent"> keyboard events</a></code> with objects ... 
+<br>We can capture a <code> key event </code> and then execute some instruction based on that event...
 <br>We will do the following:</p>
 <ul>
 <li> Turn the sun into another <code>object</code>... </li>
@@ -172,7 +178,7 @@ We output the flower instance INSIDE the event handler -- so we can now update t
 <br/>Next: lets create the <code> Sun </code> class and <code>constructor</code> and a <code>renderSun()</code> method:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
-class Sun{
+class Sun {
     constructor(x,y, sunColor){
         this.x = x;
         this.y = y;
@@ -181,10 +187,11 @@ class Sun{
         this.sunColor = sunColor;
         this.sunDiv =  document.createElement("div")
  }
+}
  </code>
 </pre>
-<p> Note that the <code>constructor</code> has basically the <span class = "customP">SAME properties</span> as when we defined it in the garden object (which we now remove) in garden.js... 
-<br/>and instead in garden.js - AFTER defining the garden{} -> we add:</p>
+<p> Note that the <code>constructor</code> has basically the <span class = "customP"><strong>SAME</strong> properties</span> as when we defined it in <code>garden.js</code>. 
+<br/>Remove the <code>sun</code> variable from <code>garden.js</code> and instead in <code>garden.js</code> add :</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
 let sun =  new Sun(10,10,{r: 240, g: 206,b: 83})
@@ -210,7 +217,7 @@ ANd now add the <code>renderSun()</code> inside the Sun class..:
 </code>
 </pre>
 <p><span class="customP">ADD KEY EVENTS TO THE SUN:</span></p>
-<p>So now we want to add some movement to our sun - based on w,a,s,d being pressed on the keyboard. 
+<p>So now we want to add some movement to our sun - based on <code>w,a,s,d</code> being pressed on the keyboard. 
 <br/> We will add the event listener for the keyboard in the garden.js -> why? 
 <br/>Because we assume that other objects may also use the keyboard - and so it does not necessarily ONLY apply to the sun ... 
 <br/>Add the following:</p>
@@ -221,7 +228,7 @@ window.addEventListener("keydown", function handleKeyDown(event) {
   });
   </code>
 </pre>
-Next - we create the local member method: <code>handleKeyDownInSUn()</code> in the sun class (sun.js):
+Next - we create the local member method: <code>handleKeyDownInSUn()</code> in the sun class (<code>sun.js</code>):
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
 <code>
 handleKeyDownInSUn(event) {
