@@ -27,9 +27,9 @@
 <section class="contents-notes">
 <h3> A Dog </h3>
 <p>Let's begin by creating a class that represents an a dog. 
-  <br/>Visually, we'll just focus on the idea of a <span class = "customP">circle object -> <em>the dog</em></span> that can move in a straight line to the right and will wrap back to the left when it 
+  <br/>Visually, we'll just focus on the idea of a <span class = "customP">circle object representing <em>the dog</em></span> that can move in a straight line to the right and will wrap back to the left when it 
     reaches the right edge of the canvas.
-    <br/> Start with the the garden example provided <a href = "resources/CART263-OBJECTS-III-START.zip"> here </a>.
+    <br/> Start with the the garden example provided <a href = "resources/CART263-OBJECTS-III.zip"> here </a>.
     <br/> Create a file called <code>Dog.js</code> and link to it in the html.
 </p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41" class="language-javascript line-numbers">
@@ -76,7 +76,14 @@ class Dog {
 }
 </code>
 </pre>
-<p>Then, replace the following code in <code>garden.js</code>:</p>
+<p>Add the following variables for the <code>dogs</code> in the <code>garden</code> object in <code>garden.js</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41" class="language-javascript line-numbers">
+<code>
+  numDogs:10,
+  dogs:[],
+</code>
+</pre>
+<p>Next, add the following code to add new <code>dogs</code> in <code>garden.js</code>:</p>
 <pre id = "write_a" class="language-javascript line-numbers">
 <script>
 let s_a = ""
@@ -88,65 +95,28 @@ for(let i = 1; i< 79; i++){
 document.querySelector("#write_a").setAttribute("data-line",s_a)
 </script>
 <code>
-window.onload = function (){
-// Our garden
-let garden = {
-    // An array to store the individual dogs
-    dogs: [],
-    // How many dogs in the garden
-    numDogs: 10,
-    /*grass object */
-    grass: {
-      // The color of the grass (background)
-      grassColor: {
-        r: 120,
-        g: 180,
-        b: 120,
-      },
-      //the grass element
-      grassDiv: document.createElement("div"),
-    },
- 
-    /*sky object */
-    sky: {
-      // The color of the sky (background)
-      skyColor: {
-        r: 83,
-        g: 154,
-        b: 240,
-      },
-      //the sky element
-      skyDiv: document.createElement("div"),
-    },
-  };
-  // new  sun instancce
-  let sun =  new Sun(10,10,{r: 240, g: 206,b: 83})
 
-
-  // Create the correct number of animals and put them in our array
+ // Create the correct number of dogs and put them in our array
   for (let i = 0; i < garden.numDogs; i++) {
     let x = Math.random()*window.innerWidth;
     let y = Math.random()*100;
     let dog = new Dog(x, y,15,15);
     garden.dogs.push(dog);
   }
-
-  function createAndRenderTheGarden() {
-    /* note how we use dot notation....*/
-    //sky
-    garden.sky.skyDiv.classList.add("sky");
-    garden.sky.skyDiv.style.background = `rgb(${garden.sky.skyColor.r},${garden.sky.skyColor.g},${garden.sky.skyColor.b})`;
-    document.getElementsByTagName("main")[0].appendChild(garden.sky.skyDiv);
-    //sun
-    sun.renderSun();
-
-    //grass
-    garden.grass.grassDiv.classList.add("grass");
-    garden.grass.grassDiv.style.background = `rgb(${garden.grass.grassColor.r},${garden.grass.grassColor.g},${garden.grass.grassColor.b})`;
-    document.getElementsByTagName("main")[0].appendChild(garden.grass.grassDiv);
-    updateGarden()
+</code>
+</pre>
+ <p>And finally let's add an  <code>updateGarden</code> function in <code>garden.js</code> to animate the <code>dogs</code>:</p>
+<pre id = "write_g" class="language-javascript line-numbers">
+<script>
+let s_g = ""
+for(let i = 1; i< 79; i++){
+    if(i%2 ===0){
+        s_g+=`${i},`
+    }
 }
-  
+document.querySelector("#write_g").setAttribute("data-line",s_g)
+</script>
+<code>
 function updateGarden(){
   // Go through all the animals and move, wrap, and display them
   for (let i = 0; i < garden.dogs.length; i++) {
@@ -157,12 +127,11 @@ function updateGarden(){
   }
   window.requestAnimationFrame(updateGarden)
   }
-    createAndRenderTheGarden();
-}
+
 </code>
 </pre>
-<p> Lets also just add a <code>css</code> class for the dog:</pre>
-<br/> The <code>Bird.js</code>:</p>
+<p>And call <code>updateGarden</code> in the <code>createAndRenderTheGarden</code> function</p>
+<p> Lets also just add a <code>css</code> class for the dog:</pre></p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17" class="language-css line-numbers">
 <code>
 .animal{
