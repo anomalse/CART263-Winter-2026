@@ -196,9 +196,9 @@ class Bird {
 <p>Then in <code>garden.js</code> add the array and number of Birds:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17" class="language-javascript line-numbers">
 <code>
-   // An array to store the individual animals
+   // An array to store the individual birds
     birds: [],
-    // How many animals in the garden
+    // How many birds in the garden
     numBirds: 10,
 </code>
 </pre>
@@ -228,10 +228,10 @@ class Bird {
 </pre>
 <h3>Repetitive Classes</h3>
 <p>So  - in our continuing objective to eliminate repetitive code we have found another culprit:
-<br>The Dog and Bird classes are really similar. In particular:
+<br>The <code>Dog</code> and <code>Bird</code> classes are really similar. In particular:
 <ul>
 <li>Their <code>constructor()</code> methods are identical except for their velocity and dimensions values</li>
-<li>Their move() and wrap() methods are completely identical</li>
+<li>Their <code>move()</code> and <code>wrap()</code> methods are completely identical</li>
 </ul>
 In most ways, their <code>renderAnimal()</code> method is the only really unique thing about them, although even here they both do have a method called <code>renderAnimal()</code>, so that idea is shared too.</p>
 <br/>
@@ -483,7 +483,7 @@ ensuring the result is within the specified range.
   <p>Great! This idea of <span class = "customP">overriding methods</span> from the superclass, but still calling the superclass version of those methods is central to writing well-structured object-oriented programs.</p>
 
   <h3> Overriding the wrap()</h3>
-  <p> Ok - so we can also override the <code>wrap()</code> in much the same way ... why? Because in the <code>Bird</code> class, we again want to extend upon <code>wrap()</code> from the Animal, in order to reset the y-velocity:</p>
+  <p> Ok - so we can also override the <code>wrap()</code> in much the same way ... why? Because in the <code>Bird</code> class, we again want to extend upon <code>wrap()</code> from the Animal, in order to reset the <code>y-velocity</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71" class="language-javascript line-numbers">
 <code>
   // Overriding the superclass' wrap() method!
@@ -545,6 +545,7 @@ ensuring the result is within the specified range.
 </code>
 </pre>
 
+  <h3> Object Inheritance vs Object Composition</h3>
 
 
 
