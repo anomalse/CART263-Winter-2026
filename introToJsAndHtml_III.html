@@ -169,7 +169,6 @@ window.onload = function () {
   console.log("timers running");
   for (let i = 0; i < 24; i++) {
     //for each x - make a column of changing y's
-    let gridCol = [];
     for (let j = 0; j < 24; j++) {
       //create a grid cell with a div
       let parent = document.getElementById("parent");
@@ -251,7 +250,6 @@ let changingNum = 0;
 
   function animate_cells_mod_rows() {
     console.log(changingNum);
-    drawGrid();
     changingNum += 1;
     
     if (changingNum === 8) {
