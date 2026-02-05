@@ -244,6 +244,7 @@ In most ways, their <code>renderAnimal()</code> method is the only really unique
 <li>The <code>Animal</code> class is the <span class ="customP">superclass</span> (sometimes called the <span class ="customP">parent</span>class)</li>
 <li>The <code>Dog</code>and <code>Bird</code> classes are the <span class ="customP">subclasses</span>(sometimes called the <span class ="customP">child</span> classes)</li>
 <li>The <code>Dog</code>and <code>Bird</code> classes <span class ="customP">extend</span> the <code>Animal</code> class so that they can <span class ="customP">inherit</span> all the properties and methods of the <code>Animal</code>  class, along with anything specific of their own</li>
+</ul>
 </p>
 
 <h3>An Animal</h3>
@@ -545,13 +546,42 @@ ensuring the result is within the specified range.
 </code>
 </pre>
 
-  <h3> Object Inheritance vs Object Composition</h3>
+<h3> Composition</h3>
+<p>So lets start with a new example :) </p>
+<p>Our goal is to implement a <span class  = "customP"> a role playing game </span> with <strong>magicians and fighters</strong></p>
+<p> We decide to use <code>classes</code> and <code>inheritance</code>. So we start with the following code: <a href = "resources/OBJECTS -III-COMPOSITION.zip">download here</a></p>
+<br/>
+<p> So we now want to include a new type of character: a <span class = "customP"> Knight</span>. The <span class = "customP"> Knight</span> needs to be able to <span class = "customP">cast spells <em>and</em> fight. </span></p>
+<p> Options?</p>
+<ol>
+  <li>We could write a new <code> Knight</code> class that extends from <code>Character</code> and then copy the <code>fight() </code>and <code>cast()</code> code from <code>Fighter</code> and <code>Magician</code>. 
+    <br/>However, we would be <em>duplicating</em> code and that’s not a good solution....</li>
+<li>We could move <code>fight()</code> and <code>cast()</code> code up into the <code>Character</code> class so that all three character types could use them. 
+  <br/>This is perhaps a better solution, but we would also need to <code>override</code> the <code>fight()</code> function in the <code>Magician</code> class and the <code>cast()</code> function in <code>Fighter</code> class.</li>
+</ol>
+<p>Neither option seems like a very good solution… and why do we have to change code that’s working perfectly fine  just to add the Knight?</p>
+<h4>This is an issue with classical inheritance:</h4>
+<ul>
+  <li>One has to define the class <span class = "customP">taxonomy in advance</span>. 
+    <br>The is almost impossible to get correct the first time, except for trivial projects.</li>
+    <li>if one does not correctly define it correctly; one will have no choice but to change it later. 
+      <br>And unfortunately, the <code>parents</code> and the <code>children</code> tend to be tightly coupled which requires one to make changes in many places, and probably add bugs.</li>
+</ul>
+To summarize: the issue with <strong>classical inheritance</strong>, is that it makes you think in terms of what things <strong>are</strong> rather than what they <strong>do</strong>.
+<h4> Object Composition in JavaScript</h4>
+<p><strong>Composition</strong> combines the power of first-class functions and factory functions. 
+<br/><strong>First-class</strong> functions means that Javascript can pass functions in as arguments to other functions. It also means that functions can be returned as results from other functions. 
+<br/><strong>Factory</strong> functions are simply functions that return an object. 
+<br/>So ... We can re-define the inheritance-based approach above such that the properties for cast() and fight() are stand-alone functions. 
+<br/>We can then bind the relevant characteristics on to each individual object definition. </p>
+<!-- I’ve added properties for land/sea bound to make the concept clearer. -->
+Using <code>Object.create</code>
+Using <code>Object.assign</code>
 
+<!--https://medium.com/@abdy4lvarez/composition-of-every-kind-in-javascript-38b5f2111a54 -->
+<!--https://jordan-eckowitz.medium.com/javascript-composition-vs-inheritance-4b99234593a9-->
 
-
-
-
-
+<!--https://medium.com/code-monkey/object-composition-in-javascript-2f9b9077b5e6-->
 </section>
 </main>
   <script src="js/prism.js"></script>
