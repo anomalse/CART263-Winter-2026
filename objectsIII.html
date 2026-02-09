@@ -574,6 +574,53 @@ To summarize: the issue with <strong>classical inheritance</strong>, is that it 
 <br/><strong>Factory</strong> functions are simply functions that return an object. 
 <br/>So ... We can re-define the inheritance-based implemented approach above such that  <code>cast()</code> and <code>fight()</code> are stand-alone functions. 
 <br/>We can then bind the relevant characteristics on to each individual object definition. </p>
+<ul>
+  <li>Lets start by creating a new js file called <code>Character_Comp.js</code> and link it in the <code>index.html</code>. 
+    <br>You can also <code>comment out</code> the refs to <code>Character.js</code>,<code>Magician.js</code> and <code>Fighter.js</code></li>
+    <li>
+      Now, add in the follwinf functions:
+       <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+      <code>
+        </code>
+        //factory function - a function that returns an object
+
+const canCast = function (state) {
+  return (
+    // an object containing the one function (cast)
+
+    {
+      cast: function () {
+        console.log(`${state.name} casts a fireball!`);
+        state.messageBox.textContent = `${state.name} casts a fireball!`;
+        window.setTimeout(function () {
+          state.messageBox.textContent = `${state.name} is idle`;
+        }, 2000);
+        state.power--;
+      },
+    }
+  );
+};
+const canFight = function (state) {
+  return (
+    // an object containing the one function (fight)
+
+    {
+      fight: function () {
+        console.log(`${state.name} takes a mighty swing!`);
+        state.messageBox.textContent = `${state.name} takes a mighty swing!`;
+        window.setTimeout(function () {
+          state.messageBox.textContent = `${state.name} is idle`;
+        }, 2000);
+        state.stamina--;
+      },
+    }
+  );
+};
+        </pre>
+
+      </li>
+</ul>
+
 <!-- I’ve added properties for land/sea bound to make the concept clearer. -->
 Using <code>Object.create</code>
 Using <code>Object.assign</code>
