@@ -758,10 +758,14 @@ This copying of properties from one or more objects into a new one is known as <
 </pre>
 </li>
 </ul>
-
-<!-- I’ve added properties for land/sea bound to make the concept clearer. -->
-Using <code>Object.create</code>
-Using <code>Object.assign</code>
+<h3>new and this</h3>
+<p>In <code>classical inheritance</code>, you create a <span class = "customP">new object</span> using the <code>new</code> keyword, but you don't use <code>new</code> with <span class = "customP">factory functions</span>. 
+  <br>This is another <em>advantage</em> that object composition has. When using classical inheritance, it is easy to forget the <code>new</code> when <span class = "customP">instantiating an object</span> and Javascript does not warn you if you do. 
+  <br>Instead it will execute your constructor function as a regular function. This can lead to difficult to diagnose bugs:(</p>
+<p>
+  Additionally, you probably noticed that the <span class = "customP">object composition approach</span> completely avoids the use of <code>this</code>.
+  <br>The <code>this</code> keyword is confusing to many, and doesn't behave quite the same way as it does in other languages, so avoiding it helps in code comprehension:)</p>
+</p>
 
 <!--https://medium.com/@abdy4lvarez/composition-of-every-kind-in-javascript-38b5f2111a54 -->
 <!--https://jordan-eckowitz.medium.com/javascript-composition-vs-inheritance-4b99234593a9-->
