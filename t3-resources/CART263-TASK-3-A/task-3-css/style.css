@@ -161,3 +161,93 @@ body{
   border-radius:10px;
   transform: translate(-50%, -50%);
 }
+
+/*CSS TEAM C**/
+
+.TEAM_C_circle {
+  border-radius: 25px;
+  position: absolute;
+}
+
+.TEAM_C_grid {
+  border-radius: 10px;
+  background-color: rgb(9, 70, 30);
+  position: absolute;
+}
+
+.TEAM_C_droplet {
+  border-radius: 25px;
+  background-color: blue;
+  position: absolute;
+}
+
+.TEAM_C_droplet_two {
+  border-radius: 50%;
+  background-color: rgb(81, 143, 208);
+  position: absolute;
+}
+
+.TEAM_C_c_grid {
+  border-radius: 10px;
+  background-color: rgb(30, 39, 145);
+  position: absolute;
+}
+/*CSS TEAM A**/
+
+.TEAM_A_box {
+  width: max-content;
+  background-color: rgb(34, 29, 41);
+  position: absolute;
+  color: white;
+  margin: 1px;
+  padding: 10px 12px;
+  top: 10px;
+  left: 10px;
+  font-size: 14px;
+}
+
+.TEAM_A_box:hover {
+  background-color: rgb(30, 168, 223);
+  cursor: pointer;
+}
+
+.TEAM_A_ball {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgb(246, 15, 142);
+}
+
+.TEAM_A_circle {
+  border-radius: 10px;
+  background-color: rgb(223, 30, 117);
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.TEAM_A_h_cell {
+  width: 20px;
+  height: 20px;
+  background-color: rgb(177, 150, 215);
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.TEAM_A_h_cell:hover {
+  background-color: rgb(225, 217, 235);
+}
+
+.TEAM_A_h_word {
+  font-size: 16px;
+  color: white;
+  /* position:absolute; */
+
+  background-color: rgba(228, 200, 208, 0.7);
+  display: inline-block;
+  margin: 2px;
+  padding: 2px;
+  border-style: dotted;
+  border-color: rgb(199, 97, 141);
+  border-width: 4px;
+}
+
+
