@@ -1,6 +1,7 @@
 setup_C();
 /** THEME: SERENITY  */
 function setup_C() {
+  //Philippe,Amélie,Joyce
   console.log("in c");
   /**************************************************** */
   //get the buttons

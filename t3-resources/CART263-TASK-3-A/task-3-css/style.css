@@ -161,6 +161,14 @@ body{
   border-radius:10px;
   transform: translate(-50%, -50%);
 }
+/*PARTICLE*/
+#particle {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background: white;
+  position: absolute;
+}
 
 /*CSS TEAM C**/
 
@@ -248,6 +256,359 @@ body{
   border-style: dotted;
   border-color: rgb(199, 97, 141);
   border-width: 4px;
+}
+
+/*CSS TEAM D**/
+/*OLIVIA*/
+.TEAM_D_box {
+  width: max-content;
+  background-color: rgb(66, 214, 84);
+  position: absolute;
+  top: 45%;
+  left: 38%;
+  color: white;
+  margin: 1px;
+  padding: 12px;
+}
+
+.TEAM_D_box:hover {
+  background-color: rgb(196, 247, 165);
+  cursor: pointer;
+}
+
+.TEAM_D_particle {
+  border-radius: 100%;
+}
+
+/*ASH*/
+.TEAM_D_ANI_B {
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+}
+
+/*YAXUAN*/
+.TEAM_D_ANI_C_Div {
+  color: rgba(255, 255, 255, 0.513);
+  display: inline-block;
+  margin: 7px;
+  padding: 4px;
+  border-style: double;
+  border-width: 14px;
+}
+
+/*NERLY*/
+.TEAM_D_cell_D {
+  position: absolute;
+  transform: translate(100%, 150%);
+}
+
+.TEAM_E_Image{
+  position: absolute;
+  width: 50px;
+  height: 50px;
+}
+
+.TEAM_E_box{
+  width:max-content;
+  background-color: rgb(15, 119, 246);
+  color:white;
+  padding: 12px 16px;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 20px);
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  box-sizing:border-box;
+  cursor:pointer;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+.TEAM_E_circle {
+  border-radius: 10px;
+  background-color: rgb(241, 199, 72);
+  position: absolute;
+  transform: transform 0.8s ease;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ripple {
+  animation: ripple 0.3s ease;
+}
+
+.TEAM_E_circle {
+  border-radius: 10px;
+  background-color: rgb(241, 199, 72);
+  position: absolute;
+  transform: transform 0.8s ease;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ripple {
+  animation: ripple 0.3s ease;
+}
+
+.TEAM_E_emoji {
+  user-select: none;
+  pointer-events: none;
+}
+.TEAM_E_box:hover{
+  background-color: rgb(255, 41, 155);
+}
+
+/* CSS TEAM B */
+
+.TEAM_B_circle {
+  border-radius: 10px;
+  background-color: black;
+  /* z-index: 50; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.TEAM_B_circle0 {
+  border-radius: 10px;
+  background-color: yellow;
+  /* z-index: 50; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.TEAM_B_circle1 {
+  border-radius: 10px;
+  background-color: red;
+  /* z-index: 50; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+}
+
+.TEAM_B_circle2 {
+  border-radius: 10px;
+  background-color: green;
+  /* z-index: 50; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+}
+
+.TEAM_B_circle3 {
+  border-radius: 10px;
+  background-color: blue;
+  /* z-index: 50; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+}
+
+.TEAM_B_backSquare0 {
+  background-color: yellow;
+  position: absolute;
+  margin: 1px;
+}
+
+.TEAM_B_backSquare1 {
+  background-color: red;
+  position: absolute;
+  margin: 1px;
+}
+
+.TEAM_B_backSquare2 {
+  background-color: green;
+  position: absolute;
+  margin: 1px;
+}
+
+.TEAM_B_backSquare3 {
+  background-color: blue;
+  position: absolute;
+  margin: 1px;
+}
+
+.TEAM_B_text {
+  font-size: 16px;
+  color: white;
+  position: absolute;
+  left: 90px;
+  background-color: rgba(30, 100, 200);
+  display: inline-block;
+  margin: 2px;
+  padding: 2px;
+}
+
+.TEAM_B_shape {
+  position: absolute;
+  background-color: black;
+  border-color: white;
+  border-style: solid;
+  border-width: 5px;
+
+}
+
+.TEAM_B_chaosShape {
+  position: absolute;
+  background-color: brown;
+  border-color: gold;
+  border-style: double;
+  border-width: 5px;
+
+}
+
+.TEAM_B_orderShape {
+  position: absolute;
+  background-color: darkblue;
+  border-color: lightblue;
+  border-style: dashed;
+  border-width: 3px;
+
+}
+
+.TEAM_B_ANI_D_cell {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  background: red;
+}
+
+/*CSS TEAM F**/
+
+.TEAM_F_joyImg {
+  width: 375px;
+  height: 375px;
+}
+
+.TEAM_F_sun {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #f3f362, #f1be06 40%, #f4a005);
+  box-shadow: 0 0 40px 15px rgba(219, 173, 20, 0.5);
+  transition: top 0.4s ease-out;
+  overflow: visible;
+}
+
+.TEAM_F_paintDot {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  opacity: 1;
+  /* centers dot to cursor */
+  transform: translate(-50%, -50%);
+  /* adds trailing effect */
+  transition: opacity 1s linear;
+  /* smiley emoji */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  /* hide cursor */
+  cursor: none;
+}
+
+.TEAM_F_rays {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140px;
+  height: 140px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+
+  background: radial-gradient(circle,
+      rgba(255, 245, 180, 0.9) 0%,
+      rgba(255, 220, 120, 0.6) 35%,
+      rgba(255, 200, 80, 0.35) 55%,
+      rgba(255, 180, 40, 0.15) 70%,
+      rgba(255, 160, 20, 0) 85%);
+
+  filter: blur(2px);
+
+  box-shadow:
+    0 0 30px 15px rgba(255, 210, 80, 0.35),
+    0 0 60px 30px rgba(255, 200, 50, 0.25);
+}
+
+.TEAM_F_sun.active {
+  box-shadow:
+    0 0 60px 25px rgba(255, 220, 120, 0.8),
+    0 0 120px 50px rgba(255, 200, 80, 0.4);
+
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* Team a CSS*/
+
+.TEAM_I_Btn {
+  width: max-content;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  color: rgb(0, 94, 255);
+  margin: 1px;
+  padding: 12px;
+  font-size: 18px;
+}
+
+
+
+.TEAM_I_Btn:hover {
+  background-color: rgb(44, 117, 253);
+  color: white;
+  cursor: pointer;
+
+}
+
+.TEAM_I_Word {
+  color: rgb(17, 164, 255);
+  font-size: 22px;
+  position: absolute;
+  /* border-radius: 10px;
+  border-color: rgb(121, 203, 253); */
+
+}
+
+.TEAM_I_Blue_Cirle {
+  background: rgb(74, 190, 236);
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
 }
 
 

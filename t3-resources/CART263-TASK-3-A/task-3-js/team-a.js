@@ -1,6 +1,7 @@
 setup_A();
 /** THEME: CALM  */
 function setup_A() {
+  //Aydan, Ben M, Matia
   console.log("in a");
   /**************************************************** */
   //get the buttons
