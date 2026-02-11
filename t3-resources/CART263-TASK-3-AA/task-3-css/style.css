@@ -265,7 +265,7 @@ body{
   color: rgb(0, 0, 0);
   padding: 10px;
   border-style:solid;
-  width: auto;
+  position:absolute;
   
 }
 

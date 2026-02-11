@@ -415,7 +415,7 @@ function setup_B() {
       let maxWidth = Math.floor(Math.random() * (150 - 60 + 1) + 60) + "px";
       let imageSelect = Math.floor(Math.random() * images.length)
       let image = document.createElement("img");
-      image.classList.add("TEAM_D_ANI_D_img");
+      image.classList.add("TEAM_I_ANI_I_img");
       image.setAttribute("draggable", "false");
       image.src = images[imageSelect];
       image.addEventListener("mousedown", imageMoveStart);

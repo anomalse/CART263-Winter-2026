@@ -22,47 +22,70 @@ function setup_C() {
    * Do not change any code above or the HTML markup.
    * **/
 
-  function aniA(parentCanvas) {
-    console.log("in ani-A -teamC");
+   function aniA(parentCanvas) {
     let Newbutton = document.createElement("button");
 
     Newbutton.id = 'cool-button';
     Newbutton.classList.add('stupid-button');
 
+
+
     Newbutton.textContent= 'Click';
     parentCanvas.appendChild(Newbutton);
     console.log("in ani-A -teamC");
 
+    //changing button textContent
+    let guuNumberCounter = 1;
+    //creating container
+    let guuContainer = document.createElement("div");
+    
+    
+    //creating grid
+    guuContainer.classList.add("guuGrid")
+    guuContainer.style.width = "100%"
+    guuContainer.style.height = "auto"
+    guuContainer.style.display = "grid"
+    
+    
     Newbutton.addEventListener("click", function (e){
-      //creating div
-      let guuContainer = document.createElement("div");
+      
       //creating image
       let guu = document.createElement("img");
       //chaging attributes
-      guu.id = "guu"
+      guu.classList.add("guuImage")      
+      guu.style.display = "block"
+      guu.style.width = "100%"
+      guu.style.height = "100%"
       guu.setAttribute("src","guu.gif");
-      guu.setAttribute("width","350px")
-      guu.setAttribute("height","100%")
+      
 
       
-      guuContainer.setAttribute("width","100%")
-      guuContainer.setAttribute("height","100%")
-      guuContainer.id = "guuGrid"
+
+      //increasing gridsize along with clicks
+      let gridSize = Math.ceil(Math.sqrt(guuNumberCounter));
+      guuContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
 
       //parenting
-      parentCanvas.appendChild(guuContainer);
       guuContainer.appendChild(guu)
+      parentCanvas.appendChild(guuContainer);
+      
+      Newbutton.textContent = guuNumberCounter
+      //fucntion to update button
+      function updateStupidButton(){
+        document.getElementById("cool-button").innerHTML = guuNumberCounter
+      }
+      
+      //increasing number on button
+      function incrementAC(){
+        guuNumberCounter++
+        updateStupidButton();
+        console.log("shit is updated")
+      }
 
-      //changing button textContent
-      Newbutton.textContent = '1'
-
+      incrementAC();
 
     })
-    for (let i= 1; i<2; i++){
-
-
-    }
-
+    
   }
   
   
