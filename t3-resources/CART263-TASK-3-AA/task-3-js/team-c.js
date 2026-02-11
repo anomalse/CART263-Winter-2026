@@ -182,17 +182,121 @@ function setup_C() {
       //code for key down in here
       console.log(e);
       console.log("c-down");
+      if (e.code === "Space") holdingSpace = true;
     };
 
     /*** THIS IS THE CALLBACK FOR KEY UP (*DO NOT CHANGE THE NAME..) */
     windowKeyUpRef = function (e) {
       console.log(e);
       console.log("c-up");
+      if (e.code === "Space") holdingSpace = false;
     };
     //DO NOT REMOVE
     window.addEventListener("keydown", windowKeyDownRef);
     window.addEventListener("keyup", windowKeyUpRef);
+
+    drawScene();
+    animate();
   }
+
+
+  let waves;
+
+  function drawScene(){
+    var c = document.getElementById("ani_canvC_C");
+    c.classList.add("TEAM_C_SKY");
+    c.style.display = "block";
+    
+    var sand = document.createElement('div');
+    sand.classList.add("TEAM_C_SAND");
+    c.appendChild(sand);
+
+    var sun = document.createElement('div');
+    sun.classList.add("TEAM_C_SUN");
+    c.appendChild(sun);
+
+    var dark = document.createElement('div');
+    dark.classList.add("TEAM_C_DARK");
+    c.appendChild(dark);
+
+    var med = document.createElement('div');
+    med.classList.add("TEAM_C_MED");
+    c.appendChild(med);
+
+    var light = document.createElement('div');
+    light.classList.add("TEAM_C_LIGHT");
+    c.appendChild(light);
+
+    var white = document.createElement('div');
+    white.classList.add("TEAM_C_WHITE");
+    c.appendChild(white);
+
+    // store the divs in global var
+    waves = [
+      { level: med, offset: 0, delay: 0 },
+      { level: light, offset: 0, delay: 120 },
+      { level: white, offset: 0, delay: 240 }
+    ];
+  }
+
+
+  const MAX_MOVE = 40;   // how far waves move
+  const SPEED = 0.12;   // easing speed
+  let holdingSpace = false;
+  let wasHoldingSpace = false; 
+  let startTime = null; // the time since the animation began
+
+function animate(time) {
+  // time = milliseconds since the page started rendering
+  // provided by browser when requestAnimationFrame is called
+
+  // Initialize startTime the first frame
+  if (startTime === null) {
+    startTime = time;
+  }
+
+  // check if the user has changed holding/not holding space and if so, restart the animation
+  if (wasHoldingSpace !== holdingSpace) {
+    startTime = time; 
+  }
+
+  // move the waves 
+  for (var i = 0; i < waves.length; i++) {
+
+    var wave = waves[i];
+
+    // calculate the time that has passed since the animation started 
+    var elapsedTime = time - startTime;
+
+    // subtracts the wave’s individual delay, waves move staggered
+    var timeAfterDelay = elapsedTime - wave.delay;
+
+    // only move if it is this wave's turn to move (delay is over) 
+    if (timeAfterDelay > 0) {
+      // move in different directions depending on space bar 
+      if (holdingSpace) {
+        // pull toward ocean (up)
+        var distanceToTarget = MAX_MOVE - wave.offset;
+        var moveAmount = distanceToTarget * SPEED; // move SPEED% of distance remaining, creates smooth transition bcs distance is smaller and smaller every frame 
+        wave.offset = wave.offset + moveAmount;
+      } else {
+        // push toward sand (down)
+        var distanceBack = 0 - wave.offset;
+        var moveBackAmount = distanceBack * SPEED;
+        wave.offset = wave.offset + moveBackAmount;
+      }
+    }
+
+    // move the wave 
+    wave.level.style.transform = "translateY(" + (-wave.offset) + "px)";
+  }
+
+  // Remember previous state for next frame
+  wasHoldingSpace = holdingSpace;
+
+  requestAnimationFrame(animate);
+}
+  
 
    /****************ANI D************************************ */
   /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN D INSIDE HERE */
