@@ -148,6 +148,7 @@ function setup_D() {
    * **/
 
   function aniB(parentCanvas) {
+    parentCanvas.style.background = "#000000";
       console.log("in ani-B -teamD");
 
       const grid = document.createElement("div");

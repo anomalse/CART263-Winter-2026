@@ -191,6 +191,7 @@ parentCanvas.appendChild(txt);
 
 /*** THIS IS THE CALLBACK FOR KEY DOWN (* DO NOT CHANGE THE NAME *..) */
 windowKeyDownRef = function (e) {
+  e.preventDefault();
 console.log(e);
 console.log("e-down");
 

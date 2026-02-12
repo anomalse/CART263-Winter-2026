@@ -202,6 +202,7 @@ function setup_C() {
 
     /*** THIS IS THE CALLBACK FOR KEY DOWN (* DO NOT CHANGE THE NAME *..) */
     windowKeyDownRef = function (e) {
+      e.preventDefault();
       //code for key down in here
       console.log(e);
       console.log("c-down");

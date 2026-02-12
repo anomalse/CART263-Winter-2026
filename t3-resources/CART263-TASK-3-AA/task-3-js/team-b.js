@@ -22,6 +22,7 @@ function setup_B() {
    * Do not change any code above or the HTML markup.
    * **/
    
+  //SEAN
   function aniA(parentCanvas) {
     console.log("in ani-A -teamB");
     
@@ -312,24 +313,118 @@ function setup_B() {
    * using  ONLY key down and/or keyup -- any keys::
    */
 
+  //RAY
   function aniC(parentCanvas) {
-      console.log("in ani-C -teamB");
+    console.log("in aniC - TEAM B simple key event");
 
-    /*** THIS IS THE CALLBACK FOR KEY DOWN (* DO NOT CHANGE THE NAME *..) */
+    parentCanvas.style.backgroundColor = "rgb(20, 20, 30)";
+    parentCanvas.style.position = "relative";
+    parentCanvas.innerHTML = "";
+
+    const DOT_SIZE = 14;
+    const DOT_GAP = 2;
+    const DOT_COLOR = "rgb(40, 140, 255)"; // blue
+
+    let groups = [];
+
+    // timer state
+    let pulse = 0;
+    let pulseDir = 1;
+
+    // Timer: pulse all dots
+    const timerRef = setInterval(function () {
+      pulse += pulseDir * 0.03;
+      if (pulse > 1) pulseDir = -1;
+      if (pulse < 0) pulseDir = 1;
+
+      const allDots = parentCanvas.querySelectorAll(".TEAM_H_dot");
+      for (let i = 0; i < allDots.length; i++) {
+        allDots[i].style.opacity = String(0.6 + pulse * 0.4);
+      }
+    }, 60);
+
     windowKeyDownRef = function (e) {
-      //code for key down in here
-      console.log(e);
-      console.log("b-down");
+      // adds a new dot cluster
+      if (e.code === "Space") {
+        e.preventDefault();
+
+        const group = createDotGroup();
+        parentCanvas.appendChild(group);
+        groups.push(group);
+      }
+
+      // BACKSPACE = remove last dot cluster
+      else if (e.code === "Backspace") {
+        e.preventDefault();
+
+        if (groups.length > 0) {
+          const last = groups.pop();
+          last.remove();
+        }
+      }
     };
 
-    /*** THIS IS THE CALLBACK FOR KEY UP (*DO NOT CHANGE THE NAME..) */
-    windowKeyUpRef = function (e) {
-      console.log(e);
-        console.log("b-up");
-    };
-    //DO NOT REMOVE
+    windowKeyUpRef = function (e) {};
+
     window.addEventListener("keydown", windowKeyDownRef);
     window.addEventListener("keyup", windowKeyUpRef);
+
+    // builds a "shape made of circles"
+    function createDotGroup() {
+      // group wrapper
+      const group = document.createElement("div");
+      group.style.position = "absolute";
+
+      // position inside canvas
+      const box = parentCanvas.getBoundingClientRect();
+      const x = Math.floor(Math.random() * (box.width - 80)) + 10;
+      const y = Math.floor(Math.random() * (box.height - 80)) + 10;
+
+      group.style.left = x + "px";
+      group.style.top = y + "px";
+
+      const patternType = Math.floor(Math.random() * 3);
+
+      //grid
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 5; c++) {
+          let showDot = true;
+
+          // Pattern 0: plus sign
+          if (patternType === 0) {
+            showDot = r === 2 || c === 2;
+          }
+
+          // Pattern 1: X
+          if (patternType === 1) {
+            showDot = r === c || r + c === 4;
+          }
+
+          // Pattern 2: sqaure shape
+          if (patternType === 2) {
+            showDot = r === 0 || r === 4 || c === 0 || c === 4;
+          }
+
+          if (showDot) {
+            const dot = document.createElement("div");
+            dot.classList.add("TEAM_H_dot");
+
+            dot.style.position = "absolute";
+            dot.style.width = DOT_SIZE + "px";
+            dot.style.height = DOT_SIZE + "px";
+            dot.style.borderRadius = "80%";
+            dot.style.backgroundColor = DOT_COLOR;
+
+            dot.style.left = c * (DOT_SIZE + DOT_GAP) + "px";
+            dot.style.top = r * (DOT_SIZE + DOT_GAP) + "px";
+
+            group.appendChild(dot);
+          }
+        }
+      }
+
+      return group;
+    }
   }
 
   /****************ANI D************************************ */
@@ -347,6 +442,7 @@ function setup_B() {
    * remember you can define other functions inside....
    * Do not change any code above or the HTML markup.
    * **/
+  //WILLOW
    function aniD(parentCanvas) {
     //create a few starting variables to be used across functions
     let moving;
@@ -358,7 +454,7 @@ function setup_B() {
     let animating = false;
     let startHeight = 0;
     let shift = [];
-    console.log("in ani-D -teamD");
+    console.log("in ani-D -teamB");
 
     //create a few key image and div elements, append them to the canvas (or other divs) and set their style attributes directly
     let bgImage = document.createElement("img");
