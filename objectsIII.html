@@ -105,6 +105,28 @@ document.querySelector("#write_a").setAttribute("data-line",s_a)
   }
 </code>
 </pre>
+ <p>Next: let's add a  <code>renderAnimals</code> function in <code>garden.js</code></p>
+ <pre id = "write_k" class="language-javascript line-numbers">
+<script>
+let s_k = ""
+for(let i = 1; i< 79; i++){
+    if(i%2 ===0){
+        s_k+=`${i},`
+    }
+}
+document.querySelector("#write_k").setAttribute("data-line",s_k)
+</script>
+<code>
+function renderAnimals(){
+  // Go through all the animals and move, wrap, and display them
+  for (let i = 0; i < garden.dogs.length; i++) {
+    let dog = garden.dogs[i];
+    dog.renderAnimal();
+  }
+}
+</code>
+</pre>
+<p>And call <code>renderAnimals</code> in the <code>createAndRenderTheGarden</code> function</p>
  <p>And finally let's add an  <code>updateGarden</code> function in <code>garden.js</code> to animate the <code>dogs</code>:</p>
 <pre id = "write_g" class="language-javascript line-numbers">
 <script>
@@ -123,7 +145,6 @@ function updateGarden(){
     let dog = garden.dogs[i];
     dog.move();
     dog.wrap();
-    dog.renderAnimal();
   }
   window.requestAnimationFrame(updateGarden)
   }
@@ -214,7 +235,17 @@ class Bird {
   }
 </code>
 </pre>
-<p>And the code to move and display them:</p>
+<p>Add the code to display them in the <code>renderAnimals():</code></p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17" class="language-javascript line-numbers">
+<code>
+// Go through all the birds and move, wrap, and display them
+  for (let i = 0; i < garden.birds.length; i++) {
+    let bird = garden.birds[i];
+    bird.renderAnimal();
+  }
+</code>
+</pre>
+<p>And add the code to move them in the <code>updateGarden():</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17" class="language-javascript line-numbers">
 <code>
 // Go through all the birds and move, wrap, and display them
@@ -222,7 +253,6 @@ class Bird {
     let bird = garden.birds[i];
     bird.move();
     bird.wrap();
-    bird.renderAnimal();
   }
 </code>
 </pre>
@@ -545,7 +575,141 @@ ensuring the result is within the specified range.
   }
 </code>
 </pre>
+<h3> Birds and Dogs interacting</h3>
+<p>So its super - we can now create <code>Dog</code> and <code>Bird</code> objects.</p>
+<p>They have behaviours, possibly even have event listeners attatched to their HTML elements.</p>
+<p> But - can they interact with eachother? Meaning: lets say we want our <span class = "customP">aware of eachother</span> and even <span class = "customP">modify their behaviour</span> based on the others presence </p>
+<p>Concretly: one needs to implement methods in the classes (<code>Dog</code> or <code>Bird</code>) that accept other objects as parameters... and can change ones own properities based on certain critera</p>
+<h4>Example: Dogs catching Birds</h4>
+<p>So first we will implement the functionality for a dog to be given the ability to <code>jump</code></p>
+<p>We start by adding a <code>boolean member property</code> to test if a dog is jumping or not:
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+      this.isjumping = false;
+</code>
+</pre>
+<p> Next - we will add a method in the <code>Dog class</code> to allow for the jumping movement:</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+    jump() {
+   // console.log("jump");
+    this.isjumping = true;
+    this.vy = -27; //speed to go up
+  }
 
+</code>
+</pre>
+<p> So - this method sets the variable to true and gives an initial y velocity for jumping</p>
+<p>Additionally, we will implement a method to <span class="customP">update the jumping movement every frame</span>:</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+  updateJump() {
+    //check if I am on the "ground" i.e. y of dog is > or equal to 150
+    if (this.y < 150) {
+      this.vy += 1; //speed of drop
+    }
+    //stop jumping
+    else {
+      this.isjumping = false;
+      this.vy = 0; //reset y speed
+      this.y = 100; //reset y value
+    }
+  }
+</code>
+</pre>
+<p>Ok - now to actually decide for when we want a dog to jump</p>
+<p>Let's allow for only the <span class = "customP">first dog</span> to be able to jump when the <code>SPACE</code> bar is pressed.</p>
+<p>So lets add the following code at the bottom of <code>garden.js</code> (inside the window.onload):</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+ // new jump on key press
+  window.addEventListener("keydown", function(e){
+    //set up to allow got "0" to jump 
+    if(e.code ==="Space"){
+      //prevent default behaviour of the space bar
+      e.preventDefault()
+      //check if the dog is already jumping
+      if(garden.dogs[0].isjumping ===false){
+        garden.dogs[0].jump()    
+      }
+    
+    }
+  })
+  </code>
+  </pre>
+<p>Finally: at the top of the <code>updateGarden()</code> in <code>garden.js</code>, lets add the code to check if the dog is jumping and if it is to update the jumping movement:</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+   // if the first dog is set to jump
+    if(garden.dogs[0].isjumping ===true){
+      console.log("jump")
+      garden.dogs[0].updateJump()
+    }
+  </code>
+  </pre>
+<p>If you test now - you should be able to see the first dog jumping -when you press the <code>SPACE</code> bar</p>
+<p>So now for the <span class = "customP">bird catching</code> functionality</p>
+<p>We will implement a method in the <code>Dog class</code> called <code>catchBird()</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+// catch bird :()
+  catchBird(bird) {
+  }
+</code>
+</pre>
+<p>What is important here to note is that when called, the method will <span class = "customP">take a bird as an argument</span>... why?</p>
+<p> Well so that the dog instance has <code>access</code> to the bird's properties.</p>
+<p>The first thing we will do in this method (<code>catchBird</code>)then is to <span class = "customP">determine the distance between the dog instance and the bird variable:</span></p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+  let birdEl = bird.animalBody.getBoundingClientRect();
+  let dogBody = this.animalBody.getBoundingClientRect();
+  let d = distance(birdEl.x, birdEl.y, dogBody.x, dogBody.y)
+</code>
+</pre>
+<p>Well Vanilla JS does not have an inbuilt distance function ... so add this generic one to your code:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+/*
+The Euclidean distance between two points is the length of the line segment connecting them. 
+The formula for calculating it in 2D is equal to the hypotenuse of a right triangle, 
+given by the Pythagorean theorem.
+*/
+
+function distance(x0, y0, x1, y1) {
+  return Math.hypot(x1 - x0, y1 - y0);
+}
+</code>
+</pre>
+<p> So now if the distance is within a specified radius - we will say that the bird has been caught by the dog.</p>
+<p>Consequently the bird will become orange - just for debugging. So add the following into the <code>catchBird</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+   if (d < 50){
+      console.log("collision")
+      console.log( bird.animalBody.style.background)
+      bird.animalBody.style.background = `orange`
+
+    }
+</code>
+</pre>
+<p>And all that's left to do is decide where to call this <code>catchBird()</code>.</p> 
+<p>In our case we want to check for catching when the dog is jumping --  so add to the <code> if(garden.dogs[0].isjumping ===true){ ...}</code> in the <code>updateGarden()</code></p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+      garden.dogs[0].catchBird(garden.birds[0])
+</code>
+</pre>
+<p> does it work?... If yes then look how easily we can check if the dog is catching <em>any bird</em>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39" class="language-javascript line-numbers">
+<code>
+     for(let i =0; i< garden.birds.length;i++){
+        //try to catch any bird
+         garden.dogs[0].catchBird(garden.birds[i])
+      }
+</code>
+</pre>
+<p> And ... so hopefully this example has showed you a general enough strategy for allowing for objects to be passed as parameters to other object methods...</p>
 <h3> Composition</h3>
 <p>So lets start with a new example :) </p>
 <p>Our goal is to implement a <span class  = "customP"> a role playing game </span> with <strong>magicians and fighters</strong></p>
@@ -767,10 +931,6 @@ This copying of properties from one or more objects into a new one is known as <
   <br>The <code>this</code> keyword is confusing to many, and doesn't behave quite the same way as it does in other languages, so avoiding it helps in code comprehension:)</p>
 </p>
 
-<!--https://medium.com/@abdy4lvarez/composition-of-every-kind-in-javascript-38b5f2111a54 -->
-<!--https://jordan-eckowitz.medium.com/javascript-composition-vs-inheritance-4b99234593a9-->
-
-<!--https://medium.com/code-monkey/object-composition-in-javascript-2f9b9077b5e6-->
 </section>
 </main>
   <script src="js/prism.js"></script>
