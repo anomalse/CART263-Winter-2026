@@ -20,43 +20,120 @@
          <nav id = "cart263Nav"></nav>
         <script src = "js/loadNav.js"></script>
        <div class="inner-head">
-                <h1>TASK 4: <br/>iNTERACTIVE & ANIMATING PATTERNS </h1>
+                <h1>TASK 4: <br/> OBJECTS: CREATE, ANIMATE, MAKE INTERACTIVE </h1>
             </div>
     </header>
     <main>
 
 <section class="contents-tasks">
 <ul>
-<li>Please use the HTML and CSS provided <a href = "#">HERE</a></li>
+<li>Please use the HTML and CSS provided <a href = "t4-resources/CART263-TASK-4.zip">HERE</a></li>
 <li>The purpose of this task is to practise designing and implementing objects (properties and methods) by building upon the example (Bees and Trees) presented in class.</li>
-<li><h3>CREATING AND ANIMATING OBJECTS AND MAKING THEM INTERACTIVE</h3>
-This task requires that once again in teams of 3-4 MAX - each team completes <strong>their allocated team's task</strong> : in the code there are <strong>6</strong> different tasks: 
-<br>all similar, all using objects and all building upon the Bees and Trees example. 
-<br>Each team must implement the code, following the given instructions - so that at the end - <span class = "customP">we have one fully working sketch made up of <strong>all</strong> the parts...</span></li>
+This task requires that once again in teams of 3-4 MAX - each team completes <strong>their allocated team's task</strong>.</li>
+</ul>
+<h3>PART ONE (COMPLETE PARTS A-F)</h3>
+<ul>
+    <li> In the code there are <strong>6</strong> different teams (A,B,C,D,E and F)</li>
+    <li>Each team must implement the code for their team, following the given instructions for their allocated task AND 
+    <br/> each task is linked to another task (A-B), (C-D) and (E-F).
+    <br/> So, each team <em>must</em> also collaborate with their counter part to implement the required functionality.
+    </li>
+    <li>The end goal is that <span class = "customP">for each class section the result will be <strong> one </strong> fully working sketch made up of <strong>all</strong> parts (A-F)</span>
+    </li>
+</ul>
+<h3>TEAM A -- BEES</h3>
+<ol>
+ <li> Create a  file to hold a  Bee Class (i.e. Bee.js)</li>
+ <li> Create the Bee Class : a constructor which takes a position, size, color and a home beehive <code>(SEE TEAM B for collab)</code> as parameters</li>
+  <li> In the Bee Class: Create a renderBee() method -> which essentially creates a HTML element(s)
+  <br/> - could be  * an image element :) or an svg .... representing a Bee... (see Sun or Flower for inspiration)</li>
+ <li> Create an animateBee() method in the Bee class - which will make a given Bee move around the garden - use the requestAnimationFrame()</li>
+ <li> In garden.js add at least 5 new Bees to the garden (in an array) - 
+ <br/> all different sizes, colors etc... and set their position to be at their home Beehive's position</li>
+ <li> and then call the animateBee() method on all the Bees)</li>
+ <li> Implement the functionality  to allow for bees to periodically return to their home beehive <code>(SEE TEAM B for collab)</code> to rest :)</li>
+ </ol>
 
-<li><h3>PART ONE (COMPLETE PARTS A-F)</h3>
-You will be divided up into 6 teams. and each team will complete their task</li>
+<h3>TEAM B -- BEE HIVES</h3>
+  <ol>
+ <li> Create a file to hold a Bee Hive (i.e. BeeHive.js)</li>
+ <li> Create the BeeHive Class : a constructor which takes a position, size and color as parameters</li>
+<li> In the BeeHive Class: Create a renderBeeHive() method -> which essentially creates  HTML element(s) 
+<br/> could be * an image element :) or an svg .... representing a BeeHive.. (see Sun or Flower for inspiration)</li>
+ <li> Create a subtle animation affecting the bee-hive ... (using setInterval(), setTimeout, or requestAnimationFrame)</li>
+<li> In garden.js add at least new 2 Beehives  to the garden (in an array) - and ensure that they have bees linked to them</li>
+<li> Add a mouse click event to each beehive such that when clicked on -> you count the number of bees <code>(SEE TEAM A for collab)</code> "at home" 
+  and visually display the result.</li>
+  </ol>
 
-<li><h3>PART TWO (PRESENT ONE PART OF A-F)</h3>
-Each team will present their solution to their allocated part <em>in class</em></li>
 
+<h3>TEAM C -- SQUIRRELS</h3>
+ <ol>
+ <li>Create a file to hold a Squirrel Class (i.e. Squirrel.js)</li>
+<li> Create the Squirrel Class : a constructor which takes a position, size and color as parameters</li>
+<li> Create a renderSquirrel() method -> which essentially creates a HTML element(s) - could be
+ <br>an image element :) or an svg .... representing a Squirrel... (see Sun or Flower for inspiration)</li>
+<li>Create an animateSquirrel() method in the Squirrel class - which will make a given Squirrel move around the garden - use the requestAnimationFrame()</li>
+<li> In garden.js add 5 new Squirrels to the garden (in an array) - all different sizes and colors and in different positions
+ <br/>and then call the animateSquirrel() method on all the Squirrels</li>
+<li> Implement a counter to keep track of how many nuts any given squirrel has picked up <code>(SEE TEAM D for collab)</code></li>
+ </ol>
+
+<h3>TEAM D -- NUTS</h3>
+<ol>
+<li>Create a file to hold a  Nut Class (i.e. Nut.js)</li>
+<li> Create the Nut Class : a constructor which takes a position, size and color as parameters</li>
+ <li> Create a renderNut() method -> which essentially creates a HTML element(s) - could be
+  <br/> an image element :) or an svg .... representing a Nut... (see Sun or Flower for inspiration)</li>
+ <li> In garden.js add at least 10 new Nuts to the garden (in an array) -  all different sizes and colors and in different positions</li>
+<li> Implement the functionality such that any nut can be picked up by a squirrel <code>(SEE TEAM C for collab)</code> </li>
+<li>If a nut is picked up by a squirrel then make that nut "inactive" and add a new nut in the garden ... </li>
+</ol>
+
+
+<h3>TEAM E -- BIRDS</h3>
+ <ol>
+<li> Create a file to hold a  Bird Class (i.e. Bird.js)</li>
+<li> Create the Bird Class : a constructor which takes a position, size and color as parameters</li>
+<li> Create a Bird() method -> which essentially creates a HTML element(s) - could be
+ <br/> an image element :) or an svg .... representing a Bird... (see Sun or Flower for inspiration)</li>
+<li> Create an animateBird() method in the Bird class - which will make a given Bird move around the sky - use the requestAnimationFrame()</li>
+<li> In garden.js add an empty array for the birds</li>
+<li> Use either the keyboard or mouse events to dynamically allow for users to add new birds to the garden - and have them be animated.</li>
+<li> Ensure that birds take cover somewhere in the garden if the weather temp <code>(SEE TEAM F for collab)</code> is determined to be too cold/ too hot or if it is raining.</li>
+ </ol>
+
+<h3>TEAM F -- WEATHER</h3>
+<ol>
+<li> Create a file to hold a Weather Class (i.e. Weather.js)</li>
+<li>Create the Weather Class : a constructor which takes at LEAST 2 properties: weather "state" i.e. sunny, raining, cloudy as well as a variable to hold the current temp </li>
+<li> Create a renderWeather() method -> which essentially will call one of a few custom methods to render the current weather.</li>
+<li> If the weather is determined to be sunny then call the renderSunny() which will contain HTML element(s) - could be
+ <br>images, svgs etc .... representing sunny weather, if the weather is determined to be rainy then one would call a renderRainy() etc ...</li>
+<li> In garden.js instantiate a weather state + add the current temperature.</li>
+<li> Implement the functionality such that at different time intervals the weather changes and or the temperature.</li>
+ <li> Ensure and Implement the functionality for the birds <code>(SEE TEAM E for collab)</code> to be affected by the current weather and temperature.</li>
+</ol>
+
+<h3>PART TWO (PRESENT ONE PART OF A-F)</h3>
+<ul>
+<li>Each team will present their solution to their allocated part <em>in class</em></li>
 <li>One person from each team should submit on github their part; and then the instructor will combine/integrate the individual submissions together.</li>
 </ul>
 
 <h3>SUBMISSION</h3>
 <ul>
-    <li> SECTION A (TUESDAY): submit to moodle by <span class = "customP"> MONDAY ** 12:00 (MIDDAY)</span> - so that Sabine can merge all the submissions into one file to present for Tuesdays class</li>
-    <li> SECTION AA (WEDNESDAY): submit to moodle by <span class = "customP"> TUESDAY ** 12:00 (MIDDAY)</span> - so that Sabine can merge all the submissions into one file to present for Wednesday's class</li>
-    <li> SECTION B (THURSDAY): submit to moodle by <span class = "customP"> WEDNESDAY ** 12:00 (MIDDAY)</span> - so that Joachim can merge all the submissions into one file to present for Thursday's class</li>
+    <li> SECTION A (TUESDAY): submit to moodle by <span class = "customP"> MONDAY FEB 23 12:00 (MIDDAY)</span> - so that Sabine can merge all the submissions into one file to present for Tuesdays class</li>
+    <li> SECTION AA (WEDNESDAY): submit to moodle by <span class = "customP"> TUESDAY FEB 24 12:00 (MIDDAY)</span> - so that Sabine can merge all the submissions into one file to present for Wednesday's class</li>
+    <li> SECTION B (THURSDAY): submit to moodle by <span class = "customP"> WEDNESDAY FEB 25 12:00 (MIDDAY)</span> - so that Joachim can merge all the submissions into one file to present for Thursday's class</li>
 </ul>
 <h3>GRADING SCHEMA</h3>
 <ul>
-<li style="list-style-type: none">This task is worth 4% ...  and so the student will be evaluated either with 1%, 2%, 3% or 4%:
+<li>This task is worth 4% ...  and so the student will be evaluated either with 1%, 2%, 3% or 4%:
+<br><span class="customP">All members of a given team will be allocated the same grade - so work together :)</span>
 </li>
-<li> 1% for successful implementation + creative considerations of ONE PART  </li>
-<li> 2% for successful implementation + creative considerations of TWO PARTS </li>
-<li> 3% for successful implementation + creative considerations of THREE PARTS </li>
-<li> 4% for successful implementation + creative considerations of ALL FOUR PARTS </li>
+<li> Up to 2% for successful implementation of a given <em>team's</em> task requirements </li>
+<li> Up to 2% for creative, visual, explorative considerations of a given <em>team's</em> task </li>
 </ul>
 </section>
 </main>
