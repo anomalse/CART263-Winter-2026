@@ -352,12 +352,10 @@ class Dog  extends Animal{
      // Because the Animal is the superclass for our Dog, we call its constructor super()!
     // So super(x,y) means: call the superclass' constructor with arguments
     // x and y (values passed in as arguments when the Dog is created)
-    super(x, y);
+    super(x, y,width,height);
 
     // After using the Animals's constructor() we need to set
     // the Animals properties to the specific values for a Dog
-    this.width = width;
-    this.height = height;
     this.vx = Math.random() * 5 + 1;
     this.vy = 0;
     this.animalBody = document.createElement("div");
@@ -400,10 +398,8 @@ class Bird extends Animal{
   constructor(x, y,width,height) {
     // Call the Animal's constructor()
     // Remember, it's called super() when we call it from a subclass
-    super(x, y);
+    super(x, y,width,height);
    // Set our properties to the specific bird values
-    this.width = width;
-    this.height = height;
     this.vx = Math.random() * 5 + 1;
     this.vy = 0;
     this.animalBody = document.createElement("div");
@@ -449,10 +445,8 @@ class Bird extends Animal{
   constructor(x, y,width,height) {
     // Call the Animal's constructor()
     // Remember, it's called super() when we call it from a subclass
-    super(x, y);
+    super(x, y,width,height);
    // Set our properties to the specific bird values
-    this.width = width;
-    this.height = height;
     this.vx = Math.random() * 5 + 1;
     this.vy = 0;
     this.animalBody = document.createElement("div");
