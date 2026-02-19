@@ -173,7 +173,7 @@ context.closePath();
 <p>As an example  - lets append our current sketch to include an irregular shape:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
-/AN IRREGULAR SHAPE
+// AN IRREGULAR SHAPE
 let lineLength = 100;
 let x1 = canvas.width/2;
 let y1 =canvas.height/2;
@@ -223,7 +223,6 @@ drawSinglePetal(xPos,yPos,radius,colors[1])
 function drawSinglePetal(x,y,r,fillColor){
 context.fillStyle = fillColor; // change the color we are using
 context.strokeStyle = fillColor; // change the color we are using
-
 context.beginPath();
 context.arc(x,y,r,startAngle,endAngle, true);
 context.fill(); // set the fill
@@ -231,37 +230,21 @@ context.lineWidth=2; //change stroke
 context.stroke();//set the stroke
 context.closePath();
 }
-
 </code>
 </pre>
-<p>Then - we can create a display function that will execute the necessary drawing functions to display a triangle:</p>
+<p>Then - we can will call our <code>createFlower()</code> function to actually render a flower to the screen:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
-  function display(tri){
-    context.beginPath(); //start a path
-    context.moveTo(tri.x1,tri.y1); //where to start drawing
-    context.lineTo(tri.x2,tri.y2); //lineTo(where to go from last...)
-    context.lineTo(tri.x3,tri.y3);
-    context.lineTo(tri.x1,tri.y1);
-    context.fillStyle = tri.fillColor; // change the color we are using
-    context.fill();
-    context.strokeStyle = tri.strokeColor; // change the color we are using
-    context.lineWidth =tri.lineWidth;
-    context.stroke();
-    context.closePath(); //end a path ...
-   }
-   </code>
+ //call function to create a flower
+ let startAngle = 0;
+ let endAngle = Math.PI * 2; //full rotation
+ createFlower(canvas.width / 2,canvas.height / 2, 60,["#ff0088ff","rgb(187, 231, 254)"])
+</code>
 </pre>
-<p>Now: call the <code>display()</code></p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
-<code>
- display(triangle_1);
- </code>
-</pre>
+
 <p>Ok! We are ready to animate ... </p>
-<h4>ANimate the Triangle </h4>
 <p>Remember when we introduced the <code>requestAnimationFrame()</code> function? 
-<br/>We will now use it again in order to animate the triangle in the canvas...
+<br/>We will now use it again in order to animate the flower in the canvas...
 <br/>Let's set up an <code>animate()</code> function:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
@@ -272,220 +255,44 @@ requestAnimationFrame(animate);
 }
 </code>
 </pre>
-<p>Then: within the <code>animate()</code>, we want to <span class = "customP"> update the triangle and then re-display .. </span>
-<br/>So - first lets write a function that will update ALL the points of a triangle given one (x,y) pair:</p>
+<p>Then: within the <code>animate()</code>, we want to <span class = "customP"> update the flower and then re-render according to a new size</span>
+<br/>(Do first remove the first flower ... )</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
-  //method to update the points ... of triangle given one x and one y
-      function setPoints(tri){
-        //p1
-        tri.x1 = tri.xRef;
-        tri.y1 = tri.yRef;
-        //p2
-        tri.x2 = tri.x1+lineLength;
-        tri.y2 = tri.y1;
-        //p3
-        tri.x3 = tri.x1+(lineLength/2);
-        tri.y3 = tri.y1-lineLength;
-}
-</code>
-</pre>
-<p>Then ... we can add to the <code>animate()</code>:</p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
-<code>
- function animate(){
-        setPoints(triangle_1);
-        display(triangle_1);
-        triangle_1.xRef+=triangle_1.xSpeed;
-        triangle_1.yRef+=triangle_1.ySpeed;
-        requestAnimationFrame(animate);
-    }
+  let r1 = 30;
+  let counter = 0;
+  requestAnimationFrame(animate);
+  function animate() {
+    //console.log("go")
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    //we will make a scaling animation:
+    //math.sin goes from [-1,1]*30 == -30,30
+    //then if we add 30 to the min ==0 and to the max will be 60 :)
+    let newSize = Math.sin(counter) * r1 + r1;
+    createFlower(canvas.width / 2, canvas.height / 2, newSize, [
+      "#ff0088ff",
+      "#ce4990ff",
+    ]);
+    counter += 0.01;
+    requestAnimationFrame(animate);
+  }
 </code>
 </pre>
 <p>Nice..... 
-<br/>Just like in p5 where you recall the <code> background()</code> in order to clear the canvas; here the implementation is:</p>
+<br/>Just like in p5 where you recall the <code> background()</code> in order to clear the canvas. Here the implementation is:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
 //repaint with a black rect..
 context.clearRect(0,0,canvas.width,canvas.height);
 </code>
 </pre>
-<p>Ok - we can test the flexibility of the code by adding a second triangle:</p>
+<p>Ok - we can test the flexibility of the code by adding a second flower in the <code>animate()</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
-  let triangle_2 = {
-    x1: canvas.width / 2,
-    y1: canvas.height / 2,
-    x2: canvas.width / 2 + lineLength,
-    y2: canvas.height / 2,
-    x3: canvas.width / 2 + lineLength / 2,
-    y3: canvas.height / 2 - lineLength,
-    strokeColor: "#FFFFFF",
-    fillColor: "#156cc8",
-    lineWidth: 2,
-    xSpeed:-1, 
-    ySpeed:1,
-    xRef:100,
-    yRef:100,
-  };
-  </code>
-</pre>
-<p>And change the <code>animate()</code> to include the second triangle :</p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
-<code>
-function animate() {
-    //repaint with a black rect..
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    setPoints(triangle_1);
-    display(triangle_1);
-    triangle_1.xRef+=triangle_1.xSpeed;
-    triangle_1.yRef+=triangle_1.ySpeed;
- 
-
-   setPoints(triangle_2);
-   display(triangle_2);
-   triangle_2.xRef+=triangle_2.xSpeed;
-   triangle_2.yRef+=triangle_2.ySpeed;
-
-   requestAnimationFrame(animate);
-  }
-</code>
-</pre>
-<p>We can go even furthur here - and implement our triangle object using a <span class = "customP">class</span>. 
-<br/>This would allow us to put the animation code, <code>setPoints()</code>, and <code>display()</code> all into the class - making more much more organized code...
-<br/>Lets start with a basic class with a <code>constructor</code>and a <code>display()</code> with a new js file: <code>triangle.js</code>:</p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43" class="language-javascript line-numbers">
-<code>
-class Triangle {
-  constructor(
-    xRef,
-    yRef,
-    lineLength,
-    strokeColor,
-    fillColor,
-    lineWidth,
-    xSpeed,
-    ySpeed
-  ) {
-    this.xRef = xRef;
-    this.yRef = yRef;
-    this.lineLength = lineLength;
-    this.strokeColor = strokeColor;
-    this.fillColor = fillColor;
-    this.lineWidth = lineWidth;
-    this.xSpeed = xSpeed;
-    this.ySpeed = ySpeed;
-
-    // the points
-    this.x1 = this.xRef;
-    this.y1 = this.yRef;
-    this.x2 = this.xRef + this.lineLength;
-    this.y2 = this.yRef;
-    this.x3 = this.xRef + this.lineLength / 2;
-    this.y3 = this.yRef - this.lineLength;
-  }
-
-  display(context) {
-    context.beginPath(); //start a path
-    context.moveTo(this.x1, this.y1); //where to start drawing
-    context.lineTo(this.x2, this.y2); //lineTo(where to go from last...)
-    context.lineTo(this.x3, this.y3);
-    context.lineTo(this.x1, this.y1);
-    context.fillStyle = this.fillColor; // change the color we are using
-    context.fill();
-    context.strokeStyle = this.strokeColor; // change the color we are using
-    context.lineWidth = this.lineWidth;
-    context.stroke();
-    context.closePath(); //end a path ..
-  }
-}
-</code>
-</pre>
-<p>Make sure to include the new file in the html page:)
-<br/>and - lets make another js file - i.e. <code>main.js</code> ** also linked in the html ** that will USE the triangle class:</p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
-<code>
-window.onload = function(){
-    let canvas = document.getElementById("testCanvas");
-    //get the context
-    let context = canvas.getContext("2d");
-}
-</code>
-</pre>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31" class="language-javascript line-numbers">
-<code>
-Then lets make two triangle objects:
-window.onload = function () {
-  let canvas = document.getElementById("testCanvas");
-  //get the context
-  let context = canvas.getContext("2d");
-
-  let triangleA = new Triangle(
-    canvas.width / 2,
-    canvas.height / 2,
-    50,
-    "#FFFFFF",
-    "#156cc8",
-    2,
-    1,
-    1
-  );
-  triangleA.display(context);
-
-   let triangleB = new Triangle(
-    400,
-    10,
-    25,
-    "#FFFFFF",
-    "#C81582",
-    2,
-    -1,
-    1
-  );
-  triangleB.display(context);
-};
-</code>
-</pre>
-
-<p>Ok... lets add the methods to the triangle class in order to update the triangle:</p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
-<code>
-  setPoints() {
-    //p1
-    this.x1 = this.xRef;
-    this.y1 = this.yRef;
-    //p2
-    this.x2 = this.x1 + this.lineLength;
-    this.y2 = this.y1;
-    //p3
-    this.x3 = this.x1 + this.lineLength / 2;
-    this.y3 = this.y1 - this.lineLength;
-
-  }
-  update(){
-    this.xRef+=this.xSpeed;
-    this.yRef+=this.ySpeed;
-  }
-  </code>
-</pre>
-<p>And - then in <code>main.js</code> we can set up the animation.</p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
-<code>
-requestAnimationFrame(animate);
-
-  function animate() {
-    //repaint with a black rect..
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    triangleA.setPoints();
-    triangleA.update();
-    triangleA.display(context);
-    
-    triangleB.setPoints();
-    triangleB.update();
-    triangleB.display(context);
-
-    requestAnimationFrame(animate);
-  }
+     createFlower(canvas.width / 4, canvas.height / 4, newSize/2, [
+      "rgb(0, 213, 255)",
+      "#ce4990ff",
+    ]);
   </code>
 </pre>
 <h3> HTML 5 VIDEO </h3>
