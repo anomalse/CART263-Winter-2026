@@ -106,12 +106,13 @@ window.onload = function () {
 <p>And an example: append to the <code>canvas_setup.js</code>:
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
+   let rectSize = 50
   //a draw a rect:
   context.fillStyle = "rgba(255,0,0,255)";
   // draw a rect
-  context.fillRect(canvas.width / 2, canvas.height / 2, 50, 50);
+  context.fillRect(canvas.width / 2, canvas.height / 2, rectSize, rectSize);
   // cut out a rect inside
-  context.clearRect(canvas.width / 2 + 12.5, canvas.height / 2 + 12.5, 25, 25);
+  context.clearRect(canvas.width / 2 + rectSize/4, canvas.height / 2 + rectSize/4, rectSize/2, rectSize/2);
   </code>
 </pre>
 
