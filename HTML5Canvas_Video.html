@@ -170,35 +170,35 @@ context.closePath();
 <li><code>lineTo(x,y) </code> -> draw a line from where we were with the last command.</li>
 <li><code>moveTo(x, y)</code> -> A useful function, which doesn't actually draw anything but becomes part of the path list described above. You can probably best think of this as lifting a pen or pencil from one spot on a piece of paper and placing it on the next. -> very useful if you want to draw more complex shapes.</li>
 </ul>
-<p>As an example  - lets append our current sketch to include a triangle:</p>
+<p>As an example  - lets append our current sketch to include an irregular shape:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
+/AN IRREGULAR SHAPE
 let lineLength = 100;
 let x1 = canvas.width/2;
 let y1 =canvas.height/2;
-let x2 = x1+lineLength;
-let y2 = canvas.height/2;
-let x3 = x1+(lineLength/2);
-let y3 = y1-lineLength;
+let x2= x1+lineLength;
+let y2 = y1-lineLength;
+let x3 = x1-lineLength;
 
-// lets draw a triangle:
-//The lineTo() method adds a new point and creates a line
-//TO that point FROM the last specified point in the canvas
-//(this method does not draw the line) -rather the stroke/fill does.
 context.beginPath(); //start a path
 context.moveTo(x1,y1); //where to start drawing
+context.lineTo(x2,y1); //lineTo(where to go from last...)
 context.lineTo(x2,y2); //lineTo(where to go from last...)
-context.lineTo(x3,y3);
-context.lineTo(x1,y1);
-context.fill();
+context.lineTo(x3,y2); //lineTo(where to go from last...)
+context.lineTo(x1,y1); //lineTo(where to go from last...)
 context.strokeStyle = "#FFFFFF"; // change the color we are using
+context.fillStyle = "#bb25d5ff"
 context.lineWidth =2;
 context.stroke();
+context.fill();
 context.closePath(); //end a path ...
 </code>
 </pre>
-<p>Next: let's now try and animate our triangle :)
-<br>First set up an link a new js script to the html: <code> js/tri_ani.js</code> and add:
+
+<h4>Animation and Drawing</h4>
+<p>Next: let's now try and animate a flower shape </p>
+<br>First set up an link a new js script to the html: <code> js/flower_ani.js</code> and add:
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
 window.onload = function () {
@@ -206,31 +206,33 @@ window.onload = function () {
     let canvas = document.getElementById("testCanvas");
     //get the context
     let context = canvas.getContext("2d");
-    let lineLength =50;
 }
 </code>
 </pre>
-<p>Now: let's group the triangle coords, color, stroke etc into an <code>js object</code>:</p>
+<p>Now: let's add a function for drawing a <code>petal</code> and then create <strong>5</strong> petals within a  <code> createFlower()</code> function:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
 <code>
-// triangle obj 1:
-let triangle_1= {
-    x1: canvas.width/2,
-    y1: canvas.height/2,
-    x2: canvas.width/2+lineLength,
-    y2: canvas.height/2,
-    x3: canvas.width/2+(lineLength/2),
-    y3:canvas.height/2-lineLength,
-    strokeColor:"#FFFFFF",
-    fillColor:"#C81582",
-    lineWidth:2,
-    xSpeed:1, 
-    ySpeed:1,
-    xRef:1,
-    yRef:1,
+function createFlower(xPos,yPos,radius, colors){
+drawSinglePetal(xPos,yPos+3*radius/2,radius,colors[0])
+drawSinglePetal(xPos,yPos-3*radius/2,radius,colors[0])
+drawSinglePetal(xPos-3*radius/2,yPos,radius,colors[0])
+drawSinglePetal(xPos+3*radius/2,yPos,radius,colors[0])
+drawSinglePetal(xPos,yPos,radius,colors[1])
+}
 
-    };
-    </code>
+function drawSinglePetal(x,y,r,fillColor){
+context.fillStyle = fillColor; // change the color we are using
+context.strokeStyle = fillColor; // change the color we are using
+
+context.beginPath();
+context.arc(x,y,r,startAngle,endAngle, true);
+context.fill(); // set the fill
+context.lineWidth=2; //change stroke
+context.stroke();//set the stroke
+context.closePath();
+}
+
+</code>
 </pre>
 <p>Then - we can create a display function that will execute the necessary drawing functions to display a triangle:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25" class="language-javascript line-numbers">
