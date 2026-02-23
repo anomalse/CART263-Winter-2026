@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<head>
+  <title> CART 263 WINTER 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link href="css/themes/prism.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+  <header>
+    <h1> CART 263 WINTER 2026</h1>
+
+    <nav id="cart263Nav"></nav>
+    <script src="js/loadNav.js"></script>
+    <div class="inner-head">
+      <h1> MEDIA APIs</h1>
+    </div>
+  </header>
+  <main>
+
+    <section class="contents-notes">
+      <h3> The Media Capture API  II</h3>
+<h4>The Microphone and the Web Audio API</h4>
+      <p>You can also get <span class="customP">live microphone input</span> from the <code>getUserMedia()</code> method
+        - and then if you want to - you can pipe the stream to the Web Audio API in order to create and output some
+        real-time effects.</p>
+      <p>We use the same <code>navigator.mediaDevices.getUserMedia()</code> method - which once again will return the
+        media stream.
+        <br />Now, though, instead of just assigning the stream to the source object associated with an audio element,
+        we can pipe the stream to the <code>Web Audio API</code>:
+        <br />The <code>Web Audio API</code> is a high-level JavaScript library for processing and
+        synthesizing audio in web applications.
+        <br />The goal of this library is to include capabilities found in modern game audio engines and some of the
+        mixing, processing, and filtering tasks that are found in modern desktop audio production applications.
+       </p>
+       <br>
+        <p><span class="customP">The basic setup for the Web Audio API is as follows:</span></p>
+      <ol>
+        <li><code>An AudioContext</code> is needed for managing and playing all sounds.</li>
+        <li>To produce a sound using the <code>Web Audio API</code>, one creates one or more sound sources and
+          connects them to the sound destination provided by the<code>AudioContext instance</code> .</li>
+        <li>A single instance of <code>AudioContext</code> can support multiple sound inputs, whose sources could be
+          files, microphone, self-creation</li>
+      </ol>
+      <br>
+      <p><span class="customP">The next example will demonstarte the following:</span></p>
+      <ol>
+        <li> Capture the audio source</li>
+        <li> Access the frequency spectrum </li>
+        <li>Visualize the data representation on the canvas</li>
+      </ol>
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+  &lt;title&gt; Microphone Tutorial &lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /&gt;
+  &lt;style&gt;
+        body {
+            background: rgb(200,200,200);
+            margin: 0;
+            padding: 0;
+            color: rgb(52,52,52);
+            font-family: 'Roboto', sans-serif;
+            width: 100vw;
+        }
+
+        h1 {
+            color: rgb(226, 104, 43);
+
+        }
+
+        main {
+            width: 50vw;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        canvas {
+        width:500px;
+        height:500px;
+        background:black;
+        }
+
+  &lt;/style&gt;
+  &lt;!-- REFERENCE OUR SCRIPTS --&gt;
+  &lt;script type="text/javascript" src="js/microphoneEx_Init.js"&gt;&lt;/script&gt; 
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+&lt;h1&gt; Microphone Example Init&lt;/h1&gt;
+  &lt;canvas id="drawingCanvas" width =500 height=500&gt;&lt;/canvas&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+      <p>So first we will implement the basic functionality to access the microphone data and then pass on the audio
+        stream to the <code>webAudio API</code>:
+        <br />The js: <code>(js/microphoneEx_Init.js)</code>
+      </p>
+      <pre id="writeB" class="language-javascript line-numbers">
+<script>
+  let s1 = ""
+  for (let i = 1; i < 120; i++) {
+    if (i % 2 === 0) {
+      s1 += `${i},`
+    }
+  }
+  document.querySelector("#writeB").setAttribute("data-line", s1)  
+</script> 
+<code>
+window.onload = getMicrophoneInput;
+
+async function getMicrophoneInput() {
+  console.log("here we are ");
+
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  let audioContext = new AudioContext(); //using the web audio library
+  try {
+    //returns a MediaStreamAudioSourceNode.
+    let audioStream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    // console.log(audioStream)
+    //pass the microphone input to the web audio API
+    let microphoneIn = audioContext.createMediaStreamSource(audioStream);
+    console.log(microphoneIn);
+}
+catch (err) {
+    /* handle the error */
+    console.log("had an error getting the microphone");
+  }
+} 
+</code>
+</pre>
+      <p>Next: we want to do something with this data - namely <code>analyze</code> it and then <code>visualize</code> it.
+       <br>We will use the <code>webAudio API</code> make filter and analyser objects.
+        <br /> Then, we will connect the microphone data to the filter and the filtered data then to the analyser ...
+        <br />Add the following code after <code>let microphoneIn =...</code>
+      </p>
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+const filter = audioContext.createBiquadFilter();
+const analyser = audioContext.createAnalyser();
+// microphone -> filter ->  analyzer->destination
+microphoneIn.connect(filter);
+//use the analyzer object to get some properties ....
+filter.connect(analyser);
+</code>
+</pre>
+      <p> The <code>analyser</code> object will allow us to analyze the data (i.e. the frequencies in the stream) ... which we can then visualize as a graph: using the <code>HTML Canvas</code>!
+      <br /> Let's add the following function after the previous code:
+      </p>
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+    visualizeTimeAndFreq();
+    function visualizeTimeAndFreq() {
+      const WIDTH = 500;
+      const HEIGHT = 500;
+
+      analyser.fftSize = 1024; // fft conversion from time to frequency samples
+      //console.log (analyser.frequencyBinCount) //half of fft size
+      const bufferLength = analyser.fftSize;
+      const dataArrayFreq = new Uint8Array(bufferLength); //array
+
+      let drawVisual = requestAnimationFrame(animateVisual);
+      function animateVisual() {
+        analyser.getByteFrequencyData(dataArrayFreq);
+        //each respective frequency goes in its own bin
+        //lowest to highest frequency domain
+
+        /* looking for dominant frequencies*/
+        /* higher bars === more dominant frequency  (db)*/
+
+        //each bin represents a given frequency
+        //get only the first
+        for (let i = 0; i < 1; i++) {
+          //frequency value in that bin (more dominant will be higher)
+          console.log(dataArrayFreq[i]);
+        }
+        drawVisual = requestAnimationFrame(animateVisual);
+      }
+    }
+</code>
+</pre>
+      <p> If you run now in your browser (enable the microphone :) - and activate the console - you should see the <code>first frequency value from the sample set</code> for each frame over time ... </p>
+      <p> So now we will visualize this: 
+        <br/>First: we will need to add a reference to the <code>canvas</code> and the
+        <code> context</code> - Add the following just after the code declaring the <code>audioContext</code>:</p>
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+// get the canvas
+let canvas = document.getElementById("drawingCanvas");
+//get the context
+let context = canvas.getContext("2d");   
+</code>
+</pre>
+      <p> Then: replace the <code>for loop</code> with the following:</p>
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+//each bin represents a given frequency
+//get only the first
+const barWidth = (WIDTH / bufferLength) * 5;
+let barHeight;
+let x2 = 0;
+for (let i = 0; i < bufferLength; i++) {
+    //frequency value in that bin (more dominant will be higher)
+    console.log(dataArrayFreq[i]);
+    //frequency value in that bin (more dominant will be higher)
+    barHeight = dataArrayFreq[i];
+    context.fillStyle = `rgb(${barHeight + 100} 50 50)`;
+    context.fillRect(x2, HEIGHT - barHeight, barWidth, barHeight);
+    x2 += barWidth + 1;
+}
+    </code>
+    </pre>
+      <p>And at the top of the <code>animateVisual()</code> - lets reset/clear the canvas every frame:</p>
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+//clear with each frame
+context.fillStyle = "rgb(0 0 0)";
+context.fillRect(0, 0, WIDTH, HEIGHT);
+</code>
+</pre>
+
+      <p>The following references are useful here:</p>
+      <ul>
+        <li> <a href="https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode">AnalyserNode</a></li>
+        <li> <a
+            href="https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData">getByteFrequencyData</a>
+        </li>
+      </ul>
+      <p> Super.... well we can <em>also</em> use the <code>frequency data</code> in a less obvious way - 
+        <br>i.e. we can use the data as a variable to <code>animate a shape</code>...</p>
+      <p> In this case - instead of taking the entire frequency spectrum - we will <span class="customP">calculate the
+          average frequency per frame</span> and use that value to animate the shape:)</p>
+      <p>Lets start with the HTML :</p>
+
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+  &lt;title&gt; Microphone Tutorial &lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.gstatic.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /&gt;
+  &lt;style&gt;
+        body {
+            background: rgb(200,200,200);
+            margin: 0;
+            padding: 0;
+            color: rgb(52,52,52);
+            font-family: 'Roboto', sans-serif;
+            width: 100vw;
+        }
+
+        h1 {
+            color: rgb(226, 104, 43);
+
+        }
+
+        main {
+            width: 50vw;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        canvas {
+        width:500px;
+        height:500px;
+        background:black;
+        }
+
+  &lt;/style&gt;
+  &lt;!-- REFERENCE OUR SCRIPTS --&gt;
+  &lt;script type="text/javascript" src="js/microphoneEx.js"&gt;&lt;/script&gt; 
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+&lt;h1&gt; Microphone Example&lt;/h1&gt;
+  &lt;canvas id="drawingCanvas" width =500 height=500&gt;&lt;/canvas&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+      <p>The js:<code>(js/microphoneEx.js)</code> </p>
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+window.onload = getMicrophoneInput;
+
+async function getMicrophoneInput() {
+  console.log("here we are ");
+
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  let audioContext = new AudioContext(); //using the web audio library
+  try {
+    //returns a MediaStreamAudioSourceNode.
+    let audioStream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    // console.log(audioStream)
+    //pass the microphone input to the web audio API
+    let microphoneIn = audioContext.createMediaStreamSource(audioStream);
+    const filter = audioContext.createBiquadFilter();
+    const analyser = audioContext.createAnalyser();
+    // microphone -> filter ->  analyzer->destination
+    microphoneIn.connect(filter);
+    //use the analyzer object to get some properties ....
+    filter.connect(analyser);
+    analyser.fftSize = 32;
+    let frequencyData = new Uint8Array(analyser.frequencyBinCount);
+
+    //call loop ...
+    requestAnimationFrame(animateFrequencies);
+
+    /****our looping callback function */
+    function animateFrequencies() {
+      analyser.getByteFrequencyData(frequencyData);
+      let average = 0;
+      let sum = 0;
+
+      for (let i = 0; i < frequencyData.length; i++) {
+        sum += frequencyData[i];
+      }
+      average = sum / frequencyData.length;
+      console.log(average);
+      //call loop ...
+      requestAnimationFrame(animateFrequencies);
+    }
+  } catch (err) {
+    /* handle the error */
+    console.log("had an error getting the microphone");
+  }
+}
+</code>
+</pre>
+      Again:
+      <ul>
+        <li>We requested the microphone input from the browser</li>
+        <li>Passed the audio stream to the <code>WebAudio API</code></li>
+        <li>Applied a <code>filter</code> to the steam and pass the filtered data to the <code>Analyser</code> object</li>
+        <li>Obtained the <code>frequency samples</code> from the audio stream calculate the average </li>
+        <li>Calculated the average frequency from the sample set at each time frame</li>
+      </ul>
+      <p>So now - we can use this <code>average value</code> as any other variable and in this case we will animate a shape:</p>
+      <p> First: we will need to add a reference to the <code>canvas</code> and the
+        <code> context</code>. Add the following just after the code declaring the <code>audioContext</code>:</p>
+      <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+// get the canvas
+let canvas = document.getElementById("drawingCanvas");
+//get the context
+let context = canvas.getContext("2d");   
+</code>
+</pre>
+Then after calculating <span class = "customP">the average frequency</span> add:
+<pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+context.fillStyle = "#FF0000";
+//use the average frequency
+context.fillRect(canvas.width / 2, canvas.height / 2, average, 30);
+  </code>
+  </pre>
+  <p>And at the top of the <code> animateFrequencies()</code> lets add the code to clear the canvas:</p>
+  <pre data-line="1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45"
+        class="language-javascript line-numbers">
+<code>
+  context.clearRect(0, 0, canvas.width, canvas.height);
+</code>
+</pre>
+ </main>
+  </section>
+  <script src="js/prism.js"></script>
+</body>
+
+</html>
