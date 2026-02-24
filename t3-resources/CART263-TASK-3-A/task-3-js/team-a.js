@@ -239,6 +239,7 @@ function setup_A() {
 
     // Arrow key logic
     windowKeyDownRef = function (e) {
+      e.preventDefault()
       if (e.key === "ArrowDown") {
         e.preventDefault();
         counterAC = Math.min(counterAC + 1, maxCounter); // move down but stay inside box

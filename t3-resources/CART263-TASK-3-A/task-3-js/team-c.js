@@ -265,6 +265,7 @@ function setup_C() {
       //code for key down in here
       console.log(e);
       console.log("c-down");
+      e.preventDefault()
 
       let droplet = document.createElement("div");
       droplet.classList.add("TEAM_C_droplet");

@@ -174,30 +174,131 @@ function setup_E() {
    * using  ONLY key down and/or keyup -- any keys::
    */
 
+//   function aniC(parentCanvas) {
+//     console.log("in aniC -teamE");
+
+//     windowKeyDownRef = function (e) {
+//       console.log(e);
+
+//       let emoji = document.createElement("span");
+//       emoji.textContent = "😐";
+//       emoji.classList.add("TEAM_E_emoji");
+
+//       emoji.style.position = "absolute";
+//       emoji.style.left = Math.random() * (parentCanvas.clientWidth - 30) + "px";
+//       emoji.style.top = Math.random() * (parentCanvas.clientHeight - 30) + "px";
+//       emoji.style.fontSize = "32px";
+
+//       parentCanvas.appendChild(emoji);
+//     };
+
+//     windowKeyUpRef = function (e) {
+//       console.log("key up:", e.code);
+//     };
+
+//     window.addEventListener("keydown", windowKeyDownRef);
+//     window.addEventListener("keyup", windowKeyUpRef);
+//   }
+
+//   /****************ANI D************************************ */
+//   /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN D INSIDE HERE */
+//   /****************ANI D************************************ */
+//   /**************** TASK *******************************************
+//    * YOU CAN USE ALL NOTES --- and see my examples in team-h.js for inspiration and possibly help:).
+//    * 1: create a creative, visual pattern using text, divs as shapes, images ...
+//    * 2: add in animation using requestAnimationFrame somewhere to make the sketch animate :)
+//    *
+//    * NOTE::: PLEASE::: if you add any custom css PLEASE use the style.css and prefix any class names with your team label
+//    * i.e. you want to create a custom div class and you are in "Team_A" then call your class TEAM_A_ANI_A_Div -
+//    * this is so that your styles are not overriden by other teams.
+//    * NOTE::: All your code is to be added here inside this function -
+//    * remember you can define other functions inside....
+//    * Do not change any code above or the HTML markup.
+//    * **/
+
+//   function aniD(parentCanvas) {
+//     console.log("in ani-D-teamE");
+
+//     let button = document.createElement("div");
+//     button.classList.add("TEAM_E_box");
+//     button.textContent = "Click for Sarcasm";
+//     parentCanvas.appendChild(button);
+
+//     const rect = parentCanvas.getBoundingClientRect();
+//     console.log(rect);
+//     console.log(rect.width, rect.height, rect.left, rect.top);
+//     const buttonRect = button.getBoundingClientRect();
+//     console.log(buttonRect);
+//     let sarcasmStrings = [
+//       "I’m not saying I hate you, what I’m saying is that you are literally the Monday of my life.",
+//       "Silence is golden. Duct tape is silver",
+//       "I am busy right now, can I ignore you some other time",
+//       "Find your patience before I lose mine.",
+//       "It’s okay if you don’t like me. Not everyone has good taste.",
+//       "Cancel my subscription because I don’t need your issues.",
+//       "No, you don’t have to repeat yourself. I was ignoring you the first time.",
+//       "I don’t have the energy to pretend to like you today.",
+//       "My imaginary friend says that you need a therapist.",
+//       "Sometimes I wish I was an octopus so I could slap eight people at once.",
+//       "I’ll get over it. I just need to be dramatic first.",
+//       "You’re everything I want in someone I don’t want anymore.",
+//       "You play the victim. I’ll play the disinterested bystander.",
+//     ];
+
+//     button.addEventListener("click", changeSarcasmRemarks);
+
+//     function changeSarcasmRemarks() {
+//       let randomIndex = Math.floor(Math.random() * sarcasmStrings.length);
+//       button.textContent = sarcasmStrings[randomIndex];
+//     }
+//   }
+// }
+
+ /****************ANI C ************************************ */
+  /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN C INSIDE HERE */
+  /****************ANI C************************************ */
+  /**************** TASK *******************************************
+   * YOU CAN USE ALL NOTES --- and see my examples in team-h.js for inspiration and possibly help:)
+   * 1: use the PROVIDED keyup/down callbacks `windowKeyDownRef` and/or `windowKeyUpnRef` to handle keyboard events
+   * 2: create an interactive pattern/sketch based on keyboard input. Anything goes.
+   *
+   * NOTE::: PLEASE::: if you add any custom css PLEASE use the style.css and prefix any class names with your team label
+   * i.e. you want to create a custom div class and you are in "Team_A" then call your class TEAM_A_ANI_A_Div -
+   * this is so that your styles are not overriden by other teams.
+   * NOTE::: All your code is to be added here inside this function -
+   * remember you can define other functions inside....
+   * Do not change any code above or the HTML markup.
+   * **/
+
+  /* TASK: make an interactive pattern .. colors, shapes, sizes, text, images....
+   * using  ONLY key down and/or keyup -- any keys::
+   */
+
+  // aniC: Interactive pattern - keyboard shapes
   function aniC(parentCanvas) {
     console.log("in aniC -teamE");
-
+    let colors = ["#e74c3c", "#8e44ad", "#3498db", "#f1c40f", "#2ecc71", "#e67e22", "#1abc9c"];
     windowKeyDownRef = function (e) {
-      console.log(e);
-
-      let emoji = document.createElement("span");
-      emoji.textContent = "😐";
-      emoji.classList.add("TEAM_E_emoji");
-
-      emoji.style.position = "absolute";
-      emoji.style.left = Math.random() * (parentCanvas.clientWidth - 30) + "px";
-      emoji.style.top = Math.random() * (parentCanvas.clientHeight - 30) + "px";
-      emoji.style.fontSize = "32px";
-
-      parentCanvas.appendChild(emoji);
+      let shape = document.createElement("div");
+      shape.classList.add("TEAM_E_shape");
+      shape.style.position = "absolute";
+      shape.style.width = "40px";
+      shape.style.height = "40px";
+      shape.style.borderRadius = e.keyCode % 2 === 0 ? "50%" : "0";
+      shape.style.background = colors[Math.floor(Math.random() * colors.length)];
+      shape.style.left = Math.random() * (parentCanvas.clientWidth - 40) + "px";
+      shape.style.top = Math.random() * (parentCanvas.clientHeight - 40) + "px";
+      shape.style.transition = "transform 0.5s";
+      parentCanvas.appendChild(shape);
+      setTimeout(() => {
+        shape.style.transform = "scale(0.2) rotate(180deg)";
+        shape.style.opacity = "0.2";
+      }, 100);
+      setTimeout(() => {
+        shape.remove();
+      }, 1200);
     };
-
-    windowKeyUpRef = function (e) {
-      console.log("key up:", e.code);
-    };
-
     window.addEventListener("keydown", windowKeyDownRef);
-    window.addEventListener("keyup", windowKeyUpRef);
   }
 
   /****************ANI D************************************ */
@@ -216,40 +317,46 @@ function setup_E() {
    * Do not change any code above or the HTML markup.
    * **/
 
+  // aniD: Interactive pattern - animated bouncing balls, click to add more
   function aniD(parentCanvas) {
     console.log("in ani-D-teamE");
+    let balls = [];
+    let colors = ["#e74c3c", "#8e44ad", "#3498db", "#f1c40f", "#2ecc71", "#e67e22", "#1abc9c"];
 
-    let button = document.createElement("div");
-    button.classList.add("TEAM_E_box");
-    button.textContent = "Click for Sarcasm";
-    parentCanvas.appendChild(button);
-
-    const rect = parentCanvas.getBoundingClientRect();
-    console.log(rect);
-    console.log(rect.width, rect.height, rect.left, rect.top);
-    const buttonRect = button.getBoundingClientRect();
-    console.log(buttonRect);
-    let sarcasmStrings = [
-      "I’m not saying I hate you, what I’m saying is that you are literally the Monday of my life.",
-      "Silence is golden. Duct tape is silver",
-      "I am busy right now, can I ignore you some other time",
-      "Find your patience before I lose mine.",
-      "It’s okay if you don’t like me. Not everyone has good taste.",
-      "Cancel my subscription because I don’t need your issues.",
-      "No, you don’t have to repeat yourself. I was ignoring you the first time.",
-      "I don’t have the energy to pretend to like you today.",
-      "My imaginary friend says that you need a therapist.",
-      "Sometimes I wish I was an octopus so I could slap eight people at once.",
-      "I’ll get over it. I just need to be dramatic first.",
-      "You’re everything I want in someone I don’t want anymore.",
-      "You play the victim. I’ll play the disinterested bystander.",
-    ];
-
-    button.addEventListener("click", changeSarcasmRemarks);
-
-    function changeSarcasmRemarks() {
-      let randomIndex = Math.floor(Math.random() * sarcasmStrings.length);
-      button.textContent = sarcasmStrings[randomIndex];
+    function createBall() {
+      let ball = document.createElement("div");
+      ball.classList.add("TEAM_E_ball");
+      ball.style.position = "absolute";
+      ball.style.width = "30px";
+      ball.style.height = "30px";
+      ball.style.borderRadius = "50%";
+      ball.style.background = colors[Math.floor(Math.random() * colors.length)];
+      ball.style.left = Math.random() * (parentCanvas.clientWidth - 30) + "px";
+      ball.style.top = Math.random() * (parentCanvas.clientHeight - 30) + "px";
+      ball.dx = Math.random() * 4 + 1;
+      ball.dy = Math.random() * 4 + 1;
+      parentCanvas.appendChild(ball);
+      balls.push(ball);
     }
+
+    // Add initial balls
+    for (let i = 0; i < 5; i++) createBall();
+
+    parentCanvas.addEventListener("click", createBall);
+
+    function animate() {
+      balls.forEach(ball => {
+        let left = parseFloat(ball.style.left);
+        let top = parseFloat(ball.style.top);
+        left += ball.dx;
+        top += ball.dy;
+        if (left <= 0 || left >= parentCanvas.clientWidth - 30) ball.dx *= -1;
+        if (top <= 0 || top >= parentCanvas.clientHeight - 30) ball.dy *= -1;
+        ball.style.left = left + "px";
+        ball.style.top = top + "px";
+      });
+      window.requestAnimationFrame(animate);
+    }
+    animate();
   }
 }

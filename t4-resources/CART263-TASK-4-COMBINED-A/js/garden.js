@@ -10,6 +10,16 @@ let garden = {
         ],
 
         squirrels: [],
+        squirrels: [],
+    // Different images of the squirrel with different colors
+    squirrelImages: [
+      "assets/image/squirrel.png",
+      "assets/image/squirrel2.png",
+      "assets/image/squirrel3.png",
+      "assets/image/squirrel4.png",
+      "assets/image/squirrel5.png",
+      "assets/image/squirrel6.png"
+    ],
         numSquirrels: 5,
 
     // An array to store the individual flowers
@@ -280,7 +290,9 @@ let garden = {
             let x = Math.random() * (window.innerWidth - 40) + 20;
             let y = Math.random() * 100 + 120;
             let size = Math.random() * 20 + 30;
-            let squirrel = new Squirrel(x, y, size, size, "assets/image/squirrel.png");
+            let index = Math.floor(Math.random() * garden.squirrelImages.length)
+            let path = garden.squirrelImages[index]
+            let squirrel = new Squirrel(x, y, size, size, path);
             garden.squirrels.push(squirrel);
             squirrel.renderSquirrel();
         }
