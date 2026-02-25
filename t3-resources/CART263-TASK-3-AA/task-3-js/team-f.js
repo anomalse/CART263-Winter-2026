@@ -1,5 +1,9 @@
 setup_F();
-/** THEME: JOY  */
+/** THEME: JOY 
+ * A: abi
+ * B: Noureddine
+ * C: Ahmad
+ */
 function setup_F() {
   console.log("in f");
   /**************************************************** */
@@ -22,9 +26,51 @@ function setup_F() {
    * Do not change any code above or the HTML markup.
    * **/
    
-  function aniA(parentCanvas) {
-    console.log("in ani-A -teamF");
+ function aniA(parentCanvas) {
+    console.log("in ani-A -teamE");
+
+    parentCanvas.style.position = "relative";
+    parentCanvas.style.overflow = "hidden";
+    parentCanvas.innerHTML = ""; 
+
+    let currentY=10;
+
+    parentCanvas.addEventListener("mouseover", ()=>{
+    parentCanvas.style.backgroundColor = "#000000";
+    });
+
+    parentCanvas.addEventListener("mouseout", ()=>{
+    parentCanvas.style.backgroundColor = "white";
+    });
+    
+    parentCanvas.addEventListener("click", ()=>{
+
+      const randomColor= `rgb(
+      ${Math.floor(Math.random()* 256)},
+      ${Math.floor(Math.random()* 256)},
+      ${Math.floor(Math.random()* 256)}
+    )`;
+
+    for (let x=0; x< parentCanvas.offsetWidth; x+=50){
+      const ellipse = document.createElement("div");
+
+      ellipse.style.width = "10px";
+      ellipse.style.height = "10px";
+      ellipse.style.borderRadius = "50%";
+      ellipse.style.position = "absolute";
+      ellipse.style.left = x+ "px";
+      ellipse.style.top = currentY + "px";
+      ellipse.style.backgroundColor = randomColor;
+      
+  
+      parentCanvas.appendChild(ellipse);
+
+    }
+    currentY += 20;
+
+    });
   }
+
 
 
   /****************ANI B ************************************ */
@@ -43,10 +89,30 @@ function setup_F() {
    * Do not change any code above or the HTML markup.
    * **/
 
-  function aniB(parentCanvas) {
-      console.log("in ani-B -teamF");
-    
-  }
+ function aniB(parentCanvas) {
+  console.log("team F aniB running");
+
+  // waits mouse clicks on the canvas
+  parentCanvas.addEventListener("click", function (e) {
+    // createss  new div
+    const emoji = document.createElement("div");
+
+    // emoji 
+    const emojis = ["🎉", "✨", "😄", "💛", "⭐️", "🎈"]; ;
+    // randomizes the text content to the random emoji
+    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+// puts emoji inside mycanvas
+    emoji.style.position = "absolute";
+    //emoji size (made it bigger)
+    emoji.style.fontSize = "40px";
+
+    // puts emoji where mouse was clicked (theres a bug where if you click on the emoji it will place on the top left corner)
+    emoji.style.left = e.offsetX + "px";
+    emoji.style.top = e.offsetY + "px";
+    // draws emoji
+    parentCanvas.appendChild(emoji);
+  });
+}
   /****************ANI C ************************************ */
   /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN C INSIDE HERE */
   /****************ANI C************************************ */
@@ -67,22 +133,58 @@ function setup_F() {
    * using  ONLY key down and/or keyup -- any keys::
    */
 
-  function aniC(parentCanvas) {
-      console.log("in ani-C -teamF");
+ function aniC(parentCanvas) {
+      console.log("in ani-C -teamE");
+      //const container = document.querySelector("#ani_canvE_C")
+      parentCanvas.style.overflow = "hidden";
 
-    /*** THIS IS THE CALLBACK FOR KEY DOWN (* DO NOT CHANGE THE NAME *..) */
+      let size = 25;
+
+      function randomColor(){
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        return "rgb(" + r + ", " + g + ", " + b + ")";
+      }
+            
+    /*** CALLBACK FOR KEY DOWN */
     windowKeyDownRef = function (e) {
-      //code for key down in here
-      console.log(e);
-      console.log("f-down");
+      if (e.key === "ArrowUp"){
+        size += 5;
+        e.preventDefault()
+      }
+      else if (e.key === "ArrowDown"){
+        if (size < 5){
+          size = 5;
+        }
+        size -= 5;
+        e.preventDefault()
+      }
+      else if (e.key === " "){
+        parentCanvas.innerHTML = "";
+        e.preventDefault()
+      }
+      else if (e.key === "Enter"){
+        parentCanvas.style.backgroundColor = randomColor();
+      }
+      else {
+        const box = document.createElement("div");
+        box.style.width = size + "px";
+        box.style.height = size + "px";
+        box.style.backgroundColor = randomColor();
+        box.style.position = "absolute";
+        box.style.left = Math.random() * (parentCanvas.offsetWidth - size) + "px";
+        box.style.top = Math.random() * (parentCanvas.offsetHeight - size) + "px";
+        parentCanvas.appendChild(box);
+      }
+
+  };
+
+    /*** CALLBACK FOR KEY UP */
+    windowKeyUpRef = function (e) {
+
     };
 
-    /*** THIS IS THE CALLBACK FOR KEY UP (*DO NOT CHANGE THE NAME..) */
-    windowKeyUpRef = function (e) {
-      console.log(e);
-      console.log("f-up");
-    };
-    //DO NOT REMOVE
     window.addEventListener("keydown", windowKeyDownRef);
     window.addEventListener("keyup", windowKeyUpRef);
   }

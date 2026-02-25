@@ -1,5 +1,7 @@
 setup_C();
-/** THEME: SERENITY  */
+/** THEME: SERENITY 
+ * Kerven, Skyla, Diana
+ */
 function setup_C() {
   console.log("in c");
   /**************************************************** */

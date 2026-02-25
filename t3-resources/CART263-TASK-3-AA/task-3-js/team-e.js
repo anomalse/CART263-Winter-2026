@@ -1,5 +1,7 @@
 setup_E();
-/** THEME: SARCASM  */
+/** THEME: SARCASM  
+ * sama, shrook,dylan
+*/
 function setup_E() {
   console.log("in e");
   /**************************************************** */

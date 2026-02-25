@@ -1,5 +1,7 @@
 setup_D();
-/** THEME: DECEPTION  */
+/** THEME: DECEPTION
+ * Jordan and Huynh
+  */
 function setup_D() {
   console.log("in d");
   /**************************************************** */
