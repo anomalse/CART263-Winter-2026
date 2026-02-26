@@ -315,7 +315,7 @@ context.clearRect(0,0,canvas.width,canvas.height);
 &lt;/html&gt;
 </code>
 </pre>
-<p>To run: make sure you downlaod a video <a href = "resources/b1_s.mov">(or this one)</a> and link appropriately.
+<p>To run: make sure you download a video <a href = "resources/b1_s.mov">(or this one)</a> and link appropriately.
 <br/>Similar to the <code>&lt;img&gt;</code> element, a path to the media we want to display is included inside the src attribute; we can include other attributes to specify information such as video width and height, whether we want it to autoplay and loop, or to show the browser's default video controls, etc... 
 <br/>For more info on the video element itself you can reference <a href ="https://www.w3schools.com/html/html5_video.asp">w3schools</a>.
 <br/>Of course - you can control the <code>&lt;video&gt;</code> element using javascript... i.e. to create your own controls for interacting/ loading the video content etc... 
@@ -443,6 +443,7 @@ window.onload = function(){
 
 <p>All of this should be pretty clear :) we add <code>event listeners</code> to our buttons and then within the callback functions, we call the video <code>play</code> or <code>pause</code> functions...</p>
 <h3> HTML Video and Filters</h3>
+<p> <span class = "customP">Please note that the example below works in Chrome only :( - We are currently troubleshooting for other browsers.</span> </p>
 <p>You will find many libraries and plugins etc for manipulating html 5 video content... 
 <br/>BUT since we are here let's give you a <span class = "customP">small background intro in case you wish to apply some simple filters etc yourself</span>.
 <br/>Also, it is useful to understand the basic concepts. We will do this in combination with the HTML 5 canvas. 
