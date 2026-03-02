@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+      <link href="css/themes/prism.css" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
+
+         <nav id = "cart263Nav"></nav>
+        <script src = "js/loadNav.js"></script>
+       <div class="inner-head">
+                <h1> INTRO TO THREE JS</h1>
+            </div>
+    </header>
+    <main>
+
+<section class="contents-notes">
+<h3>What is it?</h3>
+<p><a href = "https://threejs.org/">Three.js</a> is a javascript library and API that allows for the <span class = "customP">creation of 3D Graphics in the browser</span> to be more accessible, possible and not so daunting!
+<br/><a href = "https://en.wikipedia.org/wiki/WebGL">WebGL</a> is a JavaScript API, or programmable interface, for drawing interactive 2D and 3D graphics in web pages. WebGL connects your web browser up to your device’s graphics card, providing you with far more graphical processing power than is available on a traditional website.
+<br/> <code>Three.js</code> provides a wrapper (easier to use and more accessible functions, classes etc) around <code>WebGL</code> - which means you get all the advantages and power of of WebGL - without having to write low-level graphics code. You can <span class = "customP">render 3D models, create animations, build interactive scenes, simulate physics</span> ... all in the web browser:)
+<br/><span class = "customP">Ricardo Cabello, aka Mr.doob</span> <a href = "https://mrdoob.com/">Website</a>, is the developer who created Three.js. He is still working on it, but now he's helped by a large community. You can check the list of <a href = "https://github.com/mrdoob/three.js/graphs/contributors">contributors here</a>.
+<br/>Currently, the library gets an update every month and you can see what's changed in the releases page <a href = "https://github.com/mrdoob/three.js/releases" >here </a>. </p>
+
+<h4>Collaborations: frameworks built around three.js</h4>
+<ul>
+    <li><span class = "customP">React Three Fiber</span>: If you’re a React developer, this lets you build Three.js scenes using React components.</li>
+    <li><span class = "customP">Cannon.js / Rapier / Ammo.js</span>: Physics engines that integrate beautifully with Three.js for realistic object interactions.</li>
+    <li><span class = "customP">Blender Integration</span>: Export 3D models from Blender and import them directly into your Three.js scene via the GLTF format.</li>
+    <li><span class = "customP">Post-processing Effects</span> Bloom, depth-of-field, motion blur — cinematic effects that make your scenes look super-fragalistic!</li>
+</ul>
+<h3>LET's Go!</h3>
+<p> Before we start here - please know that there are LOTS and lots of tutorials, books, articles, YouTube Channels, Udemy Courses ... all dedicated to Three.js.
+<br/> A super place to start is the Three.JS website: specificallly: <a href = "https://threejs.org/docs/">the API Documentation</a>, <a href = "https://threejs.org/manual/">the Manual</a> and the <a href = "https://threejs.org/examples/">the examples</a> pages ...
+<br/> In the next two lectures - we will just cover the fundamentals to get you started ...</p>
+
+<h4>How to include the Three.js library</h4>
+<p>There are multiple ways to include <code>Three.js</code> in your JavaScript application, some simple, some a little more complex, but they all boil down to this: <span class = "customP">you need to include the three.js core in your project</span>.
+<br/> For simplicity I would reccomend <a href = "https://threejs.org/manual/#en/installation">Option 2: Import from a CDN </a></p>
+<ul>
+<li>Start with a new Project in VSCode</li>
+<li>Create an <code>index.html</code> and add the following:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;My first three.js app&lt;/title&gt;
+    &lt;style&gt;
+      body { margin: 0; }
+    &lt;/style&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- canvas that we custom made--&gt;
+    &lt;canvas id = "three-ex"&gt;&lt;/canvas&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+</html>
+</code>
+</pre>
+</li>
+<li>Now create a <code>main.js</code> file - note that its type has to be set to <code>module</code> which we're using to tell the browser the linked file is a <a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">JavaScript module</a>. </li>
+<li> And in our html we need to add an <a href = "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script/type/importmap">import map</a> defining where to get the three.js package (library). Place the following just under the <code>opening head tag</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+&lt;script type="importmap"&gt;
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"
+  }
+}
+&lt;/script&gt;
+</code>
+</pre>
+</li>
+</ul>
+<p>And we are ready!</p>
+<h4>Three.js A First Example </h4>
+<p>It's time to create our scene and produce something on the screen.We need 4 elements to get started:</p>
+<ol>
+<li>A scene that will contain objects</li>
+<li>Some objects</li>
+<li>A camera</li>
+<li>A renderer</li>
+</ol>
+<p>Modify the <code>main.js</code> file:</p>
+<ul> 
+<li> We start by importing a reference to the <code>Three.js library</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+// library ref: because we are loading a module
+import * as THREE from 'three';
+</code>
+</pre>
+</li>
+<li> Next: we need to do is add a <code> Three.js scene</code>.
+<br/>All Three.js scenes are rendered inside an html <code>canvas</code> element. This is why we have one setup in our html page :)
+<br/> The scene is like a container. You place your <code>objects</code>, <code>models</code>, <code>particles</code>, <code>lights</code>, etc. in it, and at some point, you will ask Three.js to <code>render</code> that scene.
+To create a scene, we use the <a href = "https://threejs.org/docs/index.html#Scene">Scene</a> class.
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+//SCENE
+const scene = new THREE.Scene() 
+</code>
+</pre>
+</li>
+<li>Next: Objects -  that can be many things. You can have primitive geometries, imported models, particles, lights, and so on...
+<br> We will start with a simple purple cube. To create that purple cube, we need to create a type of object named <a href = "https://threejs.org/docs/#Mesh">Mesh</a>.
+<br>A <code>Mesh</code> is the combination of a geometry (the shape) and a material (how it looks).
+<br>There are many geometries and many materials, but we will keep things simple for now and create a <a href = "https://threejs.org/docs/index.html#BoxGeometry">BoxGeometry</a> and a <a href = "https://threejs.org/docs/#MeshBasicMaterial">MeshBasicMaterial</a>.
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+//A: the geometry
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+//B: the material
+const material = new THREE.MeshBasicMaterial({ color: 0x800080 })
+//C: put together
+const mesh = new THREE.Mesh(geometry, material)
+//D: ADD TO THE SCENE
+scene.add(mesh)
+</code>
+</pre>
+Note that the parameters given to the <code>BoxGeometry()</code> correspond to its <code>size</code> in units. Three.js is a <span class = "customP"> unitless </span> system - meaning that the number <code>1</code> is whatever you as the developer assins to it (i.e. metres, cm...).
+<br/> Also by default, objects are placed at (0,0,0) - which is the CENTER of the canvas.
+</li>
+<li> The <code>Three.js camera</code> object is not visible. It's more like a <span class = "customP">theoretical point of view</span>. 
+<br/>When you will render your scene, it will be from that <code>camera's point of view</code>.You can have multiple cameras just like on a movie set, and you can switch between those cameras as you please. 
+<br/>Usually, we only use one camera. There are different types of cameras. For now, let's use a camera that handles <span class = "customP"> <strong>perspective</strong> (making close objects look more prominent than far objects)</span>.
+<br/>There are two essential parameters we need to provide:
+<ol>
+    <li><strong>The field of view:</strong> The field of view is how large your vision angle is. If you use a very large angle, you'll be able to see in every direction at once but with much distortion, because the result will be drawn on a small rectangle. 
+    <br/>If you use a small angle, things will look zoomed in. The field of view (or fov) is expressed in degrees and corresponds to the vertical vision angle. Here: we will use a 75 degrees angle.</li>
+    <li><strong>The aspect ratio:</strong> In most cases, the aspect ratio is the <strong>width of the canvas divided by its height</strong>. 
+    <br/>We haven't specified any width or height for now, but we will need to later. In the meantime, we will create an object with temporary values that we can re-use.</li>
+</ol>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const sizes = {
+    width: 800,
+    height: 600
+}
+//Camera
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+scene.add(camera)
+</code>
+</pre>
+</li>
+<li> The renderer's job is to do the render. All one needs to do is ask the <code>renderer</code> to render the scene from the camera's point of view, and the result will be drawn into a canvas.
+ <br/>You can create the canvas by yourself, or let the renderer generate it and then add it to your page. For this exercise, we have already added the canvas to the HTML and so we will send it to the renderer:
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+//Access the Canvas
+const canvas = document.querySelector('canvas#three-ex')
+//Renderer
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+//give it the size
+renderer.setSize(sizes.width, sizes.height)
+
+//render:
+renderer.render(scene, camera)
+</code>
+</pre>
+</li>
+<li><strong>MOVING THINGS INTO POSITION:</strong> Here's the issue: we haven't specified our object's position, nor our camera's. Both are in the default position, which is the center of the scene and we can't see an object from its inside (by default).
+<br/>We need to move things. To do that, we have access to multiple properties on each object, such as <code>position</code>, <code>rotation</code>, and <code>scale</code>. 
+<br>For now, we will use the position property to move the camera backward. The position property is an object with three relevant properties: <code>x</code>, <code>y</code> and <code>z</code>. By default, Three.js considers the forward/backward axis to be z.
+<br/>To move the camera backward, we need to provide a positive value to that property:
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+//move camera
+camera.position.z = 3
+</code>
+ </pre>
+</li>
+And now test :)
+</ul>
+ 
+</section>
+</main>
+  <script src="js/prism.js"></script>
+</body>
+
+</html>
