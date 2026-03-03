@@ -190,7 +190,56 @@ camera.position.z = 3
 </li>
 And now test :)
 </ul>
- 
+
+<h3>OBJEct TraNSformations</h3>
+<p>Now that we have rendered our first scene ...  we can explore Three.js functionalities furthur.
+<br/>Before animating our scene, we need to know how to <code>transform objects</code> in the scene. 
+<br/>You've already done that with the camera by moving it backward using the <code>camera.position.z = 3</code> instruction.
+<br/>There are <code>4 properties</code> to transform objects in our scene:</p>
+<ol>
+  <li>position (to move the object)</li>
+  <li>scale (to resize the object)</li>
+  <li>rotation (to rotate the object)</li>
+  <li>quaternion (to also rotate the object)</li>
+ </ol>
+<p>All classes that inherit from the <a href = "https://threejs.org/docs/#Object3D">Object3D</a> class possess those properties -  like <a href = "https://threejs.org/docs/#PerspectiveCamera">PerspectiveCamera</a> or <a href = "https://threejs.org/docs/#Mesh">Mesh</a> and others...</p>
+<p> These <code>transformation properties</code> will be compiled in what we call <code>matrices</code>. 
+<br/> <span class = "customP">Matrices are used internally by Three.js, by the WebGL, and by the GPU to transform things</span>. 
+<br/>Fortunately, you don't have to handle matrices by yourself and you can just modify the previously-mentioned properties :) :)</p>
+
+<h4>POSITIOn</h4>
+<p>The <code>position</code> property possesses 3 essential properties, which are <code>x</code>, <code>y</code>, and <code>z</code>. Those are the <span class = "customP">3 necessary axes to position something in a 3D space</span>.
+<br/>The Position property is an instance of the <a href = "https://threejs.org/docs/#Vector3">Vector3</a> class.</p>
+<p>Lets change the cube's position... First lets add some visual help:</p>
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+//TURN ON AXES HELPER
+//https://threejs.org/docs/?q=Axes#AxesHelper
+const axesHelper = new THREE.AxesHelper(1)
+scene.add(axesHelper)
+//move it 
+axesHelper.position.x = -1;
+axesHelper.position.y = -1;
+</code>
+</pre>
+<p> Next - lets add a second cube and put it in a different position:</p>
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const mesh_2 = new THREE.Mesh(geometry, material)
+scene.add(mesh_2)
+mesh_2.position.x = 1.5
+mesh_2.position.y = 1.25
+mesh_2.position.z = -1
+</code>
+ </pre>
+
+<h4>SCAlE</h4>
+<p>The<code>scale</code>property is also a <a href = "https://threejs.org/docs/#Vector3">Vector3</a>. By default, <code>x</code>, <code>y</code> and <code>z</code> are equal to 1, meaning that the object <strong>has no scaling applied</strong>. 
+<br/>If you put <strong>0.5</strong> as a value, <span class = "customP">the object will be half of its size on this axis</span>, and if you put <strong>2</strong> as a value, <span class="customP">it will be twice its original size on this axis</span>.
+<br>If you change those values, the object will start to scale accordingly... </p>
+<p>Lets scale to the first mesh :)</p>
+<h4>ROTAtTION</h4>
+
 </section>
 </main>
   <script src="js/prism.js"></script>
