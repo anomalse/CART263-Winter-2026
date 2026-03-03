@@ -233,13 +233,90 @@ mesh_2.position.z = -1
 </code>
  </pre>
 
-<h4>SCAlE</h4>
+<h4>ScAlE</h4>
 <p>The<code>scale</code>property is also a <a href = "https://threejs.org/docs/#Vector3">Vector3</a>. By default, <code>x</code>, <code>y</code> and <code>z</code> are equal to 1, meaning that the object <strong>has no scaling applied</strong>. 
 <br/>If you put <strong>0.5</strong> as a value, <span class = "customP">the object will be half of its size on this axis</span>, and if you put <strong>2</strong> as a value, <span class="customP">it will be twice its original size on this axis</span>.
 <br>If you change those values, the object will start to scale accordingly... </p>
-<p>Lets scale to the first mesh :)</p>
+<p>Let's apply a scale to the first mesh :)</p>
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+mesh.scale.x = 2
+mesh.scale.y = 0.25
+mesh.scale.z = 0.5
+</code>
+</pre>
 <h4>ROTAtTION</h4>
+<p><code>Rotation</code> is a little more complicated than position and scale. There are two ways of handling a rotation. You can use the more clear <code>rotation</code> property, but you can also use the less obvious <a href = "https://threejs.org/docs/#Quaternion">quaternion</a> property. 
+<br/>Three.js supports both, and updating one will automatically update the other. It's just a matter of which one you prefer. We will only go over standard rotation.
+<br/>The <code>rotation</code> property also has <code>x</code>, <code>y</code>, and <code>z</code> properties, but instead of a <a href = "https://threejs.org/docs/#Vector3">Vector3</a>, it's a <a href = "https://threejs.org/docs/index.html#Euler">Euler</a>. 
+<br/>When you change the x, y, and z properties of a Euler, you can imagine putting a stick through your object's center in the axis's direction and then rotating that object on that stick. The value of these rotations is expressed in <code>radians</code></p>
+<ul>
+<li>If you spin on the <code>y</code> axis, you can picture it like a carousel.</li>
+<li>If you spin on the <code>x</code> axis, you can imagine that you are rotating the wheels of a car you'd be in.</li>
+<li> If you rotate on the <code>z</code> axis, you can imagine that you are rotating the propellers in front of an aircraft you'd be in.</li>
+<p>Comment the scale and add an eighth of a complete rotation in both x and y axes:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+mesh.rotation.x = Math.PI * 0.25
+mesh.rotation.y = Math.PI * 0.25
+</code>
+</pre>
 
+<h4>LookAt</h4>
+<p>Another very useful function to consider is all <a href = "https://threejs.org/docs/#Object3D">Object3D</a> instances have an super useful method named <a href = "https://threejs.org/docs/#Object3D.lookAt">lookAt(...)</a> that lets you ask an object to look at something. 
+<br>The object will automatically rotate its -z axis toward the target you provided. No complicated maths needed.
+<br>You can use it to rotate the camera toward an object, orientate a cannon to face an enemy, or move the character's eyes to an object.
+<br>The parameter is the target and must be a <code>Vector3</code>: Example:</p>
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  camera.lookAt(new THREE.Vector3(0, - 1, 0))
+  //or
+  camera.lookAt(mesh_2.position)
+</code>
+</pre>
+<h4>Groups</h4>
+<p>Another useful strategy is to group objects together - to then easily apply the same transformations to all..</p>
+<p>First: Instantiate a <a href = "https://threejs.org/docs/#Group">Group</a> and add it to the scene:</p>
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  const group = new THREE.Group()
+  scene.add(group)
+</code>
+</pre>
+<p> Next, create some new meshes and <span class = "customP"> add them to the group instead of to the scene directly</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const cube1 = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({ color: 0xff0000,wireframe: true })
+)
+cube1.position.x = 1.5
+group.add(cube1)
+/*https://threejs.org/docs/#SphereGeometry*/
+const sphere = new THREE.Mesh(
+  new THREE.SphereGeometry( .75, 32 , 16 ),
+  new THREE.MeshBasicMaterial( { color: 0x0000ff, wireframe: true})
+)
+sphere.position.y = 1.5
+sphere.position.x = 3
+group.add(sphere)
+</code>
+</pre>
+<p>Because the <code>Group</code> class inherits from the <code>Object3D class</code>, it has access to the previously-mentioned properties and methods like <code>position</code>, <code>scale</code>, <code>rotation</code>, <code>quaternion</code>, and <code>lookAt</code>.
+<p>Comment the lookAt(...) call. Then apply transformations on the group:
+</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+group.position.x = -2
+group.rotation.x = Math.PI *.25
+// group.scale.x = .5
+// group.scale.y = .5
+// group.scale.z = .5
+group.scale.set(.5,.5,.5)
+//could do
+//camera.lookAt(group.position)
+</code>
+</pre>
 </section>
 </main>
   <script src="js/prism.js"></script>
