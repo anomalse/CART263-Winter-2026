@@ -317,6 +317,88 @@ group.scale.set(.5,.5,.5)
 //camera.lookAt(group.position)
 </code>
 </pre>
+<h3> Animation in Three.js </h3>
+<p>As you have already used <code>window.requestAnimationFrame()</code> you will be happy to know that you will keep on using it in order to do animation :)
+<br/> So for this example - let's remove the <code>group</code> and have just one object:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
+</code>
+</pre>
+<p> So - next add the animation function:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+window.requestAnimationFrame(animate)
+function animate(){
+    mesh.rotation.y+=0.01
+    renderer.render(scene, camera)
+    window.requestAnimationFrame(animate)
+}
+</code>
+</pre>
+<p> Note how we put the <code>render()</code> into this function... </p>
+<p> Ok - we have an issue: if you test this code on a computer with high frame rate, 
+  <br/>the cube will rotate faster, and if you test on a lower frame rate, the cube will rotate slower :(</p>
+<h4> Adapting the Frame Rate </h4>
+<p>To adapt the animation to the framerate, we need to know how much time it's been since the last frame: 
+<br/>There is a variable that is passed automatically into the <code>requestAnimationFrame()</code> that contained the time in ms since the program was loaded (like millis in p5). 
+<br/>You can then simply use that variable to calculate the time passed since the last frame.</code>. 
+<br/> You can then use this value to rotate the object. Here is the reworked <code>animate</code> function</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  let elapsedTime =0  //
+function animate(timer){
+  //calculate the difference since last frame
+  let deltaTime = timer - elapsedTime
+  elapsedTime = timer //update  new elapsedTime
+  mesh.rotation.y+=0.01*deltaTime
+  renderer.render(scene, camera)
+  window.requestAnimationFrame(animate)
+
+}
+</code>
+</pre>
+<p>So - you can also just use the <code>timer</code> variable directly: Add another object to the scene.</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const mesh_2 = new THREE.Mesh(geometry, material)
+scene.add(mesh_2)
+mesh_2.position.x = -2
+</code>
+</pre>
+<p> And then inside the <code>requestAnimationFrame)():</code></p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  // Update objects -> elapsed time increases ...
+    mesh_2.position.x = Math.cos(elapsedTime/1000)
+    mesh_2.position.y = Math.sin(elapsedTime/1000)
+</code>
+</pre>
+<p> Note : nothing is stopping you from keeping the object still and animating the camera instead:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  camera.position.x = Math.cos(elapsedTime/1000)
+  camera.position.y = Math.sin(elapsedTime/1000)
+</code>
+</pre>
+<h3>CUSTOM CONTROLS</h3>
+<p>This part of the workshop will consider how to get the camera be controlled by some input device (i.e. the mouse).
+  <br/> You build the functionality from scratch (using event lsiteners etc) ... or you can use the inbuilt control objects.</p>
+</p>
+<h4>FlyControls</h4>
+<!-- FlyControls enable moving the camera like if you were on a spaceship. You can rotate on all 3 axes, go forward and go backward. -->
+
+<h4>FirstPersonControls</h4>
+<!-- FirstPersonControls is just like FlyControls, but with a fixed up axis. You can see that like a flying bird view where the bird cannot do a barrel roll. While the FirstPersonControls contains "FirstPerson," it doesn't work like in FPS games. -->
+
+<h4>PointerLockControls</h4>
+<!-- PointerLockControls uses the pointer lock JavaScript API. This API hides the cursor, keeps it centered, and keeps sending the movements in the mousemove event callback. With this API, you can create FPS games right inside the browser. While this class sounds very promising if you want to create that kind of interaction, it'll only handle the camera rotation when the pointer is locked. You'll have to handle the camera position and game physics by yourself. -->
+
+<h3>RAY CASTING</h3>
+<h3>BLENDER MODELS</h3> 
 </section>
 </main>
   <script src="js/prism.js"></script>
