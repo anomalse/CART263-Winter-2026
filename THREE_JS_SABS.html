@@ -254,6 +254,7 @@ mesh.scale.z = 0.5
 <li>If you spin on the <code>y</code> axis, you can picture it like a carousel.</li>
 <li>If you spin on the <code>x</code> axis, you can imagine that you are rotating the wheels of a car you'd be in.</li>
 <li> If you rotate on the <code>z</code> axis, you can imagine that you are rotating the propellers in front of an aircraft you'd be in.</li>
+</ul>
 <p>Comment the scale and add an eighth of a complete rotation in both x and y axes:
   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
@@ -385,18 +386,300 @@ mesh_2.position.x = -2
 </code>
 </pre>
 <h3>CUSTOM CONTROLS</h3>
-<p>This part of the workshop will consider how to get the camera be controlled by some input device (i.e. the mouse).
-  <br/> You build the functionality from scratch (using event lsiteners etc) ... or you can use the inbuilt control objects.</p>
+<p>This part of the lecture will consider <span class = "customP">how to get the camera be controlled by some input device (i.e. the mouse)</span>.
+  <br/> You <em>could</em> build the functionality from scratch (using event lsiteners etc) ... or you can use the inbuilt control objects provided by Threee.js.
 </p>
-<h4>FlyControls</h4>
-<!-- FlyControls enable moving the camera like if you were on a spaceship. You can rotate on all 3 axes, go forward and go backward. -->
+<ul>
+<li><a href = "https://threejs.org/docs/#FlyControls">FlyControls</a> enable moving the camera like if you were on a spaceship. You can rotate on all 3 axes, go forward and go backward.</li>
+<li><a href = "https://threejs.org/docs/#FirstPersonControls">FirstPersonControls</a> is just like FlyControls, but with a fixed <code>up</code> axis. For example, you could see like a flying bird view where the bird cannot do a barrel roll. 
+  <br/>While the FirstPersonControls contains the word <em>FirstPerson</em>, it doesn't work like in FPS (First Person shooter) games.</li>
+<li><a href = "https://threejs.org/docs/#PointerLockControls">PointerLockControls</a> uses the <a href = "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API">Pointer Lock JavaScript API</a>. 
+  <br/>This API hides the cursor, keeps it centered, and keeps sending the movements in the <code>mousemove event callback</code>. 
+  <br/>With this API, you can create FPS games right inside the browser. While this class sounds very promising if you want to create that kind of interaction, it'll only handle the camera rotation when the pointer is locked. You'll have to handle the camera position and game physics by yourself.</li>
+<li><a href="https://threejs.org/docs/#OrbitControls">OrbitControls</a> performs orbiting, zooming, and panning. You can rotate around a point with the left mouse, translate laterally using the right mouse, and zoom in or out using the wheel.</li>
+<li><a href = "https://threejs.org/docs/#TrackballControls">TrackballControls</a> is just like OrbitControls but there are no limits in terms of vertical angle. You can keep rotating and do spins with the camera even if the scene gets upside down.</li>
+<li><a href = "https://threejs.org/docs/#TransformControls">TransormControls</a> has nothing to do with the camera. You can use it to add a gizmo to an object to move that object.</li>
+<li> <a href ="https://threejs.org/docs/#DragControls">DragControls</a> has nothing to do with the camera either. You can use it to move objects on a plane facing the camera by drag and dropping them.</li>
+</ul>
+<h4>Orbit Controls Example</h4>
+<p> Lets start with a new js file: <code>orbitTest.js</code>: (and link in your index.html ) INSTEAD of main.js:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+   &lt;script type="module" src="orbitTest.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+<ul>
+  <li>So first: using the import map - we can easily import <code>Three.js</code> and the <code>controls</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+</code>
+</pre>
+</li>
+<li> Add a scene, camera, and renderer:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const scene = new THREE.Scene()
+const sizes = {
+    width: 800,
+    height: 600
+}
+const canvas = document.querySelector('canvas#three-ex')
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+camera.position.z = 3;
+scene.add(camera)
 
-<h4>FirstPersonControls</h4>
-<!-- FirstPersonControls is just like FlyControls, but with a fixed up axis. You can see that like a flying bird view where the bird cannot do a barrel roll. While the FirstPersonControls contains "FirstPerson," it doesn't work like in FPS games. -->
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.setSize(sizes.width, sizes.height)
+</code>
+</pre>
+</li>
+<li> Add two new mesh objects:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
 
-<h4>PointerLockControls</h4>
-<!-- PointerLockControls uses the pointer lock JavaScript API. This API hides the cursor, keeps it centered, and keeps sending the movements in the mousemove event callback. With this API, you can create FPS games right inside the browser. While this class sounds very promising if you want to create that kind of interaction, it'll only handle the camera rotation when the pointer is locked. You'll have to handle the camera position and game physics by yourself. -->
+const mesh_2 = new THREE.Mesh(geometry, material)
+scene.add(mesh_2)
+mesh_2.position.x = -1.5
+</code>
+</pre>
+</li>
+<li>And an animate function:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  // ANIMATION SETUP
+window.requestAnimationFrame(animate)
 
+
+function animate(){
+renderer.render(scene, camera)
+window.requestAnimationFrame(animate)
+}
+</code>
+</pre>
+</li>
+<li> Now: before the <code>animate</code> add a new instance of <code>OrbitControls</code>: 
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+// Controls
+const controls = new OrbitControls(camera, canvas)
+</code>
+</pre>
+</li>
+<li>Note: By default, the camera and therefore the <code>controls</code> is looking at the center of the scene. We can change that with the target property.
+<br> For example - lets make its target the mesh:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+controls.target = mesh.position
+</code>
+</pre>
+</li>
+<li>OK! Let's update the postion of the camera: (in the <code>animate()</code>) -  the reworked function:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+function animate(timer){
+camera.position.x = Math.cos(timer/1000)
+camera.position.y = Math.sin(timer/1000)
+//console.log(camera.position.x)
+renderer.render(scene, camera)
+window.requestAnimationFrame(animate)
+}
+</code>
+</pre>
+</li>
+<li> Well... our <code>controls</code> object is no longer focuse the object... The solution is to <span class = "customP">update the controls</span> in the <code>animate()</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+controls.update()
+</code>
+</pre>
+</li>
+<li>
+  You can update the <code>controls target</code> code in the <code>animate()</code> as well. i.e.:
+     <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+controls.target.y = -2
+</code>
+</pre>
+</li>
+<li> Please do look at the <a href = "https://threejs.org/docs/#OrbitControls">documentation</a> page for more functions/properties etc... But another nice feature is to <code>enable Damping</code>, which essentially will smooth the animation by adding some kind of acceleration and friction formulas.
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  controls.enableDamping = true;
+</code>
+  </pre>
+</li>
+</ul>
+
+<h4>PointerLockControls Example</h4>
+<p> Lets start with a new js file: <code>pointerLockTest.js</code>: (and link in your index.html ) INSTEAD of main.js/orbitTest.js:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+   &lt;script type="module" src="pointerLockTest.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+<ul>
+  <li>So first: using the import map - we can easily import <code>Three.js</code> and the <code>controls</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+import * as THREE from 'three';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js'; 
+</code>
+</pre>
+</li>
+<li> Add a scene, camera, and renderer:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const scene = new THREE.Scene()
+const sizes = {
+    width: 800,
+    height: 600
+}
+const canvas = document.querySelector('canvas#three-ex')
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+camera.position.z = 3;
+scene.add(camera)
+
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.setSize(sizes.width, sizes.height)
+</code>
+</pre>
+</li>
+<li> Add two new mesh objects:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
+
+const mesh_2 = new THREE.Mesh(geometry, material)
+scene.add(mesh_2)
+mesh_2.position.x = -1.5
+</code>
+</pre>
+</li>
+<li>And an animate function:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  // ANIMATION SETUP
+window.requestAnimationFrame(animate)
+
+
+function animate(){
+renderer.render(scene, camera)
+window.requestAnimationFrame(animate)
+}
+</code>
+</pre>
+</li>
+<li>
+  Next: we need to set up up the <code>controller</code> object:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const controls = new PointerLockControls(camera, document.body);
+</code>
+</pre>
+</li>
+<li> You can set up event listeners to detect when the <span class = "customP"> controls are locked or unlocked</span>:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  controls.addEventListener("lock", function(){
+    console.log("we are locked")
+})
+
+controls.addEventListener("unlock", function(){
+    console.log("we are unlocked")
+})
+</code>
+</pre>
+</li>
+<li> Let's lock the controls when we click on an HTML <strong>play button</strong>. Add to yout html, after the canvas:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+&lt;div style = "cursor:pointer; background: orange; width:max-content; padding:2px;" 
+id = 'play_button'&gt;PLAY&lt;/div&gt;
+</code>
+</pre>
+</li>
+<li> Then add an event listener: 
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  const playButton = document.getElementById('play_button'); // Example button
+playButton.addEventListener('click', function () {
+    controls.lock();
+}, false)
+</code>
+</pre>
+</li>
+<li> And now the controls are working by default</li>
+<li> We can then implement movement (i.e. forward, backward, left and right) using the keys:
+  <br/> We first set up some boolean variables:</li>
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+let moveForward =false;
+let moveBackward = false;
+let moveRight =false;
+let moveLeft = false;
+</code>
+</pre>
+  <li>And then the event listeners:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33" class="language-javascript line-numbers">
+<code>
+  window.addEventListener("keydown",function(e){
+    if (e.key ==="w"){
+        moveForward = true;
+    } 
+     if (e.key ==="s"){
+        moveBackward = true;
+    } 
+
+     if (e.key ==="a"){
+        moveLeft = true;
+    } 
+     if (e.key ==="d"){
+        moveRight = true;
+    } 
+})
+
+window.addEventListener("keyup",function(e){
+    if (e.key ==="w"){
+        moveForward = false;
+    } 
+
+     if (e.key ==="s"){
+        moveBackward = false;
+    } 
+     if (e.key ==="a"){
+        moveLeft = false;
+    } 
+     if (e.key ==="d"){
+        moveRight = false;
+    } 
+})
+</code>
+  </pre>
+</li>
+<li> Finally in the <code>animate()</code>, we can call the relevent functions, a part of the <code>PointerLockControls</code> controls object:
+     <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  if (moveForward) controls.moveForward(0.1);
+  if (moveBackward) controls.moveForward(-0.1);
+  if (moveRight) controls.moveRight(0.1);
+  if (moveLeft) controls.moveRight(-0.1);
+</code>
+</pre>
+</li>
+</ul>
 <h3>RAY CASTING</h3>
 <h3>BLENDER MODELS</h3> 
 </section>
