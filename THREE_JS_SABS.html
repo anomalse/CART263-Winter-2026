@@ -680,7 +680,260 @@ window.addEventListener("keyup",function(e){
 </pre>
 </li>
 </ul>
-<h3>RAY CASTING</h3>
+<h3>RAYCASTiNG </h3>
+<p> So ... onto a more advanced but necessary topic: <code>RayCasters</code> and <code>RayCasting</code>.
+<br/> As the name suggests, a <code>Raycaster</code> can cast (or shoot) a <code>ray</code> in a specific <strong>direction</strong> and test what objects <strong>intersect</strong> with it.
+<br/>You can use that technique to detect if there is a wall in front of the player, test if a weapon hit something, <span class = "customP">test if something is currently under the mouse to simulate mouse events</span>, and many other things.</p>
+<h4> First RayCasting Example </h4>
+<ul>
+  <li> Lets start with a new js file: <code>rayCastTest.js</code>: (and link in your index.html ) INSTEAD of other js files...:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+   &lt;script type="module" src="rayCastTest.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+</li>
+  <li>So first: using the import map - we can easily import <code>Three.js</code> and the <code>controls</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'</code>
+</pre>
+</li>
+<li> Next add a scene, camera, and renderer:
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const scene = new THREE.Scene()
+const sizes = {
+    width: 800,
+    height: 600
+}
+const canvas = document.querySelector('canvas#three-ex')
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+camera.position.z = 3;
+scene.add(camera)
+
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.setSize(sizes.width, sizes.height)
+</code>
+</pre>
+</li>
+<li> Add the controls:
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  const controls = new OrbitControls(camera, canvas)
+  </code>
+  </pre>
+</li>
+<li>
+  Lets add three <code>spheres</code> to the scene:
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const object1 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    new THREE.MeshBasicMaterial({ color: '#ff0000' })
+)
+object1.position.x = -2
+
+const object2 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    new THREE.MeshBasicMaterial({ color: '#ff0000' })
+)
+object2.position.x = 2
+
+
+const object3 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    new THREE.MeshBasicMaterial({ color: '#ff0000' })
+)
+
+scene.add(object1,object2,object3)
+</code>
+</pre>
+  </li>
+  <li> As well as an <code>animate()</code> function
+       <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+window.requestAnimationFrame(animate);
+
+function animate() {
+  controls.update();
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate);
+}
+</code>
+  </pre>
+  </li>
+  <li>So now we can implement some raycasting. First add a <a href = "https://threejs.org/docs/#Raycaster">Raycaster</a> object:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+    const raycaster = new THREE.Raycaster()
+</code>
+</pre>
+   </li>
+   <li> There are multiple things we can configure with our <code>raycaster</code>.
+    <br/>	To change the <code>position</code> and <code>direction</code> for where the <code>ray</code> will be cast, we will use the <code>set(...)</code> method. 
+    <br/>The first parameter is the position and the second parameter is the direction.
+	  Both are <a href = "https://threejs.org/docs/#Vector3">Vector3</a>, but the direction has to be normalized. 
+    <br/><span class = "customP">A normalized vector has a length of 1</span>. Don't worry, you don't have to do the mathematics by yourself, and you can call the <code>normalize()</code> method on the vector.
+    <br> In the example below, the ray position starts a little on the left in our scene, and the direction  is to go to the <strong>right</strong>. The ray should go through all the spheres:
+
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+//ray will start somewhere on left of the spheres
+const rayOrigin = new THREE.Vector3(- 3, 0, 0)
+//right (positive x)
+const rayDirection = new THREE.Vector3(10, 0, 0)  //reduce magnitude BUT keep direction
+console.log(rayDirection.length())
+//set direction only (has length ==1)
+rayDirection.normalize()
+console.log(rayDirection.length())
+raycaster.set(rayOrigin, rayDirection) //raycaster has been oriented
+</code>
+</pre>
+</li>
+<li>So now we can <span class = "customP">cast a ray with our raycaster object</span>:
+ <br/> To cast a ray and get the objects that <strong>intersect</strong> we can use two methods: <code>intersectObject(...)</code> (singular) and <code>intersectObjects(...)</code> (plural).
+ <br/> Lets implement the first one: OUTSIDE the animation loop:
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+ //cast a ray - check intersection with ONLY object 1
+const intersect = raycaster.intersectObject(object1)
+console.log(intersect)
+</code>
+</pre>
+</li>
+<li> Ok - if you now run the code - you should look at the <a href = "https://threejs.org/docs/?q=Raycaster#Raycaster.intersectObject" >intersection object</a> returned.
+</li>
+<li>
+  Lets look at the second (comment out the first) -  and put OUTSIDE the animation loop:
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  //cast a ray - check intersection with obj1, obj2 and obj 3 
+const intersects = raycaster.intersectObjects([object1, object2, object3])
+console.log(intersects)
+</code>
+</pre>
+</li>
+<li>So we get back three results.... which does make sense ... BUT if you look closely all the objects are apparently the <code>same distance</code> from the ray origin?
+  <br/> This is incorrect - and there is a valid reason: the ray is being cast <span class="customP">before the actual objects are rendered and updated (their positions etc)</span>.
+  <br/> Note that we render only inside the <code>animate()</code>. So to ensure that the objects are updated to correct position earlier - we can add the following BEFORE casting a ray:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+  object1.updateMatrixWorld()
+	object2.updateMatrixWorld()
+  object3.updateMatrixWorld()
+  </code>
+  </pre>
+</li>
+<li>And now when you run it  - you should have more accurate results:)</li>
+<li> Lets now put a raycaster into the <code>animate()</code>, and check and change the objects if they intersect.</li>
+<li> First lets apply some animation to the objects:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+  function animate(timer) {
+  controls.update();
+
+    object1.position.y = Math.sin(timer/1000 *.5 ) * 3
+    object2.position.y = Math.sin(timer/1000  *.4) * 3
+    object3.position.y = Math.sin(timer/1000 *.3) *  3
+
+  renderer.render(scene, camera);
+
+  window.requestAnimationFrame(animate);
+  
+}
+  </code>
+  </pre>
+  </li>
+  <li> And now:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+    const objectsToTest = [object1, object2, object3]
+    const intersects = raycaster.intersectObjects(objectsToTest)
+
+    for(const object of objectsToTest)
+    {
+        object.material.color.set('#ff0000')
+    }
+
+    for(const intersect of intersects)
+    {
+        intersect.object.material.color.set('#0000ff')
+    }
+</code>
+</pre>
+</li>
+<li> So what we notice is that only when the objects cross the <code>y === 0</code> line do they intersect with the ray :)
+  <br/> You could <code>move the ray origin down</code>  - with the same direction:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+    const rayOrigin_n = new THREE.Vector3(-3, -2, 0);
+    raycaster.set(rayOrigin_n, rayDirection); //raycaster has been oriented
+  </code>
+  </pre>
+  And now the intersection point is lower on the y axis.
+</li>
+<li> If we <code>change the direction</code> of the ray:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+  const rayOrigin_n_2 = new THREE.Vector3(-2, 5, 0);
+  const rayDirection_2 = new THREE.Vector3(0, -10, 0); //point down
+  rayDirection_2.normalize();
+  raycaster.set(rayOrigin_n_2, rayDirection_2); //raycaster has been oriented
+    </code>
+    </pre>
+    So now only the most left sphere is always intersecting.
+    </li>
+</ul>
+<h3>RAYCASTiNG & MOUSE EVENTS </h3>
+<p> We can also use the <code>raycaster</code> to test <span class = "customP">if an object is behind the mouse</span>. 
+<br>In other words, if you are hovering an object :). Mathematically speaking, it's a little complex because we need to cast a ray from the camera in the mouse's direction, but, fortunately, Three.js does alot of the work for us.</p>
+<h4>Mouse Hover</h4>
+<p>To begin with, we need the <code>coordinates of the mouse</code>. We <span class = "customP">cannot use the basic native JavaScript coordinates</span>, which are in pixels - 
+<br/> We need a value that goes from <span class = "customP">-1 to +1 in both the horizontal and the vertical axis</span>, with the vertical coordinate being positive when moving the mouse upward.
+<br/>This is how WebGL works and it's related to things like clip space but we don't need to understand those complex concepts ;)</p>
+<p> In essence we need to map the following:
+  <ul>
+    <li>The mouse is at the <code>top left of the canvas</code>: Horiz: -1 Vertical : 1</li>
+    <li>The mouse is at the <code>bottom left of the canvas</code>: Horiz: -1 Vertical : -1</li>
+    <li>The mouse is at the <code>middle vertically and right horizontally of the canvas</code>: Horiz: 1 Vertical : 0</li>
+    <li>The mouse is at the <code>middle vertically and left horizontally of the canvas</code>: Horiz: -1 Vertical : 0</li>
+    <li>The mouse is at the  <code> center of the canvas</code>: Horiz: 1 Vertical : 0</li>
+    <li>...</li>
+    </ul>
+  </p>
+  <ul>
+    <li> Lets go!  - use the same code as before - except lets clean out the <code>animate()</code> to be:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+    function animate(timer) {
+    controls.update();
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(animate);
+ }
+</code>
+  </pre>
+</li>
+  <li>Next, we will create a variable to hold the mouse coordinates using a <a href = "https://threejs.org/docs/index.html#Vector2">Vector2</a>,
+  and an event listener callback to capture the <code>mousemove</code>:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+  window.addEventListener("mousemove", function(event) {
+  mouse.x = (event.clientX / sizes.width) * 2 - 1; //map to between -1,1
+  mouse.y = -(event.clientY / sizes.height) * 2 + 1; //map to between -1,1
+  //console.log(mouse);
+  </code>
+  </pre>
+});
+</li>
+<li>We could cast the ray in the <code>mousemove event callback</code>, but it's not recommended because the mousemove event might be triggered 
+  <br>more than the frame rate for some browsers... Instead, <span class = "customP">we will cast the ray in the <strong>animate()</strong> function</span> as we did before.
+
+  </li>
+</ul>
 <h3>BLENDER MODELS</h3> 
 </section>
 </main>
