@@ -925,14 +925,102 @@ console.log(intersects)
   mouse.x = (event.clientX / sizes.width) * 2 - 1; //map to between -1,1
   mouse.y = -(event.clientY / sizes.height) * 2 + 1; //map to between -1,1
   //console.log(mouse);
+  });
   </code>
   </pre>
-});
+
 </li>
 <li>We could cast the ray in the <code>mousemove event callback</code>, but it's not recommended because the mousemove event might be triggered 
   <br>more than the frame rate for some browsers... Instead, <span class = "customP">we will cast the ray in the <strong>animate()</strong> function</span> as we did before.
+  <br/>To orient the ray in the <strong>correct direction</strong>, we can use the Three.js <a href = "https://threejs.org/docs/#Raycaster.setFromCamera">setFromCamera()</a> method on the Raycaster. 
+  <br/>The rest of the code will be the same as before - and we will also update the objects materials to red or blue if they intersect or not:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  function animate(timer) {
+  controls.update();
 
+  raycaster.setFromCamera(mouse, camera);
+
+  const objectsToTest = [object1, object2, object3];
+  const intersects = raycaster.intersectObjects(objectsToTest);
+
+  for (const object of objectsToTest) {
+    object.material.color.set("#ff0000");
+  }
+
+  for (const intersect of intersects) {
+    intersect.object.material.color.set("#0000ff");
+  }
+
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate);
+}
+</code>
+</pre>
+</li>
+<li> Well this works ... BUT notice that if you have overlapping objects - both will be activated on mouse move...
+  <br/>i.e.  set <code>object2.position.x = -1.5</code></li>
+  <li>Therefore, we can implement a strategy to ensure that only <code>1</code> can be <code>activated</code> at a time...
+    <br/> - How? Well by keeping track of the object that is <code>currently active</code>: 
+    <ul>
+    <li>
+      make an object <code>active</code> when the mouse is over it AND there is NO currently tracked object</li>
+      <li>make an object <code>inactive</code> when the mouse is off it AND set the currently tracked object to null </li>
+    </ul>
   </li>
+  <li> Comment out the two for loops for color change of obejcts (red - blue)
+    and add:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>   
+if (intersects.length > 0) {
+    //there was none so we enter
+    if (currentIntersectedObj === null) {
+      currentIntersectedObj = intersects[0]; //take first
+      console.log("mouse enter");
+      currentIntersectedObj.object.material.color.set("#00c3ff");
+    }
+
+    //the currently selected one is NO LONGER IN THE LISR
+    else if (intersects.find(findIfCurrentObjIsActive) === false) {
+      currentIntersectedObj.object.material.color.set("#ff0000");
+      currentIntersectedObj = intersects[0]; //take first
+      console.log("mouse enter");
+      currentIntersectedObj.object.material.color.set("#00c3ff");
+    }
+  }
+
+</code>
+</pre>
+</li>
+<li> Note the variable <code>currentIntersectedObj</code>: this variable will hold a reference to the currently active object
+<br/>Declare it before the <code>animate()</code>:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>   
+/// FOR MOUSE ENTER AND MOUSE LEAVE
+let currentIntersectedObj = null
+</code>
+</pre>
+</li>
+<li> And lastly to reset the <code>currentIntersectedObj</code> if the mouse is no longer on it:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+ //no intersections
+  else {
+    // check if NOT null (so there was one just over)
+    if (currentIntersectedObj !== null) {
+      console.log("mouse out");
+      currentIntersectedObj.object.material.color.set("#ff1900");
+      currentIntersectedObj = null;
+    }
+  }
+
+function findIfCurrentObjIsActive(intersect){
+  return intersect.object === currentIntersectedObj;
+}
+   
+</code>
+</pre>
+</li>
 </ul>
 <h3>BLENDER MODELS</h3> 
 </section>
