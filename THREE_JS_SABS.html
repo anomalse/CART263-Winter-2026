@@ -964,63 +964,12 @@ console.log(intersects)
     <br/> - How? Well by keeping track of the object that is <code>currently active</code>: 
     <ul>
     <li>
-      make an object <code>active</code> when the mouse is over it AND there is NO currently tracked object</li>
-      <li>make an object <code>inactive</code> when the mouse is off it AND set the currently tracked object to null </li>
+      make an object <code>active</code> when the mouse is <code>over</code> it AND there is NO currently tracked object</li>
+      <li>make an object <code>inactive</code> when the mouse is <code>off</code> it AND set the currently tracked object to null </li>
     </ul>
   </li>
-  <li> Comment out the two for loops for color change of obejcts (red - blue)
-    and add:
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
-<code>   
-if (intersects.length > 0) {
-    //there was none so we enter
-    if (currentIntersectedObj === null) {
-      currentIntersectedObj = intersects[0]; //take first
-      console.log("mouse enter");
-      currentIntersectedObj.object.material.color.set("#00c3ff");
-    }
+ 
 
-    //the currently selected one is NO LONGER IN THE LISR
-    else if (intersects.find(findIfCurrentObjIsActive) === false) {
-      currentIntersectedObj.object.material.color.set("#ff0000");
-      currentIntersectedObj = intersects[0]; //take first
-      console.log("mouse enter");
-      currentIntersectedObj.object.material.color.set("#00c3ff");
-    }
-  }
-
-</code>
-</pre>
-</li>
-<li> Note the variable <code>currentIntersectedObj</code>: this variable will hold a reference to the currently active object
-<br/>Declare it before the <code>animate()</code>:
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
-<code>   
-/// FOR MOUSE ENTER AND MOUSE LEAVE
-let currentIntersectedObj = null
-</code>
-</pre>
-</li>
-<li> And lastly to reset the <code>currentIntersectedObj</code> if the mouse is no longer on it:
-  <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
-<code>
- //no intersections
-  else {
-    // check if NOT null (so there was one just over)
-    if (currentIntersectedObj !== null) {
-      console.log("mouse out");
-      currentIntersectedObj.object.material.color.set("#ff1900");
-      currentIntersectedObj = null;
-    }
-  }
-
-function findIfCurrentObjIsActive(intersect){
-        return intersect.object === currentIntersectedObj.object;
-      }
-   
-</code>
-</pre>
-</li>
 </ul>
 <h3>BLENDER MODELS</h3> 
 </section>
