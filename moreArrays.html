@@ -26,14 +26,14 @@
     <main>
 
 <section class="contents-notes">
-<p><a href = "resources/arrays-cart263-start.zip">PLEASE DOWNLOAD THE STARTING FILES FROM HERE</a></p>
+<p><a href = "resources/ARRAYS-CART263-START.zip">PLEASE DOWNLOAD THE STARTING FILES FROM HERE</a></p>
 <h3>ARRAY FUNCTIONS </h3>
-<p>So - you have learnt to <span class  = "customP">define arrays, push, pop, access elements via index , iterate over forwards, backwards etc... </span></p>
-<br/>We will today - look at some <span class  = "customP">SUPER USEFUL functions</span> that you can apply to arrays. 
+<p>So - you have learnt to <span class  = "customP">define arrays, push, pop, access elements via index , iterate over forwards, backwards etc... </span>
+<br/>We will today - look at some <span class  = "customP">SUPER USEFUL functions</span> that you can apply to <code>arrays</code>. 
 <br/>As JS evolves there are more and more new functions available... See <a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">here</a> to start :)
-<br/>We will only go over the most commonly used (and in case you use REACT or similar framework these become very important ) ...
+<br/>We will only go over the most commonly used ones.</p>
 <h4> map() </h4>
-<p>The <code>map()</code> method creates a new array by applying a <span class ="customP">provided function</span> to each element of the original array. 
+<p>The <code>map()</code> method creates <code>a new array</code> by applying a <span class ="customP">provided function</span> to each element of the original array. 
 <br/>It <span class ="customP">transforms the elements without modifying the original array</span>.
 Lets look at a simple example:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
@@ -43,52 +43,81 @@ const squaredNumbers = numbers.map(
     function (num) { 
         return(
         num * num
-        )
-    }
+        )}
 );
 </code>
 </pre>
-<p>Ok: but what if the array contains more complex things then just numbers?
-For example: lets make a new array to hold ShapeDef objects that are circular:</p>
+<p>Ok: but what if the array contains more complex things then just numbers i.e. <code>Custom Objects</code>?
+<br/> Lets start by creating an initial array of shapes using the <code>Custom Shape</code> class.
+<br/> In the js file <code>arrayStuff.js</code> add the following under <code>//INIT ONE</code></p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
-function mapArraysShape() {
-    console.log(arrayOfShapes);
+    //INIT ONE:
+  for (let i = 0; i < 10; i++) {
+    let color = {r:(255 - i * 10),g:50,b:100};
+    arrayOfShapes_One.push(
+      new CustomShape((i + 1) * 55, 50, "shape", "rectangle", color)
+    );}
+  add_elements_to_dom(arrayOfShapes_One, allRows[0]);
+</code>
+</pre>
+<p> So - we have an array of square shapes ... le's say we want to now take the <code>arrayOfShapes_One</code> array and use it to
+   <br/> create <em>another </em> array of Custom Shapes that are circular  - but everything else about the shapes remains the same...</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+function mapArraysShape(arrayOfShapes,row) {
     // MAP ONE
     let arrayOfShapesNew = arrayOfShapes.map(changeShape);
-    add_New_Els_ToDOM(arrayOfShapesNew, originalRow);
+    add_elements_to_dom(arrayOfShapesNew, row);
+    
     function changeShape(el){
         return (
         /* need to make a copy */
-        new ShapeDef(el.x, el.y+100, el.shapeClass,"circle",el.color)
-        )
-       
-      }
+        new CustomShape(el.x, el.y+100, el.shapeClass,"circle",el.color)
+        )}
+    }
 
-  }
 </code>
 </pre>
-<p>Or then for color:</p>
+<p> Add this function as the callback function for the first button</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
 <code>
-  function mapArraysColor() {
-    console.log(arrayOfShapes);
+    document
+    .querySelector("#mapButtonA")
+    .addEventListener("click", function() {
+      mapArraysShape(arrayOfShapes_One, allRows[0])
+    });  
+</code>
+</pre>
+<p>We can then implement the same idea but instead of changing shape - the new array would be the same shapes with different colors:)</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+  function mapArraysColor(arrayOfShapes,row) {
     // MAP TWO
     let arrayOfShapesNew = arrayOfShapes.map(changeColor);
-    add_New_Els_ToDOM(arrayOfShapesNew, originalRow);
-    console.log(arrayOfShapesNew)
+    add_elements_to_dom(arrayOfShapesNew, row);
+  
 
     function changeColor(el){
-        let temp = getColorObj(el.color);
-        let color = `rgb(${temp [1]},${temp[0]},${temp[2]})`
+        //take red color
+        let newColor = {r:el.color.r, g:125, b:255}
         return (
         /* need to make a copy */
-        new ShapeDef(el.x, el.y+200, el.shapeClass,el.customShapeClass,color)
-        )
-       
-      }
-  }
+        new CustomShape(el.x, el.y+200, el.shapeClass,el.customShapeClass,newColor)
+        )}
+    }
  </code>
+</pre>
+<p> Add this function as the callback function for the second button</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+    document
+    .querySelector("#mapButtonB")
+    .addEventListener("click",  function() {
+      mapArraysColor(arrayOfShapes_One, allRows[0])
+    });
+
+</code>
 </pre>
 <h4> filter() </h4>
 <p>The <code>filter()</code> method creates a new array <span class = "customP">containing all elements that match the provided condition</span>. 
@@ -104,7 +133,7 @@ const evenNumbers = numbers_filter.filter(
 console.log(evenNumbers); 
 </code>
 </pre>
-<p>Or an example for comparing strings:</p>
+<p>OR: an example for comparing strings:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
 <code>
 const strings_filter = ["banana", "oranges", "peppers", "tamatoes", "peas", "pears", "kiwi"];
@@ -116,37 +145,74 @@ console.log(startsWithP);
 </code>
 </pre>
 
-<p>If we have objects in the array -> back to the shapes: lets filter the array on x position:</p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<p>If we have objects in the array -> back to the <code>shapes</code>: lets filter that array on x position:
+<br/> Lets start by creating an initial array of shapes using the <code>Custom Shape</code> class.
+<br/> In the js file <code>arrayStuff.js</code> add the following under <code>//INIT TWO</code></p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
-function filterArraysX(){
-    console.log(arrayOfShapesTwo);
+ let cshape = "";
+  let arrayOfShapes_Two =[]
+  for (let i = 0; i < 16; i++) {
+    let color = { r: 255 - i * 10, g: 50, b: 100 };
+    if (i % 2 === 0) cshape = "circle";
+    else cshape = "rectangle";
+    arrayOfShapes_Two.push(
+      new CustomShape((i + 1) * 55, 50, "shape", cshape, color),
+    );
+  }
+  add_elements_to_dom(arrayOfShapes_Two, allRows[1]); 
+</code>
+</pre>
+<p> So - we have an array of square and circle shapes ... le's say we want to now take this array and use it to
+   <br/> create <em>another </em> array of Custom Shapes that is made up of all the <code>same shapes that have an x position > 200</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+ function filterArraysXPos(arrayOfShapes, row){
     // FILTER ONE
-    let filterArraysX= arrayOfShapesTwo.filter(smaller_posX);
+    let filteredArray= arrayOfShapes.filter(greater_posX);
     
-    function smaller_posX(el){
+    function greater_posX(el){
         return(
             (el.x > 200)
         )
     }
-    console.log(filterArraysX);
-    //then we can map - to change the y :)
-    let arrayOfShapesNew = filterArraysX.map(
-        function(el){
-            return (new ShapeDef(el.x, el.y+100, el.shapeClass,el.customShapeClass,el.color))
-
-    });
-    add_New_Els_ToDOM(arrayOfShapesNew, secondRow);
-
+    add_elements_to_dom(filteredArray, row);
+    console.log(filteredArray)
 }
+
 </code>
 </pre>
-<p>Or then by Shape ;)</p>
+<p> Add this function as the callback function for the third button</p>
+
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
-function filterArraysByShape(){
+   document
+      .querySelector("#filterButtonA")
+      .addEventListener("click", function(){filterArraysXPos(arrayOfShapes_Two, allRows[1])});
+</code>
+</pre>
+<p>If you look at the console.log() - > you will see that it is working. It just so happens that the new array is on top of the old array ;(
+<br/> So we will use the <code>map()</code> to update the y values:
+<br/> add to the <code>filterArraysXPos()</code>:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+   //then we can map - to change the y :)
+    let arrayOfShapesYChange = filteredArray.map(
+        function(el){
+            return (new CustomShape(el.x, el.y+100, el.shapeClass,el.customShapeClass,el.color))
+
+    });
+    console.log(filteredArray)
+    //update
+    add_elements_to_dom(arrayOfShapesYChange, row);
+</code>
+</pre>
+<p>Or then let's <code>filter by shape</code></p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+function filterArraysByShape(arrayOfShapes, row){
     // FILTER ONE
-    let filterArraysShape= arrayOfShapesTwo.filter(shape_filter);
+    let filterArraysShape= arrayOfShapes.filter(shape_filter);
     
     function shape_filter(el){
         return(
@@ -157,13 +223,20 @@ function filterArraysByShape(){
     //then we can map - to change the y :)
     let arrayOfShapesNew = filterArraysShape.map(
         function(el){
-            return (new ShapeDef(el.x, el.y+200, el.shapeClass,el.customShapeClass,el.color))
+            return (new CustomShape(el.x, el.y+200, el.shapeClass,el.customShapeClass,el.color))
 
     });
-    add_New_Els_ToDOM(arrayOfShapesNew, secondRow);
-
-
+    add_elements_to_dom(arrayOfShapesNew, row);
 }
+</code>
+</pre>
+<p> And ... add this function as the callback function for the fourth button</p>
+
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+   document
+      .querySelector("#filterButtonA")
+      .addEventListener("click", function(){filterArraysXPos(arrayOfShapes_Two, allRows[1])});
 </code>
 </pre>
 <h4> reduce() </h4>
@@ -186,7 +259,8 @@ const sum = numbers_n.reduce(
 console.log(sum);
 </code> 
 </pre>
-<p>We can also apply the <span class = "customP">reduce </span> to objects.... i.e. if we have a circumstance where we are reducing an array of objects to a single object...:</p>
+<p>We can also apply the <code>reduce</code> function to objects.... i.e. 
+<br/>if we have a circumstance where we are reducing an array of objects to a single object...:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
 <code>
 const donuts = [
@@ -208,41 +282,74 @@ const donuts = [
 <p>** Note: we pass an <span class = "customP">empty object as the initial accumulator value</span></p>
 <h4> forEach() </h4>
 <p>Most of you  have already used this one :) The <code>forEach()</code> method executes a provided function <span class = "customP">once</span> for each array element. 
-<br/>It allows us to execute an action on each element without creating a new array. Lets start with a simple array:</p>
+<br/>It allows us to execute an action on each element <strong>without creating a new array</strong>. Lets start with a simple array:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
 <code>
-const numbers_forEach = [12, 26, 37, 43, 52];
-numbers_forEach.forEach(function(num){
-console.log(` nummmm: ${num*2}`)
+const nums = [12, 26, 37, 43, 52];
+nums.forEach(function (num) {
+  console.log(` nummmm: ${num * 2}`);
 });
 </code>
 </pre>
-<p>Lets now use our shapes array with <code>forEach()</code>:</p>
-<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<p>Lets now use our shapes array with <code>forEach()</code>:
+<br/> Lets start by creating another initial array of shapes using the <code>Custom Shape</code> class.
+<br/> In the js file <code>arrayStuff.js</code> add the following under <code>//INIT THREE</code></p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
-function forEachCallBackA(){
-    document.querySelector("#pSpan").innerHTML=""
-    arrayOfShapesThree.forEach(addPTags)
+ //INIT THREE
+  let arrayOfShapes_Three = [];
+  for (let i = 0; i < 10; i++) {
+    let color = { r: 255 -i*9, g: 255-i*20, b: 255- i*7};
 
-    function addPTags(el){
-        document.querySelector("#pSpan").innerHTML+= `<span> x:${el.x} <span>`
-            
-    }
-}
+    arrayOfShapes_Three.push(
+      new CustomShape((i + 1) * 55, 50, "shape", "circle", color),
+    );
+  }
+     add_elements_to_dom(arrayOfShapes_Three, allRows[2]);
+     allRows[2].innerHTML+=`<div id = "pSpan"></div>`
 </code>
 </pre>
-OR
+<p>Next: let's add our <code>forEach()</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19" class="language-javascript line-numbers">
+<code>
+  function forEachCallBackA() {
+    document.querySelector("#pSpan").innerHTML = "";
+    arrayOfShapes_Three.forEach(addPTags);
+
+    function addPTags(el) {
+      document.querySelector("#pSpan").innerHTML += `<span> x:${el.x} <span>`;
+    }
+  }
+</code>
+</pre>
+<p> Then add the <code>event listener functionality</code> to the button:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+ document
+      .querySelector("#forEachButtonA")
+      .addEventListener("click", forEachCallBackA);
+</code>
+</pre>
+<p>OR let's add another  <code>forEach()</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
 function forEachCallBackB(){
     document.querySelector("#pSpan").innerHTML=""
-    arrayOfShapesThree.forEach(addPTags)
+    arrayOfShapes_Three.forEach(addPTags)
 
     function addPTags(el){
         document.querySelector("#pSpan").innerHTML+= `<span> y:${el.y} </span>`
             
     }
 }
+</code>
+</pre>
+<p> Then add the <code>event listener functionality</code> to the button:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+document
+      .querySelector("#forEachButtonB")
+      .addEventListener("click", forEachCallBackB);
 </code>
 </pre>
 
@@ -273,40 +380,78 @@ console.log(foundString)
 </code>
 </pre>
 <p>Or even with the shapes array: lets find an object based on the 'x':</p>
+<p>Again - let's first add in the initial array of shapes (<code>//INIT FOUR</code>)</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
-function findCallBackA(){
+     //INIT FOUR
+  let arrayOfShapes_Four = [];
+
+    for (let i = 0; i < 12; i++) {
+      //let color = `rgb(${255 - i * 10},0,${255 - i * 10})`;
+      let color = { r: 255 -i*9, g: 255-i*20, b: 255- i*7};
+      arrayOfShapes_Four.push(
+        new CustomShape((i + 1) * 55, 50, "shape", 'square', color)
+      );
+    }
+      add_elements_to_dom(arrayOfShapes_Four, allRows[3]); 
+</code>
+</pre>
+<p> Next: our <code>find callback function</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+    function findCallBackA(arrayOfShapes, row) {
     //get an object back whose x> 200
-    const foundObj = arrayOfShapesFour.find(
+    const foundObj = arrayOfShapes.find(
         function(el){
             return(el.x>200)
         })
         console.log(foundObj)
         if(foundObj)
-        add_SingleToDOM(foundObj, fourthRow)
+        add_single_element_to_dom(foundObj, row) 
 
     }
 </code>
  </pre>
-or possibly the y:
+<p> Then add the <code>event listener functionality</code> to the button:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
-function findCallBackB(){
+    document
+      .querySelector("#findButtonA")
+      .addEventListener("click", function () {
+      findCallBackA(arrayOfShapes_Four, allRows[3]);
+      });   
+</code>
+</pre>
+<p>or possibly let's try find an element with a particular <code>y</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+    function findCallBackB(arrayOfShapes, row){
       //get an object back whose y> 40
-      const foundObj = arrayOfShapesFour.find(
+      const foundObj = arrayOfShapes.find(
         function(el){
             return(el.y>40)
         })
         console.log(foundObj)
         if(foundObj)
-        add_SingleToDOM(foundObj, fourthRow)
+        add_single_element_to_dom(foundObj, row) 
 
     }
+
 </code>
  </pre>
+ <p> Then add the <code>event listener functionality</code> to the button:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+    document
+      .querySelector("#findButtonB")
+      .addEventListener("click", function () {
+      findCallBackB(arrayOfShapes_Four, allRows[3]);
+      });     
+</code>
+</pre>
  <h4> some() </h4>
 <p>The <code>some()</code> method checks if <span class = "customP">at least one element</span> in an array satisfies a provided condition. 
-<br/>It returns true if any element matches the condition, otherwise false. Lets try it on a simple example:</p>
+<br/><span class = "customP">It returns true if any element matches the condition, otherwise false.</span></p>
 
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
@@ -318,10 +463,11 @@ const hasMultiplesOfFive = numbers_some.some(
 console.log(hasMultiplesOfFive);
 </code>
 </pre>
-OR what about:
+<p>OR what about:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
-const numbers_some = [24,67,45,95]
-const hasMultiplesOfTen = numbers_some.some(
+<code>
+const numbers_some_again = [24,67,45,95]
+const hasMultiplesOfTen = numbers_some_again.some(
     function (num){
         return(num % 10 === 0)
     });
@@ -329,10 +475,10 @@ console.log(hasMultiplesOfTen);
 </code>
 </pre>
 
-<p><span class = "customP">QU 1: </span>Does the array contain at least one circle shape?</p>
+<p><span class = "customP">QUESTION 1:</span> Does the second array of shapes contain at least one circle shape?</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
-const hasCircleShape = arrayOfShapesTwo.some(
+const hasCircleShape = arrayOfShapes_Two.some(
     function(el){
         return (el.customShapeClass==="circle")
     }
@@ -340,10 +486,10 @@ const hasCircleShape = arrayOfShapesTwo.some(
 console.log(hasCircleShape)
 </code>
 </pre>
-<p><span class = "customP">QU 2: </span>Does another array have at least one rectangle shape?</p>
+<p><span class = "customP">QUESTION 2:</span> Does another array (third array) have at least one rectangle shape?</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
-const hasRectShape = arrayOfShapesThree.some(
+const hasRectShape = arrayOfShapes_Three.some(
     function(el){
         return (el.customShapeClass==="rectangle")
     }
@@ -363,23 +509,34 @@ const hasALLMultiplesOfFive = numbers_all.every(
         return(num % 5 === 0)
     });
 console.log(hasALLMultiplesOfFive); 
-
-
+</code>
+</pre>
+<p>OR:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
 const hasALLMultiplesOfTen = numbers_all.every(
     function (num){
         return(num % 10 === 0)
     });
-console.log(hasMultiplesOfTen); 
-
-const hasALLCircleShapes = arrayOfShapesTwo.every(
+console.log(hasALLMultiplesOfTen);
+</code>
+</pre>
+<p>OR:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
+const hasALLCircleShapes = arrayOfShapes_Two.every(
     function(el){
         return (el.customShapeClass==="circle")
     }
 )
 console.log(hasALLCircleShapes)
 
-
-const hasAllRectShapes = arrayOfShapes.every(
+</code>
+</pre>
+<p>OR: </p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
+<code>
+const hasAllRectShapes = arrayOfShapes_One.every(
     function(el){
         return (el.customShapeClass==="rectangle")
     }
@@ -398,7 +555,7 @@ console.log (testArray.sort())
 console.log (testArray) // IS NOW CHANGED
 </code>
 </pre>
-<p>With strings... Note - that uppercase is not the same as lowercase letters ;)</p>
+<p>With strings... Note - that <code>uppercase</code> is <strong>not the same</strong> as <code>lowercase</code> letters ;)</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
 <code>
 let stringSortArray = ["ABS","giraffe","Giraffe","apple","orange","tortoise","peanut", "penguin", "hare"]
@@ -410,43 +567,43 @@ console.log(stringSortArray);
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
 <code>
 //sorting objects
-console.log(arrayOfShapesTwo);
-console.log(arrayOfShapesTwo.sort())
+console.log(arrayOfShapes_Two);
+console.log(arrayOfShapes_Two.sort())
 </code>
 </pre>
-<p>No, here we need to define out own <span class = "customP">comparison function</span> :-> but we need to abide by the following constraints:
+<p>No, here we need to define out own <code>comparison function</code> :-> but we need to abide by the following constraints:
 <br/>Given 2 values <code>[a,b]</code>(that we are comparing):</p>
 <ul>
 <li>If a is to come AFTER b -> compare function should a return a value > 0 </li>
 <li>If a is to come BEFORE b -> compare function should a return a value < 0 </li>
 <li>If maintain original order -> compare function should return a value === 0 </li>
 </ul>
-<p>So lets say we will decide we want to <span class = "customP">sort by the custom shape class name</span>: let's define our comparison function:</p>
+<p>So let's say we will decide we want to <code>sort by the custom shape class name</code>: let's define our comparison function:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29" class="language-javascript line-numbers">
 <code>
-function compareShapeClass(a, b) {
-const classA = a.customShapeClass.toUpperCase(); // ignore upper and lowercase
-const classB = b.customShapeClass.toUpperCase(); // ignore upper and lowercase  
-if(classA < classB){
-return -1;
-}
-if (classA > classB) { 
-    return 1; 
-}
-//equal
-return 0;
- }
+ function compareShapeClass(a, b) {
+    const classA = a.customShapeClass.toUpperCase(); // ignore upper and lowercase
+    const classB = b.customShapeClass.toUpperCase(); // ignore upper and lowercase
+    if (classA < classB) {
+      return -1;
+    }
+    if (classA > classB) {
+      return 1;
+    }
+    //equal
+    return 0;
+  }
  </code>
 </pre>
  And then call it :)
 <pre data-line="1, 3" class="language-javascript line-numbers">
 <code>
- console.log(arrayOfShapesTwo.sort(compareShapeClass))
+ console.log(arrayOfShapes_Two.sort(compareShapeClass))
  </code>
 </pre>
 
 <h4> toSorted () </h4>
-<p>The <code>toSorted()</code>method is the copying version of the sort() method. 
+<p>The <code>toSorted()</code> method is the copying version of the sort() method. 
 <br/>It returns a new array with the elements sorted in ascending order. i.e: </p>
 <pre data-line="1, 3,5,7,9,11,13,15" class="language-javascript line-numbers">
 <code>
@@ -456,7 +613,10 @@ console.log(testArray_2); // DOES NOT CHANGE
 //SO:: 
 let sortedArray = testArray_2.toSorted()
 console.log(sortedArray)
-
+</code>
+</pre>
+<pre data-line="1, 3,5,7,9,11,13,15" class="language-javascript line-numbers">
+<code>
 let stringSortArray_2 = ["ABS","giraffe","Giraffe","apple","orange","tortoise","peanut", "penguin", "hare"]
 console.log (stringSortArray_2.toSorted())
 console.log(stringSortArray_2);
@@ -466,13 +626,13 @@ console.log(sortedStringArray)
 </pre>
 <p>And obviously - you can define your own custom comparison functions as before.</p>
 <h4> spread (...)  ON ARRAYS </h4>
-<p>The <a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">spread operator (...)</a>  - this is an ES6 (ECMAScript 6) specific feature -> is a powerful tool for expanding elements of an array.
+<p>The <a href = "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">spread operator (...)</a>  - this is an ES6 (ECMAScript 6) specific feature -> is a powerful tool for <code>expanding elements of an array</code>.
 i.e:</p>
 <pre data-line="1, 3,5,7,9,11,13,15" class="language-javascript line-numbers">
 <code>
 const fruits = ["apples", "grapes", "pears"];
 const colors = ["blues", "reds", "oranges", "purples", "yellows"]
-const food= [...fruits, "carrots", "patatoes", "turnips"];
+const food = [...fruits, "carrots", "patatoes", "turnips"];
 console.log(food)
 </code>
 </pre>
