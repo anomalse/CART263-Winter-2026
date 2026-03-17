@@ -1,36 +1,65 @@
-<!--https://threejs.org/manual/#en/creating-a-scene-->
-<!--https://threejs.org/manual/#en/fundamentals-->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>My first three.js app</title>
-    <style>
-      body { margin: 0; }
-    </style>
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-  <script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"
-  }
-}
-</script>
-    <!-- <script src = "testBox.js"></script> -->
-    <!-- <script type="module" src="main.js"></script> -->
-     <!-- <script type="module" src="main.js"></script> -->
-      <!-- <script type="module" src="orbitTest.js"></script> -->
-      <!-- <script type="module" src="pointerLockTest.js"></script> -->
-          <!-- <script type="module" src="rayCastTest.js"></script> -->
-           <!-- <script type="module" src="skyBoxEx.js"></script> -->
-            <script src="js-libs/cannon.min.js"></script>
-              <script type="module" src="physicsTest.js"></script>
-  </head>
-  <body>
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
 
-    <!-- canvas that we custom made-->
-    <canvas id = "three-ex"></canvas>
-    <div style = "cursor:pointer; background: orange; width:max-content; padding:2px;" id = 'play_button'>PLAY</div>
-  </body>
+        <nav id = "cart263Nav"></nav>
+           <script src = "js/loadNav.js"></script> 
+    </header>
+    <main>
+        <section>
+            <div class="inner-head">
+                <h1>Time and Location</h1>
+            </div>
+            <div class="inner-descript">
+                <h3>Jan - April 2026</h3>
+                <p class="back-s">SECTION A: Tuesdays 13:15 - 17:15 in EV 5.709</p>
+                <p class="back-s">SECTION AA: Wednesdays 17:45 - 21:45 in EV 5.709 </p>
+                <p class="back-j">SECTION B: Thursdays 13:15 - 17:15 in EV 5.815</p>
+            </div>
+
+            <div class="inner-head">
+                <h1> Instructors </h1>
+            </div>
+
+            <div class="inner-descript inner-flex">
+                <div class="section-s">
+                    <h3> Sabine Rosenberg </h3>
+                    <p>Email: sabine.rosenberg@concordia.ca</p>
+                    <p>Office Hours: <a
+                            href="https://outlook.office365.com/book/ComputationLabFineArts@liveconcordia.onmicrosoft.com/">CLAB
+                            BOOKING PAGE</a></p>
+                </div>
+
+                <div class="section-j">
+                    <h3> Joachim Despland-Lichert </h3>
+                    <p>Email: joachimdespland@gmail.com </p>
+                    <p>Office Hours: BY APPOINTMENT</p>
+                </div>
+            </div>
+
+
+            <div class="inner-head">
+                <h1> TA </h1>
+            </div>
+            <div class="inner-descript">
+                <h3>Michael Vlamis </h3>
+                <p>Email: m_vlamis@live.concordia.ca</p>
+            </div>
+
+
+        </section>
+    </main>
+</body>
 </html>
+
