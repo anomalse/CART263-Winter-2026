@@ -342,7 +342,7 @@ console.log(textResult)
     let response = await fetch("https://jsonplaceholder.typicode.com/posts"); //response
     let posts = await response.json();
     console.log(posts);
-    for(let i = 0; i<10; i++){
+    for(let i = 0; i< 10; i++){
         document.querySelector("#output_rev").innerHTML +=
         `<p><span style = background:#3c66b8;color:white;>POST ${i} title:</span>  ${posts[i].title}</p>`
     }
@@ -353,8 +353,9 @@ console.log(textResult)
   </pre>
     </li>
 </ul>
-<p>We used the <code>fetch()</code> function to send a GET request to the https://jsonplaceholder.typicode.com/posts endpoint :)
+<p>We used the <code>fetch()</code> function to send a GET request to the <a href = "https://jsonplaceholder.typicode.com/posts">https://jsonplaceholder.typicode.com/posts</a> endpoint :)
 <br>Any errors that occur during the fetch operation are caught in the <code>.catch()</code> block.</p>
+<h4> Accessing cats  - of course </h4>
 <p>Let's do a last example - because of course it is absolutely necessary to access a public API for <span class = "customP">cats</span>:)</p>
 <p> The website to access is: <code> https://cataas.com/</code> and there are alot of different options for accessing a cat ...
 <br>An example: 
