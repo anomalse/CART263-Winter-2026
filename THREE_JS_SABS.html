@@ -1039,8 +1039,101 @@ function findIfCurrentObjIsActive(intersect){
 
 </ul>
 <h3>BLENDER MODELS</h3> 
+<!--https://github.com/KhronosGroup/glTF-Sample-Assets-->
+<p>
+  Three.js lets you create many primitive geometries, but when it comes to more complex shapes, it is easier to use a dedicated 3D software - i.e. Blender.
+  <br/>The main question then is what <code>format</code> do we use to export from Blender? There are <a href = " https://en.wikipedia.org/wiki/List_of_file_formats#3D_graphics">hundreds of model formats</a>.
+</p>
+<h4>GLTF</h4>
+<p> <code>GLTF</code> stands for GL Transmission Format. It's made by the <a href = "https://www.khronos.org/">Khronos Group</a>. GLTF is a format that has become very popular these past few years. 
+<br/>It supports very different sets of data. You can have data like the <code>geometries</code> and the <code>materials</code> but you can also have data like <code>cameras</code>, <code>lights</code>, <code>scene graphs</code>, <code>animations</code>, <code>skeletons</code>...
+GLTF has become the standard - and so most 3D softwares, game engines, and libraries support it. That means that you can acheive similar results in different environments.</p>
+<h4>Get The sample model</h4>
+<p>In this lesson, we will use sample assets sourced from <a href = "https://github.com/KhronosGroup/glTF-Sample-Assets">here</a>
+<br/>We will start with the <a href="https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/Fox">fox</a> :) You can also just download the folder <a href = "resources/Fox.zip">here</a>.
+<br/> While GLTF is a format in itself, it can have different file formats too. It's a little complex but for good reasons. If you open the <code>Fox</code> folder, you'll see 3 different folders. Each one contains the fox but in different GLTF formats.
+<ul>
+<li>glTF</li>
+<li>glTF-Binary</li>
+<li>glTF-Embedded</li>
+</ul>
+</p>
+<h4>glTF</h4>
+<p>This format is basically the default format. The <code>Fox.gltf</code> file is a JSON that you can open in your editor. It contains various information like cameras, lights, scenes, materials, objects transformations, but neither the geometries nor the textures. 
+<br>The <code>Fox.bin</code> file is a binary that you can't read like this. It usually contains data like the geometries and all information associated with the vertices like UV coordinates, normals, vertex colors, etc. 
+<br>The <code>Texture.png</code>is simply the texture of the fox.
+<br>When we load this format, we only load the <code>Fox.gltf</code> that contains references to the other files that will then be loaded automatically.</p>
+
+<h4>glTF-Binary</h4>
+<p>This format is composed of only one file. It contains all the data as in the default format. 
+ It is a binary file, so you can't just open it in your code editor to see what's inside. This format can be a little lighter and more comfortable to load because there is only one file, but you won't be able to easily alter its data. 
+ <br/>For example, if you want to resize or compress the textures, you can't because it's inside the binary file.</p>
+<h4>glTF-Embedded</h4>
+<p>This format is like the glTF-Binary format because it's only one file, but this file is actually a JSON that you can open in your editor. The only benefit of this format is to have only one easily editable file.</p>
+
+<h4>Setup</h4>
+<p>We will us the standard <code>glTF</code> folder.</p>
+<p> Lets start with a new project in vscode  - for ease of use: download the starter project <a href = "resources/three-js-starter-models.zip">here</a></p>
+<p>To load GLTF files in Three.js, we must use the <code>GLTFLoader</code>. This class isn't available by default. We need to import it.</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+</code>
+</pre>
+<p>Then we instantiate it:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+const gltfLoader = new GLTFLoader();
+</code>
+</pre>
+<p> Finally - we are at the point where we can <code>load</code> the model ... We will use the <a href = "https://threejs.org/docs/#GLTFLoader">loadAsync()</a> option. - which is cleaner then the standard <code>load()</code>.
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+let gltfModel = null;
+try{
+  gltfModel = await gltfLoader.loadAsync( 'model/Fox/glTF/Fox.gltf' );
+  console.log(gltfModel)
+}
+catch (error){
+console.log(error.message)
+}
+</code>
+</pre>
+<p>If you look at the object logged in the console, you'll find a lot of elements. The most important part is the <code>scene property</code> because we have only one scene in the exported model.
+<br/>This scene contains everything we need. But it also includes more. Always start by looking at what is available first :) .</p>
+<p>All we want is to get our fox into the scene. There are multiple strategies - Because our model structure is simple, we will just add the Object3D to our scene. </p>
+<p>Let's organize the code like this (remove the previous <code>try{} catch{} and animate()</code>):</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  try {
+  gltfModel = await gltfLoader.loadAsync("model/Fox/glTF/Fox.gltf");
+  addAndRun(gltfModel)
+
+} catch (error) {
+  console.log(error.message);
+}
+
+
+function addAndRun(loadedObj){
+  console.log(loadedObj);
+  let foxModel = loadedObj.scene.children[0]
+  scene.add(foxModel);
+  window.requestAnimationFrame(animate);
+
+  function animate() {
+    // Update controls
+    controls.update();
+    // Render
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(animate);
+  }
+}
+</code>
+</pre>
 </section>
+
 </main>
+
   <script src="js/prism.js"></script>
 </body>
 
