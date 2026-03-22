@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+      <link href="css/themes/prism.css" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
+
+         <nav id = "cart263Nav"></nav>
+        <script src = "js/loadNav.js"></script>
+       <div class="inner-head">
+                <h1> INTRO TO THREE JS II</h1>
+            </div>
+    </header>
+    <main>
+
+<section class="contents-notes">
+<h3>CUSTOM CONTROLS</h3>
+<p>This part of the lecture will consider <span class = "customP">how to get the camera be controlled by some input device (i.e. the mouse)</span>.
+  <br/> You <em>could</em> build the functionality from scratch (using event lsiteners etc) ... or you can use the inbuilt control objects provided by Threee.js.
+</p>
+<ul>
+<li><a href = "https://threejs.org/docs/#FlyControls">FlyControls</a> enable moving the camera like if you were on a spaceship. You can rotate on all 3 axes, go forward and go backward.</li>
+<li><a href = "https://threejs.org/docs/#FirstPersonControls">FirstPersonControls</a> is just like FlyControls, but with a fixed <code>up</code> axis. For example, you could see like a flying bird view where the bird cannot do a barrel roll. 
+  <br/>While the FirstPersonControls contains the word <em>FirstPerson</em>, it doesn't work like in FPS (First Person shooter) games.</li>
+<li><a href = "https://threejs.org/docs/#PointerLockControls">PointerLockControls</a> uses the <a href = "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API">Pointer Lock JavaScript API</a>. 
+  <br/>This API hides the cursor, keeps it centered, and keeps sending the movements in the <code>mousemove event callback</code>. 
+  <br/>With this API, you can create FPS games right inside the browser. While this class sounds very promising if you want to create that kind of interaction, it'll only handle the camera rotation when the pointer is locked. You'll have to handle the camera position and game physics by yourself.</li>
+<li><a href="https://threejs.org/docs/#OrbitControls">OrbitControls</a> performs orbiting, zooming, and panning. You can rotate around a point with the left mouse, translate laterally using the right mouse, and zoom in or out using the wheel.</li>
+<li><a href = "https://threejs.org/docs/#TrackballControls">TrackballControls</a> is just like OrbitControls but there are no limits in terms of vertical angle. You can keep rotating and do spins with the camera even if the scene gets upside down.</li>
+<li><a href = "https://threejs.org/docs/#TransformControls">TransormControls</a> has nothing to do with the camera. You can use it to add a gizmo to an object to move that object.</li>
+<li> <a href ="https://threejs.org/docs/#DragControls">DragControls</a> has nothing to do with the camera either. You can use it to move objects on a plane facing the camera by drag and dropping them.</li>
+</ul>
+<h4>Orbit Controls Example</h4>
+<p> Lets start with a new js file: <code>orbitTest.js</code>: (and link in your index.html ) INSTEAD of main.js:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+   &lt;script type="module" src="orbitTest.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+<ul>
+  <li>So first: using the import map - we can easily import <code>Three.js</code> and the <code>controls</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+</code>
+</pre>
+</li>
+<li> Add a scene, camera, and renderer:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const scene = new THREE.Scene()
+const sizes = {
+    width: 800,
+    height: 600
+}
+const canvas = document.querySelector('canvas#three-ex')
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+camera.position.z = 3;
+scene.add(camera)
+
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.setSize(sizes.width, sizes.height)
+</code>
+</pre>
+</li>
+<li> Add two new mesh objects:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
+
+const mesh_2 = new THREE.Mesh(geometry, material)
+scene.add(mesh_2)
+mesh_2.position.x = -1.5
+</code>
+</pre>
+</li>
+<li>And an animate function:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  // ANIMATION SETUP
+window.requestAnimationFrame(animate)
+
+
+function animate(){
+renderer.render(scene, camera)
+window.requestAnimationFrame(animate)
+}
+</code>
+</pre>
+</li>
+<li> Now: before the <code>animate</code> add a new instance of <code>OrbitControls</code>: 
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+// Controls
+const controls = new OrbitControls(camera, canvas)
+</code>
+</pre>
+</li>
+<li>Note: By default, the camera and therefore the <code>controls</code> is looking at the center of the scene. We can change that with the target property.
+<br> For example - lets make its target the mesh:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+controls.target = mesh.position
+</code>
+</pre>
+</li>
+<li>OK! Let's update the postion of the camera: (in the <code>animate()</code>) -  the reworked function:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+function animate(timer){
+camera.position.x = Math.cos(timer/1000)
+camera.position.y = Math.sin(timer/1000)
+//console.log(camera.position.x)
+renderer.render(scene, camera)
+window.requestAnimationFrame(animate)
+}
+</code>
+</pre>
+</li>
+<li> Well... our <code>controls</code> object is no longer focuse the object... The solution is to <span class = "customP">update the controls</span> in the <code>animate()</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+controls.update()
+</code>
+</pre>
+</li>
+<li>
+  You can update the <code>controls target</code> code in the <code>animate()</code> as well. i.e.:
+     <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+controls.target.y = -2
+</code>
+</pre>
+</li>
+<li> Please do look at the <a href = "https://threejs.org/docs/#OrbitControls">documentation</a> page for more functions/properties etc... But another nice feature is to <code>enable Damping</code>, which essentially will smooth the animation by adding some kind of acceleration and friction formulas.
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  controls.enableDamping = true;
+</code>
+  </pre>
+</li>
+</ul>
+
+<h4>PointerLockControls Example</h4>
+<p> Lets start with a new js file: <code>pointerLockTest.js</code>: (and link in your index.html ) INSTEAD of main.js/orbitTest.js:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+   &lt;script type="module" src="pointerLockTest.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+<ul>
+  <li>So first: using the import map - we can easily import <code>Three.js</code> and the <code>controls</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+import * as THREE from 'three';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js'; 
+</code>
+</pre>
+</li>
+<li> Add a scene, camera, and renderer:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const scene = new THREE.Scene()
+const sizes = {
+    width: 800,
+    height: 600
+}
+const canvas = document.querySelector('canvas#three-ex')
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+camera.position.z = 3;
+scene.add(camera)
+
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.setSize(sizes.width, sizes.height)
+</code>
+</pre>
+</li>
+<li> Add two new mesh objects:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
+
+const mesh_2 = new THREE.Mesh(geometry, material)
+scene.add(mesh_2)
+mesh_2.position.x = -1.5
+</code>
+</pre>
+</li>
+<li>And an animate function:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  // ANIMATION SETUP
+window.requestAnimationFrame(animate)
+
+
+function animate(){
+renderer.render(scene, camera)
+window.requestAnimationFrame(animate)
+}
+</code>
+</pre>
+</li>
+<li>
+  Next: we need to set up up the <code>controller</code> object:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const controls = new PointerLockControls(camera, document.body);
+</code>
+</pre>
+</li>
+<li> You can set up event listeners to detect when the <span class = "customP"> controls are locked or unlocked</span>:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  controls.addEventListener("lock", function(){
+    console.log("we are locked")
+})
+
+controls.addEventListener("unlock", function(){
+    console.log("we are unlocked")
+})
+</code>
+</pre>
+</li>
+<li> Let's lock the controls when we click on an HTML <strong>play button</strong>. Add to yout html, after the canvas:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+&lt;div style = "cursor:pointer; background: orange; width:max-content; padding:2px;" 
+id = 'play_button'&gt;PLAY&lt;/div&gt;
+</code>
+</pre>
+</li>
+<li> Then add an event listener: 
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  const playButton = document.getElementById('play_button'); // Example button
+playButton.addEventListener('click', function () {
+    controls.lock();
+}, false)
+</code>
+</pre>
+</li>
+<li> And now the controls are working by default</li>
+<li> We can then implement movement (i.e. forward, backward, left and right) using the keys:
+  <br/> We first set up some boolean variables:</li>
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+let moveForward =false;
+let moveBackward = false;
+let moveRight =false;
+let moveLeft = false;
+</code>
+</pre>
+  <li>And then the event listeners:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33" class="language-javascript line-numbers">
+<code>
+  window.addEventListener("keydown",function(e){
+    if (e.key ==="w"){
+        moveForward = true;
+    } 
+     if (e.key ==="s"){
+        moveBackward = true;
+    } 
+
+     if (e.key ==="a"){
+        moveLeft = true;
+    } 
+     if (e.key ==="d"){
+        moveRight = true;
+    } 
+})
+
+window.addEventListener("keyup",function(e){
+    if (e.key ==="w"){
+        moveForward = false;
+    } 
+
+     if (e.key ==="s"){
+        moveBackward = false;
+    } 
+     if (e.key ==="a"){
+        moveLeft = false;
+    } 
+     if (e.key ==="d"){
+        moveRight = false;
+    } 
+})
+</code>
+  </pre>
+</li>
+<li> Finally in the <code>animate()</code>, we can call the relevent functions, a part of the <code>PointerLockControls</code> controls object:
+     <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  if (moveForward) controls.moveForward(0.1);
+  if (moveBackward) controls.moveForward(-0.1);
+  if (moveRight) controls.moveRight(0.1);
+  if (moveLeft) controls.moveRight(-0.1);
+</code>
+</pre>
+</li>
+</ul>
+<h3>RAYCASTiNG </h3>
+<p> So ... onto a more advanced but necessary topic: <code>RayCasters</code> and <code>RayCasting</code>.
+<br/> As the name suggests, a <code>Raycaster</code> can cast (or shoot) a <code>ray</code> in a specific <strong>direction</strong> and test what objects <strong>intersect</strong> with it.
+<br/>You can use that technique to detect if there is a wall in front of the player, test if a weapon hit something, <span class = "customP">test if something is currently under the mouse to simulate mouse events</span>, and many other things.</p>
+<h4> First RayCasting Example </h4>
+<ul>
+  <li> Lets start with a new js file: <code>rayCastTest.js</code>: (and link in your index.html ) INSTEAD of other js files...:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
+<code>
+   &lt;script type="module" src="rayCastTest.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+</li>
+  <li>So first: using the import map - we can easily import <code>Three.js</code> and the <code>controls</code>:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'</code>
+</pre>
+</li>
+<li> Next add a scene, camera, and renderer:
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const scene = new THREE.Scene()
+const sizes = {
+    width: 800,
+    height: 600
+}
+const canvas = document.querySelector('canvas#three-ex')
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+camera.position.z = 3;
+scene.add(camera)
+
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.setSize(sizes.width, sizes.height)
+</code>
+</pre>
+</li>
+<li> Add the controls:
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  const controls = new OrbitControls(camera, canvas)
+  </code>
+  </pre>
+</li>
+<li>
+  Lets add three <code>spheres</code> to the scene:
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const object1 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    new THREE.MeshBasicMaterial({ color: '#ff0000' })
+)
+object1.position.x = -2
+
+const object2 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    new THREE.MeshBasicMaterial({ color: '#ff0000' })
+)
+object2.position.x = 2
+
+
+const object3 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    new THREE.MeshBasicMaterial({ color: '#ff0000' })
+)
+
+scene.add(object1,object2,object3)
+</code>
+</pre>
+  </li>
+  <li> As well as an <code>animate()</code> function
+       <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+window.requestAnimationFrame(animate);
+
+function animate() {
+  controls.update();
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate);
+}
+</code>
+  </pre>
+  </li>
+  <li>So now we can implement some raycasting. First add a <a href = "https://threejs.org/docs/#Raycaster">Raycaster</a> object:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+    const raycaster = new THREE.Raycaster()
+</code>
+</pre>
+   </li>
+   <li> There are multiple things we can configure with our <code>raycaster</code>.
+    <br/>	To change the <code>position</code> and <code>direction</code> for where the <code>ray</code> will be cast, we will use the <code>set(...)</code> method. 
+    <br/>The first parameter is the position and the second parameter is the direction.
+	  Both are <a href = "https://threejs.org/docs/#Vector3">Vector3</a>, but the direction has to be normalized. 
+    <br/><span class = "customP">A normalized vector has a length of 1</span>. Don't worry, you don't have to do the mathematics by yourself, and you can call the <code>normalize()</code> method on the vector.
+    <br> In the example below, the ray position starts a little on the left in our scene, and the direction  is to go to the <strong>right</strong>. The ray should go through all the spheres:
+
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+//ray will start somewhere on left of the spheres
+const rayOrigin = new THREE.Vector3(- 3, 0, 0)
+//right (positive x)
+const rayDirection = new THREE.Vector3(10, 0, 0)  //reduce magnitude BUT keep direction
+console.log(rayDirection.length())
+//set direction only (has length ==1)
+rayDirection.normalize()
+console.log(rayDirection.length())
+raycaster.set(rayOrigin, rayDirection) //raycaster has been oriented
+</code>
+</pre>
+</li>
+<li>So now we can <span class = "customP">cast a ray with our raycaster object</span>:
+ <br/> To cast a ray and get the objects that <strong>intersect</strong> we can use two methods: <code>intersectObject(...)</code> (singular) and <code>intersectObjects(...)</code> (plural).
+ <br/> Lets implement the first one: OUTSIDE the animation loop:
+ <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+ //cast a ray - check intersection with ONLY object 1
+const intersect = raycaster.intersectObject(object1)
+console.log(intersect)
+</code>
+</pre>
+</li>
+<li> Ok - if you now run the code - you should look at the <a href = "https://threejs.org/docs/?q=Raycaster#Raycaster.intersectObject" >intersection object</a> returned.
+</li>
+<li>
+  Lets look at the second (comment out the first) -  and put OUTSIDE the animation loop:
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+  //cast a ray - check intersection with obj1, obj2 and obj 3 
+const intersects = raycaster.intersectObjects([object1, object2, object3])
+console.log(intersects)
+</code>
+</pre>
+</li>
+<li>So we get back three results.... which does make sense ... BUT if you look closely all the objects are apparently the <code>same distance</code> from the ray origin?
+  <br/> This is incorrect - and there is a valid reason: the ray is being cast <span class="customP">before the actual objects are rendered and updated (their positions etc)</span>.
+  <br/> Note that we render only inside the <code>animate()</code>. So to ensure that the objects are updated to correct position earlier - we can add the following BEFORE casting a ray:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+  object1.updateMatrixWorld()
+	object2.updateMatrixWorld()
+  object3.updateMatrixWorld()
+  </code>
+  </pre>
+</li>
+<li>And now when you run it  - you should have more accurate results:)</li>
+<li> Lets now put a raycaster into the <code>animate()</code>, and check and change the objects if they intersect.</li>
+<li> First lets apply some animation to the objects:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+  function animate(timer) {
+  controls.update();
+
+    object1.position.y = Math.sin(timer/1000 *.5 ) * 3
+    object2.position.y = Math.sin(timer/1000  *.4) * 3
+    object3.position.y = Math.sin(timer/1000 *.3) *  3
+
+  renderer.render(scene, camera);
+
+  window.requestAnimationFrame(animate);
+  
+}
+  </code>
+  </pre>
+  </li>
+  <li> And now:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+    const objectsToTest = [object1, object2, object3]
+    const intersects = raycaster.intersectObjects(objectsToTest)
+
+    for(const object of objectsToTest)
+    {
+        object.material.color.set('#ff0000')
+    }
+
+    for(const intersect of intersects)
+    {
+        intersect.object.material.color.set('#0000ff')
+    }
+</code>
+</pre>
+</li>
+<li> So what we notice is that only when the objects cross the <code>y === 0</code> line do they intersect with the ray :)
+  <br/> You could <code>move the ray origin down</code>  - with the same direction:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+    const rayOrigin_n = new THREE.Vector3(-3, -2, 0);
+    raycaster.set(rayOrigin_n, rayDirection); //raycaster has been oriented
+  </code>
+  </pre>
+  And now the intersection point is lower on the y axis.
+</li>
+<li> If we <code>change the direction</code> of the ray:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+  const rayOrigin_n_2 = new THREE.Vector3(-2, 5, 0);
+  const rayDirection_2 = new THREE.Vector3(0, -10, 0); //point down
+  rayDirection_2.normalize();
+  raycaster.set(rayOrigin_n_2, rayDirection_2); //raycaster has been oriented
+    </code>
+    </pre>
+    So now only the most left sphere is always intersecting.
+    </li>
+</ul>
+<h3>RAYCASTiNG & MOUSE EVENTS </h3>
+<p> We can also use the <code>raycaster</code> to test <span class = "customP">if an object is behind the mouse</span>. 
+<br>In other words, if you are hovering an object :). Mathematically speaking, it's a little complex because we need to cast a ray from the camera in the mouse's direction, but, fortunately, Three.js does alot of the work for us.</p>
+<h4>Mouse Hover</h4>
+<p>To begin with, we need the <code>coordinates of the mouse</code>. We <span class = "customP">cannot use the basic native JavaScript coordinates</span>, which are in pixels - 
+<br/> We need a value that goes from <span class = "customP">-1 to +1 in both the horizontal and the vertical axis</span>, with the vertical coordinate being positive when moving the mouse upward.
+<br/>This is how WebGL works and it's related to things like clip space but we don't need to understand those complex concepts ;)</p>
+<p> In essence we need to map the following:
+  <ul>
+    <li>The mouse is at the <code>top left of the canvas</code>: Horiz: -1 Vertical : 1</li>
+    <li>The mouse is at the <code>bottom left of the canvas</code>: Horiz: -1 Vertical : -1</li>
+    <li>The mouse is at the <code>middle vertically and right horizontally of the canvas</code>: Horiz: 1 Vertical : 0</li>
+    <li>The mouse is at the <code>middle vertically and left horizontally of the canvas</code>: Horiz: -1 Vertical : 0</li>
+    <li>The mouse is at the  <code> center of the canvas</code>: Horiz: 1 Vertical : 0</li>
+    <li>...</li>
+    </ul>
+  </p>
+  <ul>
+    <li> Lets go!  - use the same code as before - except lets clean out the <code>animate()</code> to be:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+    function animate(timer) {
+    controls.update();
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(animate);
+ }
+</code>
+  </pre>
+</li>
+  <li>Next, we will create a variable to hold the mouse coordinates using a <a href = "https://threejs.org/docs/index.html#Vector2">Vector2</a>,
+  and an event listener callback to capture the <code>mousemove</code>:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+  <code>
+  window.addEventListener("mousemove", function(event) {
+  mouse.x = (event.clientX / sizes.width) * 2 - 1; //map to between -1,1
+  mouse.y = -(event.clientY / sizes.height) * 2 + 1; //map to between -1,1
+  //console.log(mouse);
+  });
+  </code>
+  </pre>
+
+</li>
+<li>We could cast the ray in the <code>mousemove event callback</code>, but it's not recommended because the mousemove event might be triggered 
+  <br>more than the frame rate for some browsers... Instead, <span class = "customP">we will cast the ray in the <strong>animate()</strong> function</span> as we did before.
+  <br/>To orient the ray in the <strong>correct direction</strong>, we can use the Three.js <a href = "https://threejs.org/docs/#Raycaster.setFromCamera">setFromCamera()</a> method on the Raycaster. 
+  <br/>The rest of the code will be the same as before - and we will also update the objects materials to red or blue if they intersect or not:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  function animate(timer) {
+  controls.update();
+
+  raycaster.setFromCamera(mouse, camera);
+
+  const objectsToTest = [object1, object2, object3];
+  const intersects = raycaster.intersectObjects(objectsToTest);
+
+  for (const object of objectsToTest) {
+    object.material.color.set("#ff0000");
+  }
+
+  for (const intersect of intersects) {
+    intersect.object.material.color.set("#0000ff");
+  }
+
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate);
+}
+</code>
+</pre>
+</li>
+<li> Well this works ... BUT notice that if you have overlapping objects - both will be activated on mouse move...
+  <br/>i.e.  set <code>object2.position.x = -1.5</code></li>
+  <li>Therefore, we can implement a strategy to ensure that only <code>1</code> can be <code>activated</code> at a time...
+    <br/> - How? Well by keeping track of the object that is <code>currently active</code>: 
+    <ul>
+    <li>
+      make an object <code>active</code> when the mouse is <code>over</code> it AND there is NO currently tracked object</li>
+      <li>make an object <code>inactive</code> when the mouse is <code>off</code> it AND set the currently tracked object to null </li>
+    </ul>
+  </li>
+   <li> Comment out the two for loops for color change of obejcts (red - blue)
+    and add:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>   
+if (intersects.length > 0) {
+      //there was none so we enter
+      if (currentIntersectedObj === null) {
+        currentIntersectedObj = intersects[0]; //take first
+        console.log("mouse enter");
+        currentIntersectedObj.object.material.color.set("#00c3ff");
+      }
+      else{
+      
+       //the currently selected one is NO LONGER IN THE LIST
+       if (intersects.find(findIfCurrentObjIsActive) === undefined) {
+        currentIntersectedObj.object.material.color.set("#ff0000");
+        currentIntersectedObj = intersects[0]; //take first
+        currentIntersectedObj.object.material.color.set("#00c3ff");
+
+       }
+    }
+  }
+</code>
+</pre>
+</li>
+<li> Note the variable <code>currentIntersectedObj</code>: this variable will hold a reference to the currently active object
+<br/>Declare it before the <code>animate()</code>:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>   
+/// FOR MOUSE ENTER AND MOUSE LEAVE
+let currentIntersectedObj = null
+</code>
+</pre>
+</li>
+<li> And lastly to reset the <code>currentIntersectedObj</code> if the mouse is no longer on it:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+ //no intersections
+ else{
+    // check if NOT null (so there was one just over)
+     if(currentIntersectedObj!==null){
+       // console.log("mouse out")
+        currentIntersectedObj.object.material.color.set("#ff1900");
+        currentIntersectedObj =null
+
+     }
+
+ }
+function findIfCurrentObjIsActive(intersect){
+        return intersect.object === currentIntersectedObj.object;
+      }
+   
+</code>
+</pre>
+</li>
+<li> Lastly - we will complete this by adding a click event handler  -> to check if we are actually clicking on one of the objects:)
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  window.addEventListener("click", function (event) {
+  console.log("click")
+    if(currentIntersectedObj!==null){
+         currentIntersectedObj.object.material.color.set("#ffe600");
+    }
+})
+</code>
+</pre>
+</li>
+ 
+
+</ul>
+<h3>BLENDER MODELS</h3> 
+<!--https://github.com/KhronosGroup/glTF-Sample-Assets-->
+<p>
+  Three.js lets you create many primitive geometries, but when it comes to more complex shapes, it is easier to use a dedicated 3D software - i.e. Blender.
+  <br/>The main question then is what <code>format</code> do we use to export from Blender? There are <a href = " https://en.wikipedia.org/wiki/List_of_file_formats#3D_graphics">hundreds of model formats</a>.
+</p>
+<h4>GLTF</h4>
+<p> <code>GLTF</code> stands for GL Transmission Format. It's made by the <a href = "https://www.khronos.org/">Khronos Group</a>. GLTF is a format that has become very popular these past few years. 
+<br/>It supports very different sets of data. You can have data like the <code>geometries</code> and the <code>materials</code> but you can also have data like <code>cameras</code>, <code>lights</code>, <code>scene graphs</code>, <code>animations</code>, <code>skeletons</code>...
+GLTF has become the standard - and so most 3D softwares, game engines, and libraries support it. That means that you can acheive similar results in different environments.</p>
+<h4>Get The sample model</h4>
+<p>In this lesson, we will use sample assets sourced from <a href = "https://github.com/KhronosGroup/glTF-Sample-Assets">here</a>
+<br/>We will start with the <a href="https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/Fox">fox</a> :) You can also just download the folder <a href = "resources/Fox.zip">here</a>.
+<br/> While GLTF is a format in itself, it can have different file formats too. It's a little complex but for good reasons. If you open the <code>Fox</code> folder, you'll see 3 different folders. Each one contains the fox but in different GLTF formats.
+<ul>
+<li>glTF</li>
+<li>glTF-Binary</li>
+<li>glTF-Embedded</li>
+</ul>
+</p>
+<h4>glTF</h4>
+<p>This format is basically the default format. The <code>Fox.gltf</code> file is a JSON that you can open in your editor. It contains various information like cameras, lights, scenes, materials, objects transformations, but neither the geometries nor the textures. 
+<br>The <code>Fox.bin</code> file is a binary that you can't read like this. It usually contains data like the geometries and all information associated with the vertices like UV coordinates, normals, vertex colors, etc. 
+<br>The <code>Texture.png</code>is simply the texture of the fox.
+<br>When we load this format, we only load the <code>Fox.gltf</code> that contains references to the other files that will then be loaded automatically.</p>
+
+<h4>glTF-Binary</h4>
+<p>This format is composed of only one file. It contains all the data as in the default format. 
+ It is a binary file, so you can't just open it in your code editor to see what's inside. This format can be a little lighter and more comfortable to load because there is only one file, but you won't be able to easily alter its data. 
+ <br/>For example, if you want to resize or compress the textures, you can't because it's inside the binary file.</p>
+<h4>glTF-Embedded</h4>
+<p>This format is like the glTF-Binary format because it's only one file, but this file is actually a JSON that you can open in your editor. The only benefit of this format is to have only one easily editable file.</p>
+
+<h4>Setup</h4>
+<p>We will us the standard <code>glTF</code> folder.</p>
+<p> Lets start with a new project in vscode  - for ease of use: download the starter project <a href = "resources/three-js-starter-models.zip">here</a></p>
+<p>To load GLTF files in Three.js, we must use the <code>GLTFLoader</code>. This class isn't available by default. We need to import it.</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+</code>
+</pre>
+<p>Then we instantiate it:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+const gltfLoader = new GLTFLoader();
+</code>
+</pre>
+<p> Finally - we are at the point where we can <code>load</code> the model ... We will use the <a href = "https://threejs.org/docs/#GLTFLoader">loadAsync()</a> option. - which is cleaner then the standard <code>load()</code>.
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+let gltfModel = null;
+try{
+  gltfModel = await gltfLoader.loadAsync( 'model/Fox/glTF/Fox.gltf' );
+  console.log(gltfModel)
+}
+catch (error){
+console.log(error.message)
+}
+</code>
+</pre>
+<p>If you look at the object logged in the console, you'll find a lot of elements. The most important part is the <code>scene property</code> because we have only one scene in the exported model.
+<br/>This scene contains everything we need. But it also includes more. Always start by looking at what is available first :) .</p>
+<p>All we want is to get our fox into the scene. There are multiple strategies - Because our model structure is simple, we will just add the Object3D to our scene. </p>
+<p>Let's organize the code like this (remove the previous <code>try{} catch{} and animate()</code>):</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  try {
+  gltfModel = await gltfLoader.loadAsync("model/Fox/glTF/Fox.gltf");
+  addAndRun(gltfModel)
+
+} catch (error) {
+  console.log(error.message);
+}
+
+
+function addAndRun(loadedObj){
+  console.log(loadedObj);
+  let foxModel = loadedObj.scene.children[0]
+  scene.add(foxModel);
+  window.requestAnimationFrame(animate);
+
+  function animate() {
+    // Update controls
+    controls.update();
+    // Render
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(animate);
+  }
+}
+</code>
+</pre>
+</section>
+
+</main>
+
+  <script src="js/prism.js"></script>
+</body>
+
+</html>
