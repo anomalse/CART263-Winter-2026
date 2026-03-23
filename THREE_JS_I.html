@@ -275,9 +275,108 @@ mesh.rotation.y = Math.PI * 0.25
   camera.lookAt(mesh_2.position)
 </code>
 </pre>
-<h4>Groups</h4>
+<h3>Materials</h3>
+<p><code>Materials</code> are used to put a color on each visible pixel of the geometries.
+<br/><code>Shaders</code> are an <strong>advanced</strong> topic and are <strong><source>super challenging</strong> - so we will not cover in this course ;)</p>
+<p>In this class we will use built in Three.js materials:</p>
+<h4>Scene Prep</h4>
+<p>Let's <span class="customP">remove</span> all our <code>meshes</code> in the scene and add some new ones:
+<br/>Create 3 Meshes composed of 3 different geometries (a sphere, a plane, and a torus) and use the same <code>MeshBasicMaterial</code> on all of the 3.  
+<br/>Put the sphere on the left and the torus on the right to separate them. When using the <code>add(...)</code> method, you can add all three at once:)</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23" class="language-javascript line-numbers">
+<code>
+const material = new THREE.MeshBasicMaterial()
+
+const sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    material
+)
+sphere.position.x = - 1.5
+
+const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    material
+)
+
+const torus = new THREE.Mesh(
+    new THREE.TorusGeometry(0.5, 0.3, 16, 32),
+    material
+)
+torus.position.x = 1.5
+
+scene.add(sphere, plane, torus)
+</code>
+</pre>
+<h4>Loading Textures</h4>
+<p> We need to <span class = "customP">very briefly</span> introduce textures here - NOTE: there is <span class="customP">alot more to this topic</span>: here we ONLY discuss the loading of a texture - not the different types, how to cover, wrap, place, apply filters etc....</p>
+<p>Textures, as you probably know, are images that will cover the surface of your geometries. Many types of textures can have different effects on the appearance of your geometry.
+To load the texture, you need the <strong> path</strong> to the image file, and then to <code>load the file</code>:we will use the inbuilt Three.js object: the <a href = "https://threejs.org/docs/index.html#TextureLoader">TextureLoader</a>.
+<br/> First, then create an instance of the <code>TextureLoader</code> class:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23" class="language-javascript line-numbers">
+<code>
+const loader = new THREE.TextureLoader();
+</code>
+</pre>
+<p>Make a new folder called <code>textures</code> and access and download a texture from <a href = "https://github.com/mrdoob/three.js/blob/dev/examples/textures">offical three.js github</a> - I have accessed: <a href = "https://github.com/mrdoob/three.js/blob/dev/examples/textures/ambientcg/Ice002_1K-JPG_Color.jpg">this one</a>  - make sure to add references in your code :)
+<br/>Next: use the <code>loader</code> to load the texture:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23" class="language-javascript line-numbers">
+<code>
+const water_texture = await loader.loadAsync( 'textures/Ice002_1K-JPG_Color.jpg' );
+//need to ensure that the textures are encoded correctly - mapping the colors correctly.
+water_texture.colorSpace = THREE.SRGBColorSpace;
+</code>
+</pre>
+<h4> Applying the texture</h4>
+<p>So now - we want to <code>apply the texture</code> to a <code>material</code>.
+<br/>We already used the <a href = "https://threejs.org/docs/#MeshBasicMaterial">MeshBasicMaterial</a>, to apply a uniform color to our geometry.
+<br/> - We can also use this same object to apply a texture to the surface of the geometry - by using the <code>map</code> property:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23" class="language-javascript line-numbers">
+<code>
+  const material = new THREE.MeshBasicMaterial({
+    map: water_texture
+})
+
+</code>
+</pre>
+<h4>Color</h4>
+<p>The color property will apply a uniform color on the surface of the geometry. 
+<br>When you are changing the <strong>color</strong> property of the <code>THREE.MeshBasicMaterial</code> directly  -  you must instantiate the <a href = "https://threejs.org/docs/index.html#Color">Color</a>class. 
+<br>You can use many different formats. Comment out the <code>map</code> and try:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23" class="language-javascript line-numbers">
+<code>
+material.color = new THREE.Color('#ad86dd') 
+//or
+material.color = new THREE.Color('rgb(0, 128, 255)')
+</code>
+</pre>
+<p> You can <code>combine</code> the color and texture:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23" class="language-javascript line-numbers">
+<code>
+material.map = water_texture
+material.color = new THREE.Color('#f1b6fb')
+</code>
+</pre>
+<h4>wireframe</h4>
+<p> The <code>wireframe property</code> will show the triangles that compose your geometry with a thin line of 1px regardless of the distance to the camera</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23" class="language-javascript line-numbers">
+<code>
+material.wireframe = true
+</code>
+</pre>
+<h4>opacity</h4>
+<p>The <code>opacity</code> property controls the transparency - BUT you ALSO need to set the <code>transparent property to true</code>  - to tell Three.js that now the material is supporting new properties...</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23" class="language-javascript line-numbers">
+<code>
+material.transparent = true
+material.opacity = 0.5
+</code>
+</pre>
+<p>So - there is ALOT more to materials, as well as different TYPES of materials - BUT that is beyond the scope of this class... as we need to move on :)</p>
+
+
+<h3>Groups</h3>
 <p>Another useful strategy is to group objects together - to then easily apply the same transformations to all..</p>
-<p>First: Instantiate a <a href = "https://threejs.org/docs/#Group">Group</a> and add it to the scene:</p>
+<p>First: Comment out all the previous meshes. Then, instantiate a <a href = "https://threejs.org/docs/#Group">Group</a> and add it to the scene:</p>
   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
 <code>
   const group = new THREE.Group()
@@ -385,6 +484,18 @@ mesh_2.position.x = -2
   camera.position.y = Math.sin(elapsedTime/1000)
 </code>
 </pre>
+<h3> Lighting </h3>
+<p>Let's look at some basic lighting ... NOTE: once again this is a whold topic on it's own and we just are introducing the topic - not in any way going into detail...
+<br>We will start by adding two lights to our scene. First, though: <span class = "customP">comment out the updating of the position of the camera/meshes in the animate()</span><div class=""></div>
+<br>Also, add the water_texture into the material:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+<code>
+const material = new THREE.MeshBasicMaterial({ map: water_texture })
+</code>
+<p> Let's add some ambient light:</p>
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+scene.add(ambientLight)
 </section>
 
 </main>
