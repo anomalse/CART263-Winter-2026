@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<head>
+    <title> CART 263 WINTER 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+      <link href="css/themes/prism.css" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <header>
+        <h1> CART 263 WINTER 2026</h1>
+
+         <nav id = "cart263Nav"></nav>
+        <script src = "js/loadNav.js"></script>
+       <div class="inner-head">
+                <h1>TASK 7: <br/> THREE.JS SOLAR SYSTEM SCENE </h1>
+            </div>
+    </header>
+    <main>
+
+<section class="contents-tasks">
+<ul>
+<li>Please use the HTML and CSS provided <a href = "t7-resources/CART263-TASK-7.zip">HERE</a></li>
+<li>The purpose of this task is to practice designing and implementing a 3D scene in Three.js by building a shared solar system together.</li>
+This task requires that once again in teams of 3-4 MAX - each team completes <strong>their allocated team's planet implementation</strong>.</li>
+</ul>
+<h3>PART ONE (COMPLETE PARTS A-F)</h3>
+<ul>
+    <li>In the code there are <strong>6</strong> different teams (A,B,C,D,E and F)</li>
+    <li>Each team must implement their planet class following the instructions in the TODO sections of their respective file (TeamA.js, TeamB.js, etc.)</li>
+    <li>Each planet must be customized and include orbiting moons, Blender models/props/creatures placed on the planet surface, and interactive click events.</li>
+    <li>The end goal is that <span class="customP">for each class section the result will be <strong>one</strong> fully working 3D solar system made up of <strong>all</strong> planets (A-F) orbiting the sun</span></li>
+    </li>
+</ul>
+<h3>INSTRUCTIONS (ALL TEAMS)</h3>
+<ol>
+ <li>Choose a <strong>theme</strong> for your team's planet. </li>
+ <li>Create a planet using THREE.SphereGeometry (Radius must be between 1.5 and 2).</li>
+ <li>Give it a custom material using THREE.MeshStandardMaterial.</li>
+ <li>Use castShadow and receiveShadow on the mesh and all future ones so they can cast and receive shadows.</li>
+ <li>Add the planet mesh to the planet group.</li>
+ <li>The moons should rotate around the planet just like the planet group rotates around the Sun.</li>
+ <li>Load Blender models to populate the planet with multiple props and critters by adding them to the planet group.</li>
+ <li>Make sure to rotate the models so they are oriented correctly relative to the surface of the planet.</li>
+ <li>Use raycasting in the click() method below to detect clicks on the models, and make an animation happen when a model is clicked.</li>
+ <li>Use your imagination and creativity!</li>
+ </ol>
+
+<h3>PART TWO (PRESENT ONE PART OF A-F)</h3>
+<ul>
+<li>Each team will present their planet <em>in class</em></li>
+<li>One person from each team should submit their planet file (TeamX.js) on GitHub; the instructor will combine/integrate all submissions into the complete solar system.</li>
+<li>Be prepared to demonstrate your planet's unique features, moons, critters, and click animations</li>
+</ul>
+
+<h3>SUBMISSION</h3>
+<ul>
+    <li> SECTION A (TUESDAY): submit to moodle by <span class = "customP"> MONDAY APR 6 12:00 (MIDDAY)</span> - so that Sabine can merge all the submissions into one file to present for Tuesdays class</li>
+    <li> SECTION AA (WEDNESDAY): submit to moodle by <span class = "customP"> TUESDAY APR 7 12:00 (MIDDAY)</span> - so that Sabine can merge all the submissions into one file to present for Wednesday's class</li>
+    <li> SECTION B (THURSDAY): submit to moodle by <span class = "customP"> WEDNESDAY APR 8 12:00 (MIDDAY)</span> - so that Joachim can merge all the submissions into one file to present for Thursday's class</li>
+</ul>
+<h3>GRADING SCHEMA</h3>
+<ul>
+<li>This task is worth 4% ...  and so the student will be evaluated either with 1%, 2%, 3% or 4%:
+<br><span class="customP">All members of a given team will be allocated the same grade - so work together :)</span>
+</li>
+    <li><strong>Up to 2% for successful implementation of a given team's planet requirements:</strong>
+        <br>- Planet mesh with custom material (0.5%)
+        <br>- Orbiting moons with proper motion (0.5%)
+        <br>- Blender models/props/critters on planet surface (0.5%)
+        <br>- Working raycasting and click animations (0.5%)
+    </li>
+    <li><strong>Up to 2% for creative, visual, explorative considerations:</strong>
+        <br>- Thematic consistency and visual appeal of the planet (0.5%)
+        <br>- Quality and variety of critter/prop models (0.5%)
+        <br>- Creativity of click animations and effects (0.5%)
+        <br>- Additional effects (particle systems, unique visual features, etc.) (0.5%)
+    </li>
+</ul>
+</section>
+</main>
+  <script src="js/prism.js"></script>
+</body>
+
+</html>
