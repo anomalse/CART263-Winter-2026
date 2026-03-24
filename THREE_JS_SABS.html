@@ -1130,6 +1130,64 @@ function addAndRun(loadedObj){
 }
 </code>
 </pre>
+
+
+<h3> Lighting </h3>
+<p>Let's look at some basic lighting ... NOTE: once again this is a whold topic on it's own and we just are introducing the topic - not in any way going into detail...
+<br>We will start by adding two lights to our scene. First, though: <span class = "customP">comment out the updating of the position of the camera/meshes in the animate()</span>
+<br> Then, because we are going to use lights, we have to <span class = "customP">use a material that reacts to lights</span>. There are a few different options: - we will use the <a href = "https://threejs.org/docs/index.html#MeshStandardMaterial">MeshStandardMaterial </a>because it's the most realistic one. 
+<br> We will also reduce the roughness of the material to 0.4 to see the reflections of the lights.
+<br>Also, add the water_texture into the material:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+// add in if not already there 
+const loader = new THREE.TextureLoader();
+const water_texture = await loader.loadAsync( 'textures/Ice002_1K-JPG_Color.jpg' );
+water_texture.colorSpace = THREE.SRGBColorSpace
+
+const material = new THREE.MeshStandardMaterial({}) 
+//or
+const material = new THREE.MeshStandardMaterial({map:water_texture}) 
+material.roughness = 0.4
+//supports lighting!
+</code>
+</pre>
+<h4> <a style = "color:white" href = "https://threejs.org/docs/index.html#AmbientLight">Ambient light</a></h4>
+ <p>The <code>Ambient Light</code> applies <em>omnidirectional</em> lighting on all geometries of the scene. The first parameter is the color and the second parameter is the intensity.</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const ambientLight = new THREE.AmbientLight()
+scene.add(ambientLight)
+</code>
+</pre>
+<p> You can set the color and intensity like this:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+ambientLight.color = new THREE.Color(0xff0000)
+ambientLight.intensity = .5;
+  </code>
+  </pre>
+<h4> <a style = "color:white" href = "https://threejs.org/docs/index.html#DirectionalLight">Directional light</a></h4>
+ <p>The <code>Directional light</code>will have a sun-like effect as if the sun rays were traveling in parallel. 
+ <br>The first parameter is the color and the second parameter is the intensity. This light can also cast shadows.
+ <br>By default, the light will seem to come from above. To change that, you need to <span class = "customP">move the whole light</span> by using the <code>position property</code> as with any other Three.js object:</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+ directionalLight.position.set(-5,5, 0)
+</code>
+</pre>
+<p> we can of course move the directional light - in our <code>animate()</code>:</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+ let x = directionalLight.position.x
+  x+=.02
+  directionalLight.position.set(x,5, 0)
+  </code>
+  </pre>
+<!--point lights-->
+<!--spot lights-->
+<!--shadows-->
+<!-- light helpers-->
 </section>
 
 </main>
