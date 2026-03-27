@@ -1231,9 +1231,9 @@ ambientLight.intensity = .5;
   </code>
    </pre>
    <p>The light looks quite similar, but the intensity drops down drastically when getting close to the 1.0 distance cutoff point/threshold.
-    <br/> In case you wonder what this <code> distance number means: here is a link to the <a href = "https://en.wikipedia.org/wiki/Inverse-square_law">inverse-square law</a>.
+    <br/> In case you wonder what this <code> distance</code> number means: here is a link to the <a href = "https://en.wikipedia.org/wiki/Inverse-square_law">inverse-square law</a>.
   </p>
-  <p> Finally, the <code>point light</code> also has a <code>decay</code> parameter. The next parameter is the decay. The default value is 2.
+  <p> Finally, the <code>point light</code> also has a <code>decay</code> parameter.The default value is <code>2</code>.
    <br>Try setting it to <code>0.5</code>. Also, set the <code> distance</code> back to <code>0</code>.The lower the decay, the faster the light will decay.</p>
    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
   <code>
@@ -1244,12 +1244,12 @@ ambientLight.intensity = .5;
   <h4><a style = "color:white" href = "https://threejs.org/docs/index.html#SpotLight">Spot Light</a></h4>
   <p> The Spot light works like a flashlight. It's a cone of light starting at a point and oriented in a direction. Here the list of its parameters:
   <ul>
-  <li>color: the color</li>
- <li>intensity: the strength</li>
- <li>distance: the distance at which the intensity drops to 0</li>
- <li>angle: how large is the beam</li>
- <li>penumbra: how diffused is the contour of the beam</li>
- <li>decay: how fast the light dims</li>
+  <li><code>color</code>: the color</li>
+ <li><code>intensity</code>: the strength</li>
+ <li><code>distance</code>: the distance at which the intensity drops to 0</li>
+ <li><code>angle</code>: how large is the beam</li>
+ <li><code>penumbra</code>: how diffused is the contour of the beam</li>
+ <li><code>decay</code>: how fast the light dims</li>
 </ul>
 </p>
 <p> Let's create one:</p>
@@ -1276,15 +1276,147 @@ spotLight.target.position.x = -2
 </pre>
 <!-- still to come :: the helpers-->
 <h3> Casting Shadows </h3>
-<p> Now that you have lights - you may possibly also want shadows ;)
-<br >Note - creating realistic lighting and shadows is <strong> hard </strong> and the techniques shown so far and next are essentially
-built in solutions from Three.js - they are convenient but <em>far from perfect</em></p>
-<p> In order to understand <strong> the basics of shadows</strong>: When you do one render, Three.js will first do a render for each light supposed to cast shadows. Those renders will simulate what the light sees as if it was a camera. During these lights renders, MeshDepthMaterial replaces all meshes materials. The results are stored as textures and named shadow maps.
+<p> Now that you have lights - you may possibly also want shadows ;) The back of the objects are  in the dark, and this is called the <strong>core shadow</strong>. What we are missing is the <code>drop shadow</code>, where objects create shadows on the other objects.
+<br >Note: - Creating realistic lighting and shadows is <strong> hard </strong> and the techniques that will be shown next are <strong>built in solutions from Three.js</strong> - they are convenient but <em>far from perfect</em>.</p>
+<p><strong> The basics of how shadows work in Three.js</strong>: 
+<ul>
+  <li>When you do one render, Three.js will first do a render for each light that is supposed to cast shadows.</li>
+  <li>Those renders will simulate what the light 'sees' as if it were a camera.</li> 
+  <li>During these lights renders, the <a href = "https://threejs.org/docs/index.html#MeshDepthMaterial">MeshDepthMaterial</a> replaces all materials for those meshes.</li> 
+  <li>The results are then stored as textures and named shadow maps.</li>
+  <li>You won't see those shadow maps directly, but they are used on every material supposed to receive shadows and projected on the geometry.</li>
+  <li>Here's an excellent example of what the directional light and the spotlight see: <a href = "https://threejs.org/examples/webgl_shadowmap_viewer.html">this link</a></li>
+  </ul>
+<p>Let's start with a new  starter js: <code>shadows.js</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65" class="language-javascript line-numbers">
+<code>
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-You won't see those shadow maps directly, but they are used on every material supposed to receive shadows and projected on the geometry.
+const scene = new THREE.Scene();
+// Canvas
+const canvas = document.querySelector("canvas#three-ex");
 
-Here's an excellent example of what the directional light and the spotlight see: https://threejs.org/examples/webgl_shadowmap_viewer.html
+//Ambient Light
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
 
+// Directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+directionalLight.position.set(2, 2, -1);
+scene.add(directionalLight)
+
+//Sphere and plane
+const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+const material = new THREE.MeshStandardMaterial({});
+material.roughness = 0.7;
+
+const sphere = new THREE.Mesh(geometry, material);
+scene.add(sphere);
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
+scene.add(plane);
+plane.rotation.x = -Math.PI * 0.5;
+plane.position.y = -0.5;
+
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+const camera = new THREE.PerspectiveCamera(
+  75,
+  sizes.width / sizes.height,
+  0.1,
+  100,
+);
+camera.position.x = 1;
+camera.position.y = 1;
+camera.position.z = 2;
+
+scene.add(camera);
+
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+//RENDER
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+});
+renderer.setSize(sizes.width, sizes.height);
+
+
+//ANIMATE
+window.requestAnimationFrame(animate);
+function animate() {
+  controls.update();
+
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate);
+}
+</code>
+</pre>
+<ul>
+  <li>Start by activating the shadow maps on the renderer:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+  <code>
+    renderer.shadowMap.enabled = true
+  </code>
+  </pre>
+  </li>
+  <li>
+    Then, we need to go through each object in the scene and decide if the object can cast a shadow with the <code>castShadow</code> property, and if the object can receive shadows with the <code>receiveShadow</code> property. 
+    Try to activate these on the <em>least</em> amount of objects as possible (computationally expensive)
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+  <code>
+    sphere.castShadow = true
+    plane.receiveShadow = true
+    </code>
+    </pre>
+  </li>
+  <li> Finally -  we want to activate the shadows on the light with the <code>castShadow</code> property - again try to activate on as <em>few lights</em> as possible</em>. Only the following lights support shadows:
+    <ul>
+      <li>Point Light</li>
+      <li>Directional Light</li>
+      <li>Spot Light</li>
+    </ul>
+    Let's add to the directional light:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+    <code>
+    directionalLight.castShadow = true
+    </code>
+    </pre>
+  </li>
+</ul>
+<h4>Shadow map optimisations</h4>
+Ok - we want to perhaps attempt to improve our shadow somewhat ... First of all - as the <code>directional Light</code> is the one casting the shadows - we can log the properties:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+console.log(directionalLight.shadow)
+</code>
+</pre>
+<p>By default, the shadow map size is only <code>512x512</code> for performance reasons. We can improve it but it needs to be values that are <em>powers-of-2</em>:</p>
+
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+directionalLight.shadow.mapSize.width = 1024
+directionalLight.shadow.mapSize.height = 1024
+</code>
+</pre>
+
+<!-- come back to?-->
+<!--
+<p>Three.js is using cameras to do the shadow map renders. Those cameras have the same properties as the cameras we have implemened. 
+ So - we can also modify/configure/set the camera <code>near</code> and <code>far</code> values. It won't really improve the shadow's quality, but it might fix bugs where you can't see the shadow or where the shadow appears suddenly cropped.
+
+To help us debug the camera and preview the near and far, we can use a CameraHelper with the camera used for the shadow map located in the directionalLight.shadow.camera property: -->
+
+<p>You can control the shadow blur with the <code>radius property</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+directionalLight.shadow.radius = 10
+</code>
+</pre>
 
 
 
