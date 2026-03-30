@@ -609,7 +609,7 @@ console.log(intersects)
       <li>make an object <code>inactive</code> when the mouse is <code>off</code> it AND set the currently tracked object to null </li>
     </ul>
   </li>
-   <li> Comment out the two for loops for color change of obejcts (red - blue)
+   <li> Comment out the two for loops for color change of objects (red - blue)
     and add:
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
 <code>   
@@ -676,9 +676,345 @@ function findIfCurrentObjIsActive(intersect){
 </code>
 </pre>
 </li>
- 
+ </ul>
+ <h3> Lighting </h3>
+<p>Let's look at some basic lighting ... NOTE: once again this is a whold topic on it's own and we just are introducing the topic - not in any way going into detail...
+<br>We will start by adding two lights to our scene. First, though: <span class = "customP">comment out the updating of the position of the camera/meshes in the animate()</span>
+<br> Then, because we are going to use lights, we have to <span class = "customP">use a material that reacts to lights</span>. There are a few different options: - we will use the <a href = "https://threejs.org/docs/index.html#MeshStandardMaterial">MeshStandardMaterial </a>because it's the most realistic one. 
+<br> We will also reduce the roughness of the material to 0.4 to see the reflections of the lights.
+<!--<br>Also, add the water_texture into the material:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+// add in if not already there 
+const loader = new THREE.TextureLoader();
+const water_texture = await loader.loadAsync( 'textures/Ice002_1K-JPG_Color.jpg' );
+water_texture.colorSpace = THREE.SRGBColorSpace -->
 
+const material = new THREE.MeshStandardMaterial({}) 
+//or
+const material = new THREE.MeshStandardMaterial({map:water_texture}) 
+material.roughness = 0.4
+//supports lighting!
+</code>
+</pre>
+<p> Let's also add a <code>plane</code> to represent a floor:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+//NEW for casting shadows add a plane:)
+const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(5, 5),
+    material
+)
+
+scene.add(plane)
+plane.rotation.x = - Math.PI * 0.5
+plane.position.y = -.5;
+plane.position.z = 1;
+plane.position.x = -1;
+</code>
+</pre>
+<h4> <a style = "color:white" href = "https://threejs.org/docs/index.html#AmbientLight">Ambient light</a></h4>
+ <p>The <code>Ambient Light</code> applies <em>omnidirectional</em> lighting on all geometries of the scene. The first parameter is the color and the second parameter is the intensity.</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const ambientLight = new THREE.AmbientLight()
+scene.add(ambientLight)
+</code>
+</pre>
+<p> You can set the color and intensity like this:
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+ambientLight.color = new THREE.Color(0xff0000)
+ambientLight.intensity = .5;
+  </code>
+  </pre>
+<h4> <a style = "color:white" href = "https://threejs.org/docs/index.html#DirectionalLight">Directional light</a></h4>
+ <p>The <code>Directional light</code>will have a sun-like effect as if the sun rays were traveling in parallel. 
+ <br>The first parameter is the color and the second parameter is the intensity. 
+ <br>By default, the light will seem to come from above. To change that, you need to <span class = "customP">move the whole light</span> by using the <code>position property</code> as with any other Three.js object:</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+ directionalLight.position.set(-5,5, 0)
+</code>
+</pre>
+<p> we can of course move the directional light - in our <code>animate()</code>:</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+ let x = directionalLight.position.x
+  x+=.02
+  directionalLight.position.set(x,5, 0)
+  </code>
+  </pre>
+  <h4><a style = "color:white" href="https://threejs.org/docs/index.html#PointLight"> Point Light </a></h4>
+  <p>The <code>Point Light</code> is like a lighter. The light source is infinitely small, and the light spreads uniformly in every direction. 
+  <br/>The first parameter is the color and the second parameter is the intensity:</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+  <code>
+  const pointLight = new THREE.PointLight(0xff9000, 1.5)
+  scene.add(pointLight)
+  console.log(pointLight.position) // default position is 0,0,0
+  </code>
+  </pre>
+  <p>Of course you can change the position of the light :)</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+  <code>
+    pointLight.position.set(0,1,0) //set y 
+
+    //or
+     //pointLight.position.set(1,1,1) 
+
+     //set the intensity too
+      pointLight.intensity = 5
+
+  </code>
+  </pre>
+  <p> The <code>point light</code> has a third parameter for <code>distance</code>. Its default value is 0, meaning that the distance is actually infinite.
+  <br/> Try the following:</p>
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+  <code>
+     pointLight.distance = 1
+  </code>
+   </pre>
+   <p>The light looks quite similar, but the intensity drops down drastically when getting close to the 1.0 distance cutoff point/threshold.
+    <br/> In case you wonder what this <code> distance</code> number means: here is a link to the <a href = "https://en.wikipedia.org/wiki/Inverse-square_law">inverse-square law</a>.
+  </p>
+  <p> Finally, the <code>point light</code> also has a <code>decay</code> parameter.The default value is <code>2</code>.
+   <br>Try setting it to <code>0.5</code>. Also, set the <code> distance</code> back to <code>0</code>.The lower the decay, the faster the light will decay.</p>
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+  <code>
+    pointLight.distance =0
+    pointLight.decay = .5
+  </code>
+  </pre>
+  <h4><a style = "color:white" href = "https://threejs.org/docs/index.html#SpotLight">Spot Light</a></h4>
+  <p> The Spot light works like a flashlight. It's a cone of light starting at a point and oriented in a direction. Here the list of its parameters:
+  <ul>
+  <li><code>color</code>: the color</li>
+ <li><code>intensity</code>: the strength</li>
+ <li><code>distance</code>: the distance at which the intensity drops to 0</li>
+ <li><code>angle</code>: how large is the beam</li>
+ <li><code>penumbra</code>: how diffused is the contour of the beam</li>
+ <li><code>decay</code>: how fast the light dims</li>
 </ul>
+</p>
+<p> Let's create one:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const spotLight = new THREE.SpotLight(0x78ff00, 4.5, 10, Math.PI * 0.1, 0.25, 1)
+spotLight.position.set(0, 2, 3)
+scene.add(spotLight)
+</code>
+</pre>
+<p> The Spot light has a property called <code>target</code> - which is of type <code>
+Object3D</code>. The Spotlight is <strong>ALWAYS looking at that target object which by default is (0,0,0)</strong>. 
+<br>In order to successfully change the target's position/rotation it has to be <code>added manually to the scene</code> (eventhough its an empty object)</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+scene.add(spotLight.target)
+</code>
+</pre>
+<p> And now we can set a new target: i.e. </p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+spotLight.target.position.x = -2
+</code>
+</pre>
+<p>Positioning and orienting the lights is hard. Three,js provides the following helper objects:</p>
+<ul>
+<li><a href ="https://threejs.org/docs/index.html#HemisphereLightHelper" >HemisphereLightHelper</a></li>
+<li><a href ="https://threejs.org/docs/index.html#DirectionalLightHelper">DirectionalLightHelper</a></li>
+<li><a href ="https://threejs.org/docs/index.html#PointLightHelper">PointLightHelper</a></li>
+<li><a href ="https://threejs.org/docs/index.html#SpotLightHelper">SpotLightHelper</a></li>
+</ul>
+<h3> Casting Shadows </h3>
+<p> Now that you have lights - you may possibly also want shadows ;) The back of the objects are  in the dark, and this is called the <strong>core shadow</strong>. What we are missing is the <code>drop shadow</code>, where objects create shadows on the other objects.
+<br >Note: - Creating realistic lighting and shadows is <strong> hard </strong> and the techniques that will be shown next are <strong>built in solutions from Three.js</strong> - they are convenient but <em>far from perfect</em>.</p>
+<p><strong> The basics of how shadows work in Three.js</strong>: 
+<ul>
+  <li>When you do one render, Three.js will first do a render for each light that is supposed to cast shadows.</li>
+  <li>Those renders will simulate what the light 'sees' as if it were a camera.</li> 
+  <li>During these lights renders, the <a href = "https://threejs.org/docs/index.html#MeshDepthMaterial">MeshDepthMaterial</a> replaces all materials for those meshes.</li> 
+  <li>The results are then stored as textures and named shadow maps.</li>
+  <li>You won't see those shadow maps directly, but they are used on every material supposed to receive shadows and projected on the geometry.</li>
+  <li>Here's an excellent example of what the directional light and the spotlight see: <a href = "https://threejs.org/examples/webgl_shadowmap_viewer.html">this link</a></li>
+  </ul>
+<p>Let's start with a new  starter js: <code>shadows.js</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65" class="language-javascript line-numbers">
+<code>
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+const scene = new THREE.Scene();
+// Canvas
+const canvas = document.querySelector("canvas#three-ex");
+
+//Ambient Light
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
+
+// Directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+directionalLight.position.set(2, 2, -1);
+scene.add(directionalLight)
+
+//Sphere and plane
+const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+const material = new THREE.MeshStandardMaterial({});
+material.roughness = 0.7;
+
+const sphere = new THREE.Mesh(geometry, material);
+scene.add(sphere);
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
+scene.add(plane);
+plane.rotation.x = -Math.PI * 0.5;
+plane.position.y = -0.5;
+
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+const camera = new THREE.PerspectiveCamera(
+  75,
+  sizes.width / sizes.height,
+  0.1,
+  100,
+);
+camera.position.x = 1;
+camera.position.y = 1;
+camera.position.z = 2;
+
+scene.add(camera);
+
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+//RENDER
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+});
+renderer.setSize(sizes.width, sizes.height);
+
+
+//ANIMATE
+window.requestAnimationFrame(animate);
+function animate() {
+  controls.update();
+
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate);
+}
+</code>
+</pre>
+<ul>
+  <li>Start by activating the shadow maps on the renderer:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+  <code>
+    renderer.shadowMap.enabled = true
+  </code>
+  </pre>
+  </li>
+  <li>
+    Then, we need to go through each object in the scene and decide if the object can cast a shadow with the <code>castShadow</code> property, and if the object can receive shadows with the <code>receiveShadow</code> property. 
+    Try to activate these on the <em>least</em> amount of objects as possible (computationally expensive)
+  <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+  <code>
+    sphere.castShadow = true
+    plane.receiveShadow = true
+    </code>
+    </pre>
+  </li>
+  <li> Finally -  we want to activate the shadows on the light with the <code>castShadow</code> property - again try to activate on as <em>few lights</em> as possible</em>. Only the following lights support shadows:
+    <ul>
+      <li>Point Light</li>
+      <li>Directional Light</li>
+      <li>Spot Light</li>
+    </ul>
+    Let's add to the directional light:
+    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+    <code>
+    directionalLight.castShadow = true
+    </code>
+    </pre>
+  </li>
+</ul>
+<h4>Shadow map optimisations</h4>
+Ok - we want to perhaps attempt to improve our shadow somewhat ... First of all - as the <code>directional Light</code> is the one casting the shadows - we can log the properties:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+console.log(directionalLight.shadow)
+</code>
+</pre>
+<p>By default, the shadow map size is only <code>512x512</code> for performance reasons. We can improve it but it needs to be values that are <em>powers-of-2</em>:</p>
+
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+directionalLight.shadow.mapSize.width = 1024
+directionalLight.shadow.mapSize.height = 1024
+</code>
+</pre>
+
+<p>Three.js uses <code>cameras</code> to implemnet the shadow map renders. Those cameras have the same properties as the cameras you have implemented:)
+ <br>So - we can also modify/configure/set the camera <code>near</code> and <code>far</code> values. It won't really improve the shadow's quality, but it might fix bugs where you can't see the shadow or where the shadow appears suddenly cropped.
+<p>We will not go into the implementation here (lack of time) - but know that it is always a possibility :)</p>
+
+<p>You can control the shadow blur with the <code>radius property</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+directionalLight.shadow.radius = 10
+</code>
+</pre>
+<p>This technique doesn't use the proximity of the camera to the object. It's just a general and cheap blur.</p>
+
+<h4> Shadow map algorithms </h4>
+<p>Different types of algorithms can be applied to shadow maps:</p>
+<ul>
+<li><code>THREE.BasicShadowMap</code>: Very performant but  not-good quality</li>
+<li><code>THREE.PCFShadowMap</code> Less performant but smoother edges</li>
+<li><code>THREE.PCFSoftShadowMap</code>: Less performant but even softer edges</li>
+<li><code>THREE.VSMShadowMap</code>: Less performant, more constraints, can have unexpected results</li>
+</ul>
+<p>To change it, we just need to update the <code>renderer.shadowMap.type</code> property. The default is <code>THREE.PCFShadowMap</code>.
+<br>To use <code>THREE.PCFSoftShadowMap</code> for better quality:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
+</code>
+</pre>
+<h3> Adding shadows for spotlights</h3>
+<p>Let's add a spotlight to the scene and enable shadows:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const spotLight = new THREE.SpotLight(0xff0000 ,5, 10, Math.PI * 0.3)
+//new
+spotLight.castShadow = true
+spotLight.position.set(0, 2, 2)
+scene.add(spotLight)
+scene.add(spotLight.target)
+</code>
+</pre>
+<p> You can reduce the intensity of the other lights...</p>
+
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const ambientLight = new THREE.AmbientLight(0xffffff, .25);
+const directionalLight = new THREE.DirectionalLight(0xffffff, .25);
+</code>
+</pre>
+<p>As you can see, shadows don't merge nicely. They are handled independently, and, unfortunately, there is not much to do about it.
+<br>Like for the directional light shadow, can improve the shadow quality: i.e. the resolution:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+spotLight.shadow.mapSize.width = 1024
+spotLight.shadow.mapSize.height = 1024
+</code>
+</pre>
+<p> And we leave it up to you to set up shadows with point lights using similar strategies...</p>
+<p> Three.js Shadows can be very super-fragalistic if the scene is simple  - but otherwise can become quite cumbersome...
+<br>A good alternative is <code>baked shadows</code> -  where the Shadows are integrated into textures and then  applied on the materials of the relevent objects.</p>
+<p> The <em>same</em> strategy can be used for the lights themselves: you <code>bake the light into the texture of the object</code>. This can be done in a 3D software like Blender. 
+<br/> The downside is that, once the lighting is baked, you can't move the lights, because there are none and you'll probably need a lot of textures....</p>
 <h3>BLENDER MODELS</h3> 
 <!--https://github.com/KhronosGroup/glTF-Sample-Assets-->
 <p>
@@ -742,7 +1078,7 @@ console.log(error.message)
 </pre>
 <p>If you look at the object logged in the console, you'll find a lot of elements. The most important part is the <code>scene property</code> because we have only one scene in the exported model.
 <br/>This scene contains everything we need. But it also includes more. Always start by looking at what is available first :) .</p>
-<p>All we want is to get our fox into the scene. There are multiple strategies - Because our model structure is simple, we will just add the Object3D to our scene. </p>
+<p>All we want <em>right now</em> is to get our fox into the scene. There are multiple strategies - Because our model structure is simple, we will just add the Object3D to our scene. </p>
 <p>Let's organize the code like this (remove the previous <code>try{} catch{} and animate()</code>):</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
 <code>
@@ -771,6 +1107,150 @@ function addAndRun(loadedObj){
 }
 </code>
 </pre>
+<p> So the model is huge ... lets scale it down: </p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+foxModel.scale.set(.015,.015,.015)
+</code>
+</pre>
+<p> Ok  -- lets load another model: <code>the duck</code>. It is also from here: <a href = "https://github.com/KhronosGroup/glTF-Sample-Assets">sample assets github</a>
+<br/>You can also just download the folder <a href = "resources/Duck.zip">here</a>. 
+<br/> Add a new variable to hold the <code>duck model </code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+let gltfDuck = null;
+</code>
+</pre>
+<p>Use the <code>gltfLoader.loadAsync()</code> to load the model:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  gltfDuck = await gltfLoader.loadAsync("model/Duck/glTF/Duck.gltf");
+  </code>
+</pre>
+<p> ok - so now that we have more than one model lets make an array and add the models:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  let objs = []
+  objs.push(gltfModel)
+  objs.push(gltfDuck)
+</code>
+</pre>
+<p> Adapt the <code>addAndRun()</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  addAndRun(objs)
+</code>
+</pre>
+<p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+function addAndRun(loadedObjsArray){
+  let foxModel = loadedObjsArray[0].scene.children[0]
+  let duckModel = loadedObjsArray[1].scene.children[0]
+  
+  foxModel.scale.set(.015,.015,.015)
+  
+  console.log(duckModel.scale)
+ //set scale
+  duckModel.scale.x -=.005
+  duckModel.scale.y -=.005
+  duckModel.scale.z -=.005
+
+//set pos
+  duckModel.position.x =1
+
+scene.add(foxModel)
+scene.add(duckModel)
+
+//..
+//}
+</code>
+</pre>
+<p> Note how the <code>duckModel</code> has other properties, a different scale etc...</p>
+<p> So we have two different models ... - lets consider the <code>fox</code> again. If you log the following in the entire loaded object in the console:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+//the loaded gltf 
+console.log(loadedObjsArray[0])
+</code>
+</pre>
+<p> - you will see that this object also contains an array of animations:<code>Survey</code>,<code>Walk</code>, and <code>Run</code>.
+<br/> So we will now try and animate our fox and use their animation clips ;)
+<br>Lets start by moving the fox on the z-axis. Set it initally at <code>-5</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+foxModel.position.z = -5
+</code>
+</pre>
+<p> Then in the <code>animate()</code> update its position:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+foxModel.position.z+=.01
+</code>
+</pre>
+<p>It moves!</p>
+<p> To add the animation clips we need to use the <a href = "https://threejs.org/docs/index.html?q=Anima#AnimationMixer">THREE.AnimationMixer()</a>, a player for animations.
+<br/> We will set it up within the <code>addAndRun()</code> before <code>animate()</code>:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+  const mixer = new THREE.AnimationMixer(foxModel)
+  
+  // Access the second animation clip in the array
+  const clip = loadedObjsArray[0].animations[1];
+
+  //returns a reference to an AnimationAction
+  //https://threejs.org/docs/index.html?q=Anima#AnimationAction
+  const anim_action = mixer.clipAction(clip);
+  
+  // Start playing the animation
+    anim_action.play()
+</code>
+</pre>
+<p>Then in the <code>animate()</code> we need to call <code>update()</code> on the <code>AnimationMixer</code> object ... in order to update the animation.
+  <br> It requires the <code>deltaTime</code> (difference in time between last and current frame in secs) - we did this last week and so can reuse it.
+  <br> The reworked <code>animate()</code> is:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+let elapsedTime = 0; //
+window.requestAnimationFrame(animate);
+
+function animate(timer) {
+//calculate the difference since last frame
+  let deltaTime = (timer - elapsedTime) / 1000; //put in secs
+  elapsedTime = timer; //update  new elapsedTime
+
+  // Update controls
+  controls.update();
+    if (mixer) {
+        mixer.update(deltaTime);
+    }
+
+  // fox model
+  foxModel.position.z+=.01
+  // Render
+  renderer.render(scene, camera);
+
+  window.requestAnimationFrame(animate);
+}
+</code>
+</pre>
+<p> Note - how we could easily, also use the <code>running</code>animation ...</p>
+<p>Let's add a spotlight on the <code>duck model</code> :) Add a <code>spotlight</code> with the other lights:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+const spotLight = new THREE.SpotLight(0xBB76E3, 15, 10, Math.PI * 0.1, 0.25, 1)
+spotLight.position.set(0, 2, 3)
+scene.add(spotLight)
+</code>
+</pre>
+<p>Set the spotlight target  (after loading the duck...)</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21," class="language-javascript line-numbers">
+<code>
+spotLight.target = duckModel
+</code>
+</pre>
+<p> You may need to dim the other lights/ and or configure intensity/color of the lights (i.e. <span class = "customP">point light to 20</span>), <span class = "customP">ambient light to .5</span> ....</p>
+<p>So - that's it for the <strong>whirlind</strong> lectures on <code>THREE.js</code> - there is alot more nd you are encouraged to continue learning and practising !</p>
 </section>
 
 </main>

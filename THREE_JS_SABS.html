@@ -1274,7 +1274,13 @@ scene.add(spotLight.target)
 spotLight.target.position.x = -2
 </code>
 </pre>
-<!-- still to come :: the helpers-->
+<p>Positioning and orienting the lights is hard. Three,js provides the following helper objects:</p>
+<ul>
+<li><a href ="https://threejs.org/docs/index.html#HemisphereLightHelper" >HemisphereLightHelper</a></li>
+<li><a href ="https://threejs.org/docs/index.html#DirectionalLightHelper">DirectionalLightHelper</a></li>
+<li><a href ="https://threejs.org/docs/index.html#PointLightHelper">PointLightHelper</a></li>
+<li><a href ="https://threejs.org/docs/index.html#SpotLightHelper">SpotLightHelper</a></li>
+</ul>
 <h3> Casting Shadows </h3>
 <p> Now that you have lights - you may possibly also want shadows ;) The back of the objects are  in the dark, and this is called the <strong>core shadow</strong>. What we are missing is the <code>drop shadow</code>, where objects create shadows on the other objects.
 <br >Note: - Creating realistic lighting and shadows is <strong> hard </strong> and the techniques that will be shown next are <strong>built in solutions from Three.js</strong> - they are convenient but <em>far from perfect</em>.</p>
@@ -1404,12 +1410,9 @@ directionalLight.shadow.mapSize.height = 1024
 </code>
 </pre>
 
-<!-- come back to?-->
-<!--
-<p>Three.js is using cameras to do the shadow map renders. Those cameras have the same properties as the cameras we have implemened. 
- So - we can also modify/configure/set the camera <code>near</code> and <code>far</code> values. It won't really improve the shadow's quality, but it might fix bugs where you can't see the shadow or where the shadow appears suddenly cropped.
-
-To help us debug the camera and preview the near and far, we can use a CameraHelper with the camera used for the shadow map located in the directionalLight.shadow.camera property: -->
+<p>Three.js uses <code>cameras</code> to implemnet the shadow map renders. Those cameras have the same properties as the cameras you have implemented:)
+ <br>So - we can also modify/configure/set the camera <code>near</code> and <code>far</code> values. It won't really improve the shadow's quality, but it might fix bugs where you can't see the shadow or where the shadow appears suddenly cropped.
+<p>We will not go into the implementation here (lack of time) - but know that it is always a possibility :)</p>
 
 <p>You can control the shadow blur with the <code>radius property</code>:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
@@ -1417,15 +1420,56 @@ To help us debug the camera and preview the near and far, we can use a CameraHel
 directionalLight.shadow.radius = 10
 </code>
 </pre>
+<p>This technique doesn't use the proximity of the camera to the object. It's just a general and cheap blur.</p>
 
+<h4> Shadow map algorithms </h4>
+<p>Different types of algorithms can be applied to shadow maps:</p>
+<ul>
+<li><code>THREE.BasicShadowMap</code>: Very performant but  not-good quality</li>
+<li><code>THREE.PCFShadowMap</code> Less performant but smoother edges</li>
+<li><code>THREE.PCFSoftShadowMap</code>: Less performant but even softer edges</li>
+<li><code>THREE.VSMShadowMap</code>: Less performant, more constraints, can have unexpected results</li>
+</ul>
+<p>To change it, we just need to update the <code>renderer.shadowMap.type</code> property. The default is <code>THREE.PCFShadowMap</code>.
+<br>To use <code>THREE.PCFSoftShadowMap</code> for better quality:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
+</code>
+</pre>
+<h3> Adding shadows for spotlights</h3>
+<p>Let's add a spotlight to the scene and enable shadows:</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const spotLight = new THREE.SpotLight(0xff0000 ,5, 10, Math.PI * 0.3)
+//new
+spotLight.castShadow = true
+spotLight.position.set(0, 2, 2)
+scene.add(spotLight)
+scene.add(spotLight.target)
+</code>
+</pre>
+<p> You can reduce the intensity of the other lights...</p>
 
-
-
-
-
-
-
-
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const ambientLight = new THREE.AmbientLight(0xffffff, .25);
+const directionalLight = new THREE.DirectionalLight(0xffffff, .25);
+</code>
+</pre>
+<p>As you can see, shadows don't merge nicely. They are handled independently, and, unfortunately, there is not much to do about it.
+<br>Like for the directional light shadow, can improve the shadow quality: i.e. the resolution:
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+spotLight.shadow.mapSize.width = 1024
+spotLight.shadow.mapSize.height = 1024
+</code>
+</pre>
+<p> And we leave it up to you to set up shadows with point lights using similar strategies...</p>
+<p> Three.js Shadows can be very super-fragalistic if the scene is simple  - but otherwise can become quite cumbersome...
+<br>A good alternative is <code>baked shadows</code> -  where the Shadows are integrated into textures and then  applied on the materials of the relevent objects.</p>
+<p> The <em>same</em> strategy can be used for the lights themselves: you <code>bake the light into the texture of the object</code>. This can be done in a 3D software like Blender. 
+<br/> The downside is that, once the lighting is baked, you can't move the lights, because there are none and you'll probably need a lot of textures....</p>
 
   
 <!--point lights-->
