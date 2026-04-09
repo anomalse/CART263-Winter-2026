@@ -1,0 +1,11 @@
+Model Information:
+* title:	Astronaut with flag
+* source:	https://sketchfab.com/3d-models/astronaut-with-flag-9bb8640498a54ef59bd781b8dcbcedc8
+* author:	dorit (https://sketchfab.com/dorit.b)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Astronaut with flag" (https://sketchfab.com/3d-models/astronaut-with-flag-9bb8640498a54ef59bd781b8dcbcedc8) by dorit (https://sketchfab.com/dorit.b) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
