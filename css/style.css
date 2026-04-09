@@ -248,7 +248,17 @@ nav ul li a:hover {
     width: max-content;
 }
 
+.contents h4.new-contents{
+     color: white;
+    background: var(--code-color);
 
+}
+
+.new-contents-list{
+
+    color: var(--code-color);
+
+}
 
 .contents a, .contents-tasks a, .contents-notes a {
     text-decoration: none;
@@ -462,3 +472,4 @@ code{
     padding:var(--space-4)
    
 }
+

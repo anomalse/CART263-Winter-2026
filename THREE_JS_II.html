@@ -327,6 +327,7 @@ window.addEventListener("keyup",function(e){
 <br/>You can use that technique to detect if there is a wall in front of the player, test if a weapon hit something, <span class = "customP">test if something is currently under the mouse to simulate mouse events</span>, and many other things.</p>
 <h4> First RayCasting Example </h4>
 <ul>
+  <li>If starting the lecture from this point - <a href = "resources/three-js-two-start.zip">here is a sample project to start with:</a></li>
   <li> Lets start with a new js file: <code>rayCastTest.js</code>: (and link in your index.html ) INSTEAD of other js files...:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-html line-numbers">
 <code>
@@ -370,7 +371,7 @@ renderer.setSize(sizes.width, sizes.height)
 </li>
 <li>
   Lets add three <code>spheres</code> to the scene:
-   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
+   <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
 const object1 = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 16, 16),
@@ -464,7 +465,7 @@ console.log(intersects)
     <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
   <code>
   object1.updateMatrixWorld()
-	object2.updateMatrixWorld()
+  object2.updateMatrixWorld()
   object3.updateMatrixWorld()
   </code>
   </pre>
@@ -562,6 +563,7 @@ console.log(intersects)
   and an event listener callback to capture the <code>mousemove</code>:
   <pre data-line="1, 3, 5, 7, 9, 11, 13,15" class="language-javascript line-numbers">
   <code>
+  const mouse = new THREE.Vector2();
   window.addEventListener("mousemove", function(event) {
   mouse.x = (event.clientX / sizes.width) * 2 - 1; //map to between -1,1
   mouse.y = -(event.clientY / sizes.height) * 2 + 1; //map to between -1,1
@@ -693,6 +695,24 @@ material.roughness = 0.4
 //supports lighting!
 </code>
 </pre>
+<p>Let's add some boxes :)</p>
+<pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
+<code>
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
+
+const mesh_2 = new THREE.Mesh(geometry, material)
+scene.add(mesh_2)
+mesh_2.position.x = -2
+
+//NEW for casting shadows add a plane:)
+const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(5, 5),
+    material
+)
+</code>
+</pre>
+
 <p> Let's also add a <code>plane</code> to represent a floor:</p>
 <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
@@ -730,7 +750,10 @@ ambientLight.intensity = .5;
  <br>By default, the light will seem to come from above. To change that, you need to <span class = "customP">move the whole light</span> by using the <code>position property</code> as with any other Three.js object:</p>
    <pre data-line="1, 3, 5, 7, 9, 11, 13,15,17,19,21" class="language-javascript line-numbers">
 <code>
- directionalLight.position.set(-5,5, 0)
+const directionalLight = new THREE.DirectionalLight()
+directionalLight.color = new THREE.Color(0xFFA500)
+scene.add(directionalLight)
+directionalLight.position.set(-5,5, 0)
 </code>
 </pre>
 <p> we can of course move the directional light - in our <code>animate()</code>:</p>
