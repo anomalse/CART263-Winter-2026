@@ -1,0 +1,11 @@
+Model Information:
+* title:	Traveler's duck
+* source:	https://sketchfab.com/3d-models/travelers-duck-082b95b9d2a245ebaae2f2223c63bdee
+* author:	adsky_pes (https://sketchfab.com/adsky_pes)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Traveler's duck" (https://sketchfab.com/3d-models/travelers-duck-082b95b9d2a245ebaae2f2223c63bdee) by adsky_pes (https://sketchfab.com/adsky_pes) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

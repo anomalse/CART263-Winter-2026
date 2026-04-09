@@ -1,0 +1,11 @@
+Model Information:
+* title:	Fox X Supreme Helmet
+* source:	https://sketchfab.com/3d-models/fox-x-supreme-helmet-ac680d32d02b4a9cb769d29f4f545609
+* author:	Muhammad Seno Aji (https://sketchfab.com/senoaji)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Fox X Supreme Helmet" (https://sketchfab.com/3d-models/fox-x-supreme-helmet-ac680d32d02b4a9cb769d29f4f545609) by Muhammad Seno Aji (https://sketchfab.com/senoaji) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
