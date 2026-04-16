@@ -1,0 +1,11 @@
+Model Information:
+* title:	Compsognathus
+* source:	https://sketchfab.com/3d-models/compsognathus-4a3c49d646b6424ebe7eab08bd254067
+* author:	AllThingsSaurus (https://sketchfab.com/AllThingsSaurus)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Compsognathus" (https://sketchfab.com/3d-models/compsognathus-4a3c49d646b6424ebe7eab08bd254067) by AllThingsSaurus (https://sketchfab.com/AllThingsSaurus) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
