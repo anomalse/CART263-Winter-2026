@@ -1,0 +1,11 @@
+Model Information:
+* title:	Kiwi bird 3d model
+* source:	https://sketchfab.com/3d-models/kiwi-bird-3d-model-8645dee0d01f462cbdf622122623337e
+* author:	iRahulRajput (https://sketchfab.com/rt699448)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Kiwi bird 3d model" (https://sketchfab.com/3d-models/kiwi-bird-3d-model-8645dee0d01f462cbdf622122623337e) by iRahulRajput (https://sketchfab.com/rt699448) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
