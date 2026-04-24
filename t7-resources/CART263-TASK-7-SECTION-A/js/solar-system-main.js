@@ -69,8 +69,8 @@ const sun = new Sun(scene);
 const planets = [];
 
 // Team A's planet (closest to sun)
-// const planetA = new PlanetA(scene, 8, 0.01);
-// planets.push(planetA);
+const planetA = new PlanetA(scene, 8, 0.01);
+planets.push(planetA);
 
 // // Team B's planet
 // load some models using a gltfLoader - make one per team
@@ -142,8 +142,8 @@ let teamBTextures = {
   },
 };
 
-// const planetB = new PlanetB(scene, 15, 0.005, teamBTextures, teamBModels);
-// planets.push(planetB);
+const planetB = new PlanetB(scene, 15, 0.005, teamBTextures, teamBModels);
+planets.push(planetB);
 
 // // Team C's planet
 const loaderTeamC = new THREE.TextureLoader();
@@ -158,20 +158,20 @@ const gltfLoaderTeamC = new GLTFLoader();
 let sheepModel = await gltfLoaderTeamC.loadAsync("models/sheep/scene.gltf");
 let teamCModels = [];
 teamCModels.push(sheepModel);
-//const planetC = new PlanetC(scene, 22, 0.003, teamCTextures, teamCModels);
-//planets.push(planetC);
+const planetC = new PlanetC(scene, 22, 0.003, teamCTextures, teamCModels);
+planets.push(planetC);
 
 // Team D's planet
 const planetD = new PlanetD(scene, 29, 0.002);
 planets.push(planetD);
 
-// // Team E's planet
-// const planetE = new PlanetE(scene, 36, 0.0015);
-// planets.push(planetE);
+// Team E's planet
+const planetE = new PlanetE(scene, 36, 0.0015);
+planets.push(planetE);
 
-// // Team F's planet (farthest)
-//const planetF = new PlanetF(scene, 43, 0.001);
-//planets.push(planetF);
+// Team F's planet (farthest)
+const planetF = new PlanetF(scene, 43, 0.001);
+planets.push(planetF);
 
 let elapsedTime = 0;
 function animate(timer) {
@@ -210,10 +210,10 @@ renderer.domElement.addEventListener("click", (event) => {
   mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
   mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
- //  planetA.click(mouse, scene, camera);
-   //planetB.click(mouse, scene, camera);
-  // planetC.click(mouse, scene, camera);
+  planetA.click(mouse, scene, camera);
+   planetB.click(mouse, scene, camera);
+  planetC.click(mouse, scene, camera);
    planetD.click(mouse, scene, camera);
-  //planetE.click(mouse, scene, camera);
-  //planetF.click(mouse, scene, camera);
+  planetE.click(mouse, scene, camera);
+  planetF.click(mouse, scene, camera);
 });
