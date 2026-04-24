@@ -60,28 +60,28 @@ const sun = new Sun(scene);
 const planets = [];
 
 // Team A's planet (closest to sun)
-const planetA = new PlanetA(scene, 8, 0.01);
-planets.push(planetA);
+// const planetA = new PlanetA(scene, 8, 0.01);
+// planets.push(planetA);
 
-// // // Team B's planet
+// // // // Team B's planet
 const planetB = new PlanetB(scene, 15, 0.005);
 planets.push(planetB);
 
-// // Team C's planet
-const planetC = new PlanetC(scene, 22, 0.003);
-planets.push(planetC);
+// // // Team C's planet
+// const planetC = new PlanetC(scene, 22, 0.003);
+// planets.push(planetC);
 
-// // Team D's planet
-const planetD = new PlanetD(scene, 29, 0.002);
-planets.push(planetD);
+// // // Team D's planet
+// const planetD = new PlanetD(scene, 29, 0.002);
+// planets.push(planetD);
 
-// // Team E's planet
-const planetE = new PlanetE(scene, 36, 0.0015);
-planets.push(planetE);
+// // // Team E's planet
+// const planetE = new PlanetE(scene, 36, 0.0015);
+// planets.push(planetE);
 
-// // Team F's planet (farthest)
-const planetF = new PlanetF(scene, 43, 0.001);
-planets.push(planetF);
+// // // Team F's planet (farthest)
+// const planetF = new PlanetF(scene, 43, 0.001);
+// planets.push(planetF);
 
 let elapsedTime = 0;
 function animate(timer) {
@@ -120,10 +120,10 @@ renderer.domElement.addEventListener('click', (event) => {
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
-    planetA.click(mouse, scene, camera);
-    planetB.click(mouse, scene, camera);
-    planetC.click(mouse, scene, camera);
-    planetD.click(mouse, scene, camera);
-    planetE.click(mouse, scene, camera);
-    planetF.click(mouse, scene, camera);
+    //planetA.click(mouse, scene, camera);
+     planetB.click(mouse, scene, camera);
+    // planetC.click(mouse, scene, camera);
+    // planetD.click(mouse, scene, camera);
+    // planetE.click(mouse, scene, camera);
+    // planetF.click(mouse, scene, camera);
 });

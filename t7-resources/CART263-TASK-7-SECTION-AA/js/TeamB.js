@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-//Sophia, Skyla and Abhinav
+
+
+
 // Planet class for Team B
 export class PlanetB {
     constructor(scene, orbitRadius, orbitSpeed) {
@@ -8,6 +10,10 @@ export class PlanetB {
         this.orbitRadius = orbitRadius;
         this.orbitSpeed = orbitSpeed;
         this.angle = Math.random() * Math.PI * 2;
+
+        // moon jump state
+        this.moonJumping = false;
+        this.moonJumpTime = 0;
 
         //Create planet group
         this.group = new THREE.Group()
@@ -26,7 +32,7 @@ export class PlanetB {
             emissive: 0x852929,//red rn
             emissiveIntensity: .5,//default 1
             flatShading: false,
-            metalness: .9,
+            metalness: .29,
             roughness: .7,
         });//color of planet, emissive color it emits, flat shading shaded the facets of the sphere, metalness max 1 (looks most metalic), roughness 0 makes super shiny
         const planetB = new THREE.Mesh(geometryPlanetB, materialPlanetB);
@@ -46,13 +52,13 @@ export class PlanetB {
             transparent: true,
             opacity: 0.35,
         });
-        const planetBglow = new THREE.Mesh(glowGeometryB, glowMaterialB);
+        this.planetBglow = new THREE.Mesh(glowGeometryB, glowMaterialB); // stored as this. so click() can access it
 
         //no shadow on glow effect
-        planetBglow.castShadow = false;
+        this.planetBglow.castShadow = false;
 
         //add glow to planet group
-        this.group.add(planetBglow);
+        this.group.add(this.planetBglow);
 
 
         //STEP 2: 
@@ -100,7 +106,7 @@ export class PlanetB {
             moonRotation.add(moon);
 
             //add moon to moons array, three moonGroup are created idk this logic is a bit questionable but it works 
-            this.moons.push({ group: moonRotation, speed: Math.random() * (1 - 0.5) + 0.5 }); //speed in between 0.5 and 1
+            this.moons.push({ group: moonRotation, speed: Math.random() * (1 - 0.5) + 0.5, mesh: moon, baseY: 0 }); //speed in between 0.5 and 1, mesh and baseY stored for jump animation
 
             //three moon rotation to planet group
             this.group.add(moonRotation);
@@ -144,7 +150,7 @@ export class PlanetB {
             tree4.position.set(0, -1.4, 0); // position
             tree4.scale.set(5,5,5);
             tree4.rotation.x = Math.PI; 
-            planetB.add(tree4);
+            planetB.add(tree4)
 
             var tree5 = tree1.clone(); 
             tree5.position.set(0, 0, -1.4); // position
@@ -166,7 +172,7 @@ export class PlanetB {
         const catLoader = new GLTFLoader();
 
         catLoader.load(
-        'models/cat/scene.gltf', // path to model
+        '/models/cat/scene.gltf', // path to model
         (gltf) => { 
             const cat1 = gltf.scene;
             cat1.position.set(0, 1, 1); // position
@@ -182,12 +188,19 @@ export class PlanetB {
         }); 
 
 
-       
-
-
         //STEP 4:
         //TODO: Use raycasting in the click() method below to detect clicks on the models, and make an animation happen when a model is clicked.
         //TODO: Use your imagination and creativity!
+
+        // using space key to make the moon jump
+        this._onKeyDown = (e) => {
+            if (e.code === 'Space' && !this.moonJumping) {
+                e.preventDefault();
+                this.moonJumping = true;
+                this.moonJumpTime = 0;
+            }
+        };
+        window.addEventListener('keydown', this._onKeyDown);
 
         this.scene.add(this.group);
     }
@@ -208,9 +221,44 @@ export class PlanetB {
         this.moons.forEach(moon => {
             moon.group.rotation.y += delta * moon.speed;
         });
+
+        // the duration and height of the jump of the moon 
+        const JUMP_DURATION = 0.6;
+        const JUMP_HEIGHT = 1.2;
+        if (this.moonJumping) {
+            this.moonJumpTime += delta;
+            const t = this.moonJumpTime / JUMP_DURATION; // 0 → 1
+            if (t >= 1) {
+                // once the jumps over the moon reset to base position and reset jumping state
+                this.moonJumping = false;
+                this.moons.forEach(moon => { moon.mesh.position.y = moon.baseY; });
+            } else {
+                
+                const offset = Math.sin(Math.PI * t) * JUMP_HEIGHT;
+                this.moons.forEach(moon => {
+                    moon.mesh.position.y = moon.baseY + offset;
+                });
+            }
+        }
     }
 
     click(mouse, scene, camera) {
         //TODO: Do the raycasting here.
+
+        // Build raycaster from the mouse position and camera
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(mouse, camera);
+
+        // Cast against everything inside this planet's group (planet, glow, moons, models)
+        const intersects = raycaster.intersectObjects(this.group.children, true);
+
+        if (intersects.length > 0) {
+            // random glow color when clicked
+            this.planetBglow.material.color.setHex(Math.random() * 0xffffff);
+        }
+    }
+
+    dispose() {
+        window.removeEventListener('keydown', this._onKeyDown);
     }
 }

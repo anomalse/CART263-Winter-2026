@@ -127,6 +127,7 @@ export class PlanetE {
         const intersections = this.raycaster.intersectObjects(this.planetProps, true);
 
         if (intersections.length > 0) {
+            console.log("clicked")
             const clickedProp = intersections[0].object.userData.propAnchor;
             if (clickedProp) {
                 clickedProp.userData.spinSpeed = 10;
@@ -134,6 +135,7 @@ export class PlanetE {
                     clickedProp.userData.loadingSwap = true;
                     this.propLoader.load('./zuckreptile.glb', (gltf) => {
                         const reptileModel = this.preparePropModel(gltf.scene);
+                        console.log(reptileModel)
                         clickedProp.clear();
                         clickedProp.add(reptileModel);
                         this.tagPropMeshes(reptileModel, clickedProp);
